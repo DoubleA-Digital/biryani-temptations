@@ -2696,42 +2696,26 @@ async function placeOrder() {
   const btn = document.querySelector('#checkout-form-wrap .btn-primary');
   if (btn) { btn.disabled = true; btn.textContent = 'Placing order...'; }
 
-  const { data: { user } } = await _supa.auth.getUser();
+  // Use cached currentUser — avoids extra network call to getUser()
+  const userId = currentUser ? currentUser.id : null;
   const total = cartTotal();
+  const customerEmail = document.getElementById('co-email').value.trim();
+  const orderNotes = document.getElementById('co-notes').value.trim();
+  const orderAddress = document.getElementById('co-address').value.trim();
+
   const { error } = await _supa.from('orders').insert({
     order_num: orderNum,
     customer_name: name,
     customer_phone: phone,
-    customer_email: document.getElementById('co-email').value.trim(),
+    customer_email: customerEmail,
     order_type: selectedOrderType,
-    address: document.getElementById('co-address').value.trim(),
-    notes: document.getElementById('co-notes').value.trim(),
+    address: orderAddress,
+    notes: orderNotes,
     items: cart.map(c => ({ ...c })),
     subtotal: total,
     status: 'new',
-    user_id: user ? user.id : null
+    user_id: userId
   });
-  // Award points if logged in
-  if (!error && user) {
-    try {
-      const pts = Math.floor(total * 10);
-      const { data: prof, error: profErr } = await _supa.from('profiles').select('points').eq('id', user.id).maybeSingle();
-      if (profErr) { console.error('Points fetch error:', profErr); }
-      const currentPts = prof ? (prof.points || 0) : 0;
-      const newPts = currentPts + pts;
-      if (prof) {
-        const { error: upErr } = await _supa.from('profiles').update({ points: newPts }).eq('id', user.id);
-        if (upErr) { console.error('Points update error:', upErr); }
-      } else {
-        // Profile row missing — create it now
-        const { error: insErr } = await _supa.from('profiles').insert({ id: user.id, name: name, phone: phone, points: newPts });
-        if (insErr) { console.error('Profile insert error:', insErr); }
-      }
-      if (currentUser) { currentUser.points = newPts; updateNavUser(); }
-      const ptsEl = document.getElementById('profile-points');
-      if (ptsEl) ptsEl.textContent = newPts;
-    } catch(e) { console.error('Points error:', e); }
-  }
 
   if (btn) { btn.disabled = false; btn.textContent = 'Place Order'; }
 
@@ -2741,35 +2725,42 @@ async function placeOrder() {
     return;
   }
 
+  // Show confirmation immediately — no waiting
   document.getElementById('order-num-display').textContent = orderNum;
-  // Build order summary for confirmation screen
   const spL = { mild:'Mild', medium:'Medium', spicy:'Spicy' };
   const itemLines = cart.map(c => `<div style="display:flex;justify-content:space-between"><span>${c.emoji} ${_esc(c.name)}${c.spice?' ('+spL[c.spice]+')':''} ×${c.qty}</span><span>$${(c.price*c.qty).toFixed(2)}</span></div>`).join('');
   document.getElementById('order-confirm-summary').innerHTML = itemLines + `<div style="border-top:1px solid rgba(255,255,255,.1);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-weight:600"><span>Total</span><span>$${total.toFixed(2)}</span></div>`;
   document.getElementById('checkout-form-wrap').style.display = 'none';
   document.getElementById('order-confirm').style.display = 'block';
 
-  // Send owner notification email
+  // Points update — runs in background, doesn't block confirmation
+  if (userId) {
+    const pts = Math.floor(total * 10);
+    _supa.from('profiles').select('points').eq('id', userId).maybeSingle()
+      .then(({ data: prof }) => {
+        const newPts = (prof ? (prof.points || 0) : 0) + pts;
+        const op = prof
+          ? _supa.from('profiles').update({ points: newPts }).eq('id', userId)
+          : _supa.from('profiles').insert({ id: userId, name, phone, points: newPts });
+        return op.then(() => {
+          if (currentUser) { currentUser.points = newPts; updateNavUser(); }
+          const ptsEl = document.getElementById('profile-points');
+          if (ptsEl) ptsEl.textContent = newPts;
+        });
+      }).catch(e => console.error('Points error:', e));
+  }
+
+  // Emails — fire and forget, never block the user
   if (window.emailjs) {
     const itemSummary = cart.map(c => `${c.emoji} ${c.name}${c.spice?' ('+spL[c.spice]+')':''} x${c.qty}`).join(', ');
-    const customerEmail = document.getElementById('co-email').value.trim();
     const emailParams = {
-      order_num: orderNum,
-      customer_name: name,
-      customer_phone: phone,
-      customer_email: customerEmail || 'Not provided',
-      order_type: selectedOrderType,
-      order_items: itemSummary,
-      order_total: '$' + total.toFixed(2),
-      order_notes: document.getElementById('co-notes').value.trim() || 'None',
-      order_address: document.getElementById('co-address').value.trim() || 'N/A'
+      order_num: orderNum, customer_name: name, customer_phone: phone,
+      customer_email: customerEmail || 'Not provided', order_type: selectedOrderType,
+      order_items: itemSummary, order_total: '$' + total.toFixed(2),
+      order_notes: orderNotes || 'None', order_address: orderAddress || 'N/A'
     };
-    // Notify owner
     emailjs.send('service_5js624f', 'template_ih2urfa', emailParams, 'p7RtWcIqypXH4e5-7').catch(()=>{});
-    // Send receipt to customer
-    if (customerEmail) {
-      emailjs.send('service_5js624f', 'template_tiyr5bc', { ...emailParams, to_email: customerEmail }, 'p7RtWcIqypXH4e5-7').catch(()=>{});
-    }
+    if (customerEmail) emailjs.send('service_5js624f', 'template_tiyr5bc', { ...emailParams, to_email: customerEmail }, 'p7RtWcIqypXH4e5-7').catch(()=>{});
   }
 
   ['co-name','co-phone','co-email','co-address','co-notes'].forEach(id => {
