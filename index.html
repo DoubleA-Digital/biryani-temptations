@@ -389,6 +389,102 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
   .hero-ctas{flex-direction:column;align-items:center}
   .btn-primary,.btn-outline{width:100%;max-width:280px;text-align:center}
 }
+
+/* MENU CARD BOTTOM (single price) */
+.menu-card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:8px}
+.item-price{font-family:var(--font-display);font-size:1.5rem;color:var(--accent);letter-spacing:.5px}
+.add-cart-btn{background:var(--accent);color:#fff;border:none;padding:8px 16px;font-family:var(--font-body);font-size:.82rem;font-weight:600;cursor:pointer;letter-spacing:.3px;transition:background .2s,transform .15s;white-space:nowrap}
+.add-cart-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.add-cart-btn.spice-pick{background:linear-gradient(135deg,#D4692A,#c44c1a)}
+
+/* SPICE MODAL */
+#spice-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+#spice-overlay.open{display:flex}
+.spice-modal{background:var(--card-bg);border:1px solid var(--border2);padding:32px 28px;max-width:340px;width:90%;text-align:center}
+.spice-modal h3{font-family:var(--font-display);font-size:1.6rem;color:var(--cream);margin-bottom:6px;letter-spacing:1px}
+.spice-modal .spice-item-name{font-family:var(--font-sub);font-style:italic;color:var(--accent);font-size:1rem;margin-bottom:20px;opacity:.9}
+.spice-options{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.spice-opt{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1px solid var(--border);background:rgba(255,255,255,.03);cursor:pointer;transition:all .2s;font-size:.95rem;color:var(--cream)}
+.spice-opt:hover{border-color:var(--accent);background:rgba(212,105,42,.08);transform:translateX(4px)}
+.spice-opt .spice-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.spice-opt .mild .spice-dot,.spice-opt.mild .spice-dot{background:#4CAF50}
+.spice-opt.medium .spice-dot{background:#FFC107}
+.spice-opt.spicy .spice-dot{background:#e53935}
+.spice-cancel{background:transparent;border:none;color:var(--cream);opacity:.5;font-size:.85rem;cursor:pointer;margin-top:4px;padding:6px}
+.spice-cancel:hover{opacity:.9}
+
+/* AUTH MODAL */
+#auth-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+#auth-overlay.open{display:flex}
+.auth-modal{background:var(--card-bg);border:1px solid var(--border2);padding:36px 32px;max-width:380px;width:90%}
+.auth-modal h2{font-family:var(--font-display);font-size:1.8rem;color:var(--cream);margin-bottom:4px;letter-spacing:1px}
+.auth-modal p{font-size:.85rem;opacity:.6;margin-bottom:20px}
+.auth-tabs{display:flex;gap:0;margin-bottom:24px;border-bottom:1px solid var(--border)}
+.auth-tab{flex:1;background:transparent;border:none;padding:10px;font-family:var(--font-body);font-size:.88rem;color:var(--cream);opacity:.5;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.auth-tab.active{opacity:1;color:var(--accent);border-bottom-color:var(--accent)}
+.auth-form-section{display:none}
+.auth-form-section.active{display:block}
+.auth-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--cream);padding:11px 14px;font-family:var(--font-body);font-size:.9rem;margin-bottom:12px;outline:none;transition:border-color .2s}
+.auth-input:focus{border-color:var(--accent)}
+.auth-submit{width:100%;background:var(--accent);color:#fff;border:none;padding:13px;font-family:var(--font-body);font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.auth-submit:hover{background:var(--accent2)}
+.auth-error{color:#e57373;font-size:.82rem;margin-bottom:10px;display:none}
+.auth-close{float:right;background:none;border:none;color:var(--cream);opacity:.5;font-size:1.3rem;cursor:pointer;margin-top:-8px;margin-right:-8px}
+.auth-close:hover{opacity:1}
+
+/* NAV USER BUTTON */
+.nav-user-wrap{position:relative}
+.nav-user-btn{background:rgba(212,105,42,.12);border:1px solid var(--border2);color:var(--cream);padding:6px 14px;font-family:var(--font-body);font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
+.nav-user-btn:hover{background:rgba(212,105,42,.2)}
+.nav-signin-btn{background:transparent;border:1px solid rgba(212,105,42,.5);color:var(--cream);padding:6px 16px;font-family:var(--font-body);font-size:.82rem;cursor:pointer;transition:all .2s}
+.nav-signin-btn:hover{border-color:var(--accent);color:var(--accent)}
+.user-dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--card-bg2);border:1px solid var(--border2);min-width:160px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.user-dropdown.open{display:block}
+.user-dropdown a{display:block;padding:11px 16px;font-size:.85rem;color:var(--cream);cursor:pointer;transition:background .15s;white-space:nowrap}
+.user-dropdown a:hover{background:rgba(212,105,42,.1);color:var(--accent)}
+
+/* PROFILE PAGE */
+#profile-page{min-height:100vh;padding:0 0 80px}
+.profile-hero{background:linear-gradient(180deg,var(--bg3) 0%,var(--bg) 100%);border-bottom:1px solid var(--border);padding:48px 24px;text-align:center}
+.profile-avatar{width:64px;height:64px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 16px;border:3px solid rgba(212,105,42,.4)}
+.points-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.3);padding:8px 20px;border-radius:40px;margin-top:12px}
+.points-badge .pts{font-family:var(--font-display);font-size:1.4rem;color:var(--gold)}
+.points-badge .pts-label{font-size:.8rem;opacity:.7;text-transform:uppercase;letter-spacing:1px}
+.profile-section{max-width:900px;margin:0 auto;padding:32px 24px 0}
+.profile-section-title{font-family:var(--font-display);font-size:1.3rem;letter-spacing:1px;color:var(--accent);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.reward-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:24px}
+.reward-card{background:var(--card-bg);border:1px solid var(--border);padding:16px;text-align:center;transition:border-color .2s}
+.reward-card:hover{border-color:var(--accent)}
+.reward-emoji{font-size:2rem;margin-bottom:8px}
+.reward-name{font-weight:500;font-size:.9rem;margin-bottom:4px}
+.reward-pts{font-family:var(--font-display);font-size:1rem;color:var(--gold)}
+.redeem-btn{background:var(--accent);color:#fff;border:none;padding:7px 16px;font-size:.8rem;font-weight:600;cursor:pointer;margin-top:8px;letter-spacing:.3px}
+.redeem-btn:disabled{opacity:.4;cursor:not-allowed}
+.past-order-card{background:var(--card-bg);border:1px solid var(--border);padding:18px;margin-bottom:12px}
+.past-order-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.past-order-num{font-family:var(--font-display);font-size:1.1rem;color:var(--accent)}
+.past-order-items{font-size:.82rem;opacity:.65;margin-bottom:10px;line-height:1.7}
+.past-order-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.reorder-btn{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:6px 16px;font-size:.8rem;cursor:pointer;font-family:var(--font-body);transition:all .2s}
+.reorder-btn:hover{background:var(--accent);color:#fff}
+.chat-btn{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--cream);padding:6px 14px;font-size:.8rem;cursor:pointer;font-family:var(--font-body);transition:all .2s}
+.chat-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ORDER CHAT */
+.order-chat-wrap{margin-top:12px;border:1px solid var(--border);background:rgba(0,0,0,.15)}
+.order-chat-messages{max-height:200px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.chat-msg{max-width:78%;padding:8px 12px;border-radius:4px;font-size:.83rem;line-height:1.5}
+.chat-msg.user{align-self:flex-end;background:rgba(212,105,42,.2);border:1px solid rgba(212,105,42,.3)}
+.chat-msg.admin{align-self:flex-start;background:rgba(255,255,255,.07);border:1px solid var(--border)}
+.chat-msg-time{font-size:.65rem;opacity:.4;margin-top:3px}
+.order-chat-input{display:flex;border-top:1px solid var(--border)}
+.order-chat-input input{flex:1;background:transparent;border:none;color:var(--cream);padding:10px 12px;font-family:var(--font-body);font-size:.85rem;outline:none}
+.order-chat-input button{background:var(--accent);border:none;color:#fff;padding:10px 16px;cursor:pointer;font-size:.85rem}
+
+/* REWARDS ADMIN */
+.reward-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px}
+.reward-admin-card{background:var(--card-bg);border:1px solid var(--border);padding:16px;position:relative}
+.reward-admin-card.inactive{opacity:.5}
 </style>
 </head>
 <body>
@@ -412,6 +508,14 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
     <li><a href="#" onclick="navigateTo('about');return false">Contact</a></li>
     <li><div id="status-badge" class="status-badge status-closed"><span class="dot"></span><span id="status-text">CLOSED</span></div></li>
     <li><button class="cart-btn" onclick="openCart()" aria-label="View Cart">🛒 Cart<span class="cart-count" id="cart-count">0</span></button></li>
+    <li class="nav-user-wrap">
+      <button class="nav-signin-btn" id="nav-signin-btn" onclick="openAuthModal()">Sign In</button>
+      <button class="nav-user-btn" id="nav-user-btn" style="display:none" onclick="toggleUserDropdown()">👤 <span id="nav-user-name">Account</span> ▾</button>
+      <div class="user-dropdown" id="user-dropdown">
+        <a onclick="navigateTo('profile');closeUserDropdown()">My Orders &amp; Rewards</a>
+        <a onclick="doSignOut()">Sign Out</a>
+      </div>
+    </li>
   </ul>
   <div style="display:flex;align-items:center;gap:12px">
   <button class="cart-btn" onclick="openCart()" aria-label="View Cart" style="display:none" id="mobile-cart-btn">🛒<span class="cart-count" id="cart-count-mobile">0</span></button>
@@ -425,6 +529,9 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
   <a href="#" onclick="navigateTo('catering');toggleMobileMenu();return false">Catering</a>
   <a href="#" onclick="navigateTo('about');toggleMobileMenu();return false">About</a>
   <a href="#" onclick="navigateTo('about');toggleMobileMenu();return false">Contact</a>
+  <a href="#" id="mobile-signin-link" onclick="openAuthModal();toggleMobileMenu();return false">Sign In / Create Account</a>
+  <a href="#" id="mobile-profile-link" style="display:none" onclick="navigateTo('profile');toggleMobileMenu();return false">My Orders &amp; Rewards</a>
+  <a href="#" id="mobile-signout-link" style="display:none" onclick="doSignOut();toggleMobileMenu();return false">Sign Out</a>
   <div id="status-badge-mobile" class="status-badge status-closed" style="width:fit-content"><span class="dot"></span><span id="status-text-mobile">CLOSED</span></div>
 </div>
 
@@ -562,6 +669,7 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
         <button class="cat-tab" data-cat="biryanis" onclick="setCategory('biryanis')">Biryanis</button>
         <button class="cat-tab" data-cat="curries" onclick="setCategory('curries')">Curries</button>
         <button class="cat-tab" data-cat="rice" onclick="setCategory('rice')">Rice & Noodles</button>
+        <button class="cat-tab" data-cat="naans" onclick="setCategory('naans')">Naans</button>
         <button class="cat-tab" data-cat="sides" onclick="setCategory('sides')">Sides</button>
         <button class="cat-tab" data-cat="desserts" onclick="setCategory('desserts')">Desserts</button>
       </div>
@@ -740,6 +848,70 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
 </div>
 
 <!-- FLOATING CTA -->
+<!-- PROFILE PAGE -->
+<div id="profile-page" class="page">
+  <div class="profile-hero">
+    <div class="profile-avatar">👤</div>
+    <div id="profile-name-display" style="font-family:var(--font-display);font-size:1.6rem;letter-spacing:1px;margin-bottom:4px">Welcome Back</div>
+    <div id="profile-email-display" style="font-size:.85rem;opacity:.55;margin-bottom:12px"></div>
+    <div class="points-badge">
+      <span class="pts" id="profile-points">0</span>
+      <span class="pts-label">BT Points</span>
+    </div>
+    <p style="font-size:.75rem;opacity:.45;margin-top:8px">Earn 10 points per $1 spent</p>
+  </div>
+
+  <div class="profile-section">
+    <div class="profile-section-title">Available Rewards</div>
+    <div id="profile-rewards-list"><p style="opacity:.5;font-size:.85rem">No rewards available yet.</p></div>
+  </div>
+
+  <div class="profile-section">
+    <div class="profile-section-title">Past Orders</div>
+    <div id="profile-orders-list"><p style="opacity:.5;font-size:.85rem">No orders yet. Place your first order!</p></div>
+  </div>
+</div>
+
+<!-- SPICE LEVEL MODAL -->
+<div id="spice-overlay">
+  <div class="spice-modal">
+    <h3>SPICE LEVEL</h3>
+    <div class="spice-item-name" id="spice-item-name"></div>
+    <div class="spice-options">
+      <div class="spice-opt mild" onclick="confirmSpice('mild')"><span class="spice-dot" style="background:#4CAF50"></span><div><div style="font-weight:500">Mild</div><div style="font-size:.78rem;opacity:.6">Light heat, full flavor</div></div></div>
+      <div class="spice-opt medium" onclick="confirmSpice('medium')"><span class="spice-dot" style="background:#FFC107"></span><div><div style="font-weight:500">Medium</div><div style="font-size:.78rem;opacity:.6">Balanced spice kick</div></div></div>
+      <div class="spice-opt spicy" onclick="confirmSpice('spicy')"><span class="spice-dot" style="background:#e53935"></span><div><div style="font-weight:500">Spicy 🔥</div><div style="font-size:.78rem;opacity:.6">Bold, fiery heat</div></div></div>
+    </div>
+    <button class="spice-cancel" onclick="closeSpiceModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div id="auth-overlay">
+  <div class="auth-modal">
+    <button class="auth-close" onclick="closeAuthModal()">✕</button>
+    <h2>MY ACCOUNT</h2>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</button>
+    </div>
+    <div class="auth-form-section active" id="section-signin">
+      <div class="auth-error" id="signin-error"></div>
+      <input class="auth-input" id="signin-email" type="email" placeholder="Email address">
+      <input class="auth-input" id="signin-password" type="password" placeholder="Password">
+      <button class="auth-submit" onclick="doSignIn()">Sign In</button>
+    </div>
+    <div class="auth-form-section" id="section-signup">
+      <div class="auth-error" id="signup-error"></div>
+      <input class="auth-input" id="signup-name" type="text" placeholder="Your name">
+      <input class="auth-input" id="signup-phone" type="tel" placeholder="Phone number">
+      <input class="auth-input" id="signup-email" type="email" placeholder="Email address">
+      <input class="auth-input" id="signup-password" type="password" placeholder="Password (min 6 chars)">
+      <button class="auth-submit" onclick="doSignUp()">Create Account</button>
+    </div>
+  </div>
+</div>
+
 <button id="floating-cta" onclick="navigateTo('catering')" aria-label="Catering Inquiry">
   <span class="icon">🍽️</span>Catering Inquiry
 </button>
@@ -859,6 +1031,9 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
     <div class="admin-nav-item" data-panel="announcements" onclick="switchAdminPanel('announcements')">
       <span class="nav-icon">📢</span> Announcements
     </div>
+    <div class="admin-nav-item" data-panel="rewards" onclick="switchAdminPanel('rewards')">
+      <span class="nav-icon">🎁</span> Rewards
+    </div>
     <div class="admin-logout"><button onclick="adminLogout()">Sign Out</button></div>
   </aside>
 
@@ -912,6 +1087,7 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
             <option value="biryanis">Biryanis</option>
             <option value="curries">Curries</option>
             <option value="rice">Rice & Noodles</option>
+            <option value="naans">Naans</option>
             <option value="sides">Sides</option>
             <option value="desserts">Desserts</option>
           </select>
@@ -919,9 +1095,10 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
             <option value="veg">Veg</option>
             <option value="nonveg">Non-Veg</option>
           </select>
-          <input class="admin-input" id="ni-s" placeholder="Small $" type="number">
-          <input class="admin-input" id="ni-m" placeholder="Medium $" type="number">
-          <input class="admin-input" id="ni-l" placeholder="Large $" type="number">
+          <input class="admin-input" id="ni-price" placeholder="Price (e.g. 16.99)" type="number" step="0.01">
+          <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;opacity:.8;cursor:pointer">
+            <input type="checkbox" id="ni-spice"> Has spice level selector 🌶️
+          </label>
           <button class="btn-admin-add" onclick="addMenuItem()">+ Add Item</button>
         </div>
       </div>
@@ -981,6 +1158,25 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
       </div>
     </div>
 
+    <!-- REWARDS MANAGER -->
+    <div class="admin-panel" id="panel-rewards">
+      <div class="admin-page-title">Rewards Manager</div>
+      <div class="admin-page-sub">Configure reward items customers can redeem with BT Points (10 pts per $1 spent)</div>
+      <div class="admin-card">
+        <div class="admin-card-title">Add Reward Item</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+          <input class="admin-input" id="rw-emoji" placeholder="Emoji" maxlength="4" style="width:70px">
+          <input class="admin-input" id="rw-name" placeholder="Reward name (e.g. Free Biryani)" style="flex:1;min-width:180px">
+          <input class="admin-input" id="rw-pts" type="number" placeholder="Points required" style="width:150px">
+          <button class="btn-admin-add" onclick="adminAddReward()">+ Add Reward</button>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-title">Current Rewards</div>
+        <div id="rewards-admin-list"><p style="opacity:.5;font-size:.85rem">No rewards yet. Add one above.</p></div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -990,115 +1186,121 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
 const DEFAULT_MENU = {
   appetizers: {
     veg: [
-      { id: 'a1', name: 'Paneer 65', emoji: '🧀', desc: 'Crispy fried paneer with spices', prices: [80, 100, 145] },
-      { id: 'a2', name: 'Chilli Paneer', emoji: '🌶️', desc: 'Indo-Chinese style spicy paneer', prices: [80, 100, 145] },
-      { id: 'a3', name: 'Jalapeno Paneer', emoji: '🫑', desc: 'Paneer stuffed with jalapeno', prices: [80, 100, 145] },
-      { id: 'a4', name: 'Gobi 65', emoji: '🥦', desc: 'Crispy cauliflower with spices', prices: [70, 90, 125] },
-      { id: 'a5', name: 'Chilli Gobi 65', emoji: '🌶️', desc: 'Spicy Indo-Chinese cauliflower', prices: [70, 90, 125] },
-      { id: 'a6', name: 'Paneer Tikka', emoji: '🍢', desc: 'Grilled marinated paneer skewers', prices: [80, 100, 145] },
-      { id: 'a7', name: 'Hariyali Paneer Tikka', emoji: '🌿', desc: 'Green herb marinated paneer tikka', prices: [80, 100, 145] },
-      { id: 'a8', name: 'Cut Mirchi', emoji: '🌶️', desc: 'Fried slit green chillies', prices: [70, 90, 125] },
-      { id: 'a9', name: 'Mirchi Bajji', emoji: '🌶️', desc: 'Battered fried green chillies', prices: [70, 90, 125] },
-      { id: 'a10', name: 'Onion Pakora', emoji: '🧅', desc: 'Crispy fried onion fritters', prices: [70, 90, 125] },
-      { id: 'a11', name: 'BT Gobi Fry', emoji: '🥦', desc: 'Signature crispy cauliflower fry', prices: [70, 90, 125] }
+      { id: 'a1', name: 'Gobi 65', emoji: '🥦', desc: 'Crispy cauliflower tossed in bold spices', price: 15.99, spice: true },
+      { id: 'a2', name: 'Chilli Gobi 65', emoji: '🌶️', desc: 'Indo-Chinese spicy cauliflower', price: 15.99, spice: true },
+      { id: 'a3', name: 'Paneer 65', emoji: '🧀', desc: 'Crispy fried paneer with signature spices', price: 16.99, spice: true },
+      { id: 'a4', name: 'Chilli Paneer', emoji: '🌶️', desc: 'Indo-Chinese style spicy paneer', price: 16.99, spice: true },
+      { id: 'a5', name: 'Paneer Tikka', emoji: '🍢', desc: 'Grilled marinated paneer skewers', price: 16.99 },
+      { id: 'a6', name: 'Hariyali Paneer Tikka', emoji: '🌿', desc: 'Green herb marinated paneer tikka', price: 16.99 },
+      { id: 'a7', name: 'Cut Mirchi', emoji: '🌶️', desc: 'Fried slit green chillies with masala', price: 12.99, spice: true },
+      { id: 'a8', name: 'Mirchi Bajji', emoji: '🌶️', desc: 'Battered fried green chillies', price: 12.99 },
+      { id: 'a9', name: 'Onion Pakora', emoji: '🧅', desc: 'Crispy fried onion fritters', price: 13.99 },
+      { id: 'a10', name: 'BT Gobi Fry', emoji: '🥦', desc: 'Signature crispy cauliflower fry', price: 15.99, spice: true }
     ],
     nonVeg: [
-      { id: 'a12', name: 'BT Chicken Fry', emoji: '🍗', desc: 'Signature crispy chicken fry', prices: [90, 120, 160] },
-      { id: 'a13', name: 'Chicken 65', emoji: '🍗', desc: 'Classic spicy fried chicken', prices: [90, 120, 160] },
-      { id: 'a14', name: 'Chilli Chicken', emoji: '🌶️', desc: 'Indo-Chinese spicy chicken', prices: [90, 120, 160] },
-      { id: 'a15', name: 'Chicken Lollipop', emoji: '🍗', desc: 'French-cut chicken wings', prices: [80, 130, 200] },
-      { id: 'a16', name: 'Jalapeno Chicken', emoji: '🫑', desc: 'Chicken with jalapeno stuffing', prices: [90, 130, 180] },
-      { id: 'a17', name: 'Chicken Pepper Fry', emoji: '🌑', desc: 'Bold black pepper chicken fry', prices: [100, 140, 200] },
-      { id: 'a18', name: 'BT Goat Sukka Fry', emoji: '🐐', desc: 'Dry-spiced signature goat fry', prices: [100, 150, 200] },
-      { id: 'a19', name: 'BT Shrimp Apollo', emoji: '🍤', desc: 'Signature crispy shrimp Apollo', prices: [90, 120, 160] },
-      { id: 'a20', name: 'BT Tandoori Chicken', emoji: '🍗', desc: 'Classic tandoor-roasted chicken', prices: [90, 120, 160] },
-      { id: 'a21', name: 'BT Tandoori Chicken Spicy', emoji: '🌶️', desc: 'Extra spicy tandoori chicken', prices: [90, 120, 160] },
-      { id: 'a22', name: 'Chicken Tikka', emoji: '🍢', desc: 'Marinated grilled chicken cubes', prices: [90, 120, 160] },
-      { id: 'a23', name: 'Chicken Hariyali Kabob', emoji: '🌿', desc: 'Green herb marinated chicken kabob', prices: [90, 120, 160] },
-      { id: 'a24', name: 'BT Fish Apollo', emoji: '🐟', desc: 'Signature crispy fish Apollo', prices: [95, 130, 180] },
-      { id: 'a25', name: 'Malai Kabob', emoji: '🍢', desc: 'Creamy soft chicken kabob', prices: [90, 120, 160] },
-      { id: 'a26', name: 'Kabob Platter', emoji: '🍽️', desc: 'Assorted kabob selection platter', prices: [90, 120, 160] }
+      { id: 'a11', name: 'BT Chicken Fry', emoji: '🍗', desc: 'Signature crispy chicken fry', price: 17.99, spice: true },
+      { id: 'a12', name: 'Chicken 65', emoji: '🍗', desc: 'Classic spicy fried chicken', price: 17.99, spice: true },
+      { id: 'a13', name: 'Chilli Chicken', emoji: '🌶️', desc: 'Indo-Chinese spicy chicken', price: 17.99, spice: true },
+      { id: 'a14', name: 'Chicken Lollipop', emoji: '🍗', desc: 'French-cut chicken wings', price: 17.99 },
+      { id: 'a15', name: 'BT Tandoori Chicken', emoji: '🍗', desc: 'Classic tandoor-roasted chicken', price: 17.99 },
+      { id: 'a16', name: 'BT Tandoori Chicken Spicy', emoji: '🌶️', desc: 'Extra spicy tandoori chicken', price: 17.99 },
+      { id: 'a17', name: 'BT Goat Sukka Fry', emoji: '🐐', desc: 'Dry-spiced signature goat fry', price: 17.99, spice: true },
+      { id: 'a18', name: 'BT Shrimp Apollo', emoji: '🍤', desc: 'Signature crispy shrimp Apollo', price: 18.99 },
+      { id: 'a19', name: 'Chicken Tikka', emoji: '🍢', desc: 'Marinated grilled chicken cubes', price: 17.99 },
+      { id: 'a20', name: 'Chicken Hariyali Kabob', emoji: '🌿', desc: 'Green herb marinated chicken kabob', price: 17.99 },
+      { id: 'a21', name: 'BT Fish Apollo', emoji: '🐟', desc: 'Signature crispy fish Apollo', price: 18.99 },
+      { id: 'a22', name: 'Malai Kabob', emoji: '🍢', desc: 'Creamy soft chicken kabob', price: 17.99 },
+      { id: 'a23', name: 'Kabob Platter', emoji: '🍽️', desc: 'Assorted kabob selection platter', price: 18.99 },
+      { id: 'a24', name: 'Jalapeno Chicken', emoji: '🫑', desc: 'Chicken with jalapeno stuffing', price: 17.99 },
+      { id: 'a25', name: 'Chicken Seekh Kabob', emoji: '🍢', desc: 'Grilled minced chicken kabob', price: 17.99 },
+      { id: 'a26', name: 'Chicken Pepper Fry', emoji: '🌑', desc: 'Bold black pepper chicken fry', price: 17.99, spice: true }
     ]
   },
   biryanis: {
     veg: [
-      { id: 'b1', name: 'Mix Veggie Dum Biryani', emoji: '🥘', desc: 'Fragrant basmati with mixed vegetables', prices: [70, 90, 125] },
-      { id: 'b2', name: 'BT Paneer Biryani', emoji: '🧀', desc: 'Signature paneer dum biryani', prices: [80, 110, 150] }
+      { id: 'b1', name: 'Mix Veggie Dum Biryani', emoji: '🥘', desc: 'Fragrant basmati with mixed vegetables', price: 15.99, spice: true },
+      { id: 'b2', name: 'BT Paneer Biryani', emoji: '🧀', desc: 'Signature paneer dum biryani', price: 16.99, spice: true }
     ],
     nonVeg: [
-      { id: 'b3', name: 'Egg Dum Biryani', emoji: '🥚', desc: 'Slow-cooked egg dum biryani', prices: [70, 90, 125] },
-      { id: 'b4', name: 'BT Chicken Dum Biryani', emoji: '🍗', desc: 'Signature slow-cooked chicken biryani', prices: [90, 120, 160] },
-      { id: 'b5', name: 'Boneless Chicken Biryani', emoji: '🍗', desc: 'Tender boneless chicken biryani', prices: [90, 120, 160] },
-      { id: 'b6', name: 'BT Chicken Fry Biryani', emoji: '🍗', desc: 'Biryani with crispy fried chicken', prices: [90, 120, 160] },
-      { id: 'b7', name: 'BT Goat Dum Biryani', emoji: '🐐', desc: 'Rich slow-cooked goat dum biryani', prices: [100, 150, 200] },
-      { id: 'b8', name: 'BT Shrimp Dum Biryani', emoji: '🍤', desc: 'Aromatic shrimp dum biryani', prices: [100, 150, 200] },
-      { id: 'b9', name: 'BT Natu Kodi Dum Biryani', emoji: '🐓', desc: 'Country chicken dum biryani', prices: [100, 150, 200] },
-      { id: 'b10', name: 'BT Fish Biryani', emoji: '🐟', desc: 'Signature fish biryani', prices: [100, 150, 200] },
-      { id: 'b11', name: 'Keema Biryani', emoji: '🥩', desc: 'Spiced minced meat biryani', prices: [100, 150, 200] }
+      { id: 'b3', name: 'Egg Dum Biryani', emoji: '🥚', desc: 'Slow-cooked egg dum biryani', price: 17.99, spice: true },
+      { id: 'b4', name: 'BT Chicken Dum Biryani', emoji: '🍗', desc: 'Signature slow-cooked chicken biryani', price: 17.99, spice: true },
+      { id: 'b5', name: 'Boneless Chicken Biryani', emoji: '🍗', desc: 'Tender boneless chicken biryani', price: 17.99, spice: true },
+      { id: 'b6', name: 'BT Chicken Fry Biryani', emoji: '🍗', desc: 'Biryani with crispy fried chicken', price: 17.99, spice: true },
+      { id: 'b7', name: 'BT Natu Kodi Dum Biryani', emoji: '🐓', desc: 'Country chicken dum biryani', price: 18.99, spice: true },
+      { id: 'b8', name: 'BT Goat Dum Biryani', emoji: '🐐', desc: 'Rich slow-cooked goat dum biryani', price: 18.99, spice: true },
+      { id: 'b9', name: 'BT Shrimp Dum Biryani', emoji: '🍤', desc: 'Aromatic shrimp dum biryani', price: 18.99, spice: true },
+      { id: 'b10', name: 'BT Fish Biryani', emoji: '🐟', desc: 'Signature fish biryani', price: 18.99, spice: true },
+      { id: 'b11', name: 'Keema Biryani', emoji: '🥩', desc: 'Spiced minced meat biryani', price: 18.99, spice: true }
     ]
   },
   curries: {
     veg: [
-      { id: 'c1', name: 'Mixed Vegetable Curry', emoji: '🥗', desc: 'Seasonal vegetables in rich gravy', prices: [55, 75, 110] },
-      { id: 'c2', name: 'Bagara Baingan', emoji: '🍆', desc: 'Hyderabadi eggplant in tamarind gravy', prices: [65, 85, 110] },
-      { id: 'c3', name: 'Aloo Gobi', emoji: '🥔', desc: 'Potato and cauliflower masala', prices: [55, 75, 110] },
-      { id: 'c4', name: 'Mirchi Ka Saalan', emoji: '🌶️', desc: 'Hyderabadi green chilli curry', prices: [55, 70, 100] },
-      { id: 'c5', name: 'Bhindi Masala', emoji: '🥬', desc: 'Okra in spiced masala', prices: [75, 100, 140] },
-      { id: 'c6', name: 'Channa Masala', emoji: '🫘', desc: 'Spiced chickpea curry', prices: [55, 70, 100] },
-      { id: 'c7', name: 'Sambar', emoji: '🍲', desc: 'South Indian lentil vegetable stew', prices: [55, 75, 110] },
-      { id: 'c8', name: 'Rasam', emoji: '🍵', desc: 'Tangy pepper tamarind soup', prices: [50, 70, 90] },
-      { id: 'c9', name: 'Paneer Tikka Masala', emoji: '🧀', desc: 'Grilled paneer in creamy tomato sauce', prices: [75, 100, 140] },
-      { id: 'c10', name: 'Dal Tadka', emoji: '🫘', desc: 'Tempered yellow lentils', prices: [55, 75, 100] },
-      { id: 'c11', name: 'Tomato Curry', emoji: '🍅', desc: 'Tangy spiced tomato curry', prices: [55, 75, 100] },
-      { id: 'c12', name: 'Bhindi Fry', emoji: '🥬', desc: 'Crispy stir-fried okra', prices: [90, 130, 180] },
-      { id: 'c13', name: 'Palak Paneer', emoji: '🌿', desc: 'Paneer in creamy spinach gravy', prices: [75, 100, 140] },
-      { id: 'c14', name: 'Malai Kofta', emoji: '🧆', desc: 'Paneer dumplings in cream sauce', prices: [75, 100, 140] }
+      { id: 'c1', name: 'Mirchi Ka Saalan', emoji: '🌶️', desc: 'Hyderabadi green chilli curry', price: 14.99, spice: true },
+      { id: 'c2', name: 'Bhindi Masala', emoji: '🥬', desc: 'Okra in spiced masala', price: 15.99, spice: true },
+      { id: 'c3', name: 'Channa Masala', emoji: '🫘', desc: 'Spiced chickpea curry', price: 14.99, spice: true },
+      { id: 'c4', name: 'Rasam', emoji: '🍵', desc: 'Tangy pepper tamarind soup', price: 12.99 },
+      { id: 'c5', name: 'Dal Tadka', emoji: '🫘', desc: 'Tempered yellow lentils', price: 12.99 },
+      { id: 'c6', name: 'Tomato Curry', emoji: '🍅', desc: 'Tangy spiced tomato curry', price: 14.99, spice: true },
+      { id: 'c7', name: 'Paneer Tikka Masala', emoji: '🧀', desc: 'Grilled paneer in creamy tomato sauce', price: 15.99, spice: true },
+      { id: 'c8', name: 'Mixed Vegetable Curry', emoji: '🥗', desc: 'Seasonal vegetables in rich gravy', price: 14.99, spice: true },
+      { id: 'c9', name: 'Bagara Baingan', emoji: '🍆', desc: 'Hyderabadi eggplant in tamarind gravy', price: 14.99, spice: true },
+      { id: 'c10', name: 'Bhindi Fry', emoji: '🥬', desc: 'Crispy stir-fried okra', price: 15.99 },
+      { id: 'c11', name: 'Palak Paneer', emoji: '🌿', desc: 'Paneer in creamy spinach gravy', price: 15.99, spice: true }
     ],
     nonVeg: [
-      { id: 'c15', name: 'BT Chicken Curry', emoji: '🍗', desc: 'Signature slow-cooked chicken curry', prices: [90, 120, 160] },
-      { id: 'c16', name: 'Butter Chicken', emoji: '🧈', desc: 'Creamy tomato butter chicken', prices: [90, 120, 160] },
-      { id: 'c17', name: 'Chicken Tikka Masala', emoji: '🍗', desc: 'Grilled chicken in masala sauce', prices: [90, 120, 160] },
-      { id: 'c18', name: 'Karahi Chicken', emoji: '🥘', desc: 'Wok-cooked spiced chicken', prices: [90, 120, 160] },
-      { id: 'c19', name: 'BT Mutton Curry', emoji: '🐑', desc: 'Rich slow-cooked mutton curry', prices: [100, 150, 200] },
-      { id: 'c20', name: 'Dum Ka Ghosh', emoji: '🥩', desc: 'Hyderabadi slow-cooked meat', prices: [100, 150, 200] },
-      { id: 'c21', name: 'BT Fish Curry', emoji: '🐟', desc: 'Coastal spiced fish curry', prices: [100, 150, 200] },
-      { id: 'c22', name: 'BT Shrimp Curry', emoji: '🍤', desc: 'Spiced shrimp in rich gravy', prices: [100, 150, 200] },
-      { id: 'c23', name: 'Keema Curry', emoji: '🥩', desc: 'Spiced minced meat curry', prices: [100, 150, 200] },
-      { id: 'c24', name: 'Egg Masala', emoji: '🥚', desc: 'Boiled eggs in spiced masala', prices: [65, 85, 110] },
-      { id: 'c25', name: 'Egg Burji', emoji: '🍳', desc: 'Spiced scrambled eggs', prices: [75, 100, 125] },
-      { id: 'c26', name: 'Dum-Ka-Murg', emoji: '🍗', desc: 'Hyderabadi slow-cooked chicken', prices: [90, 120, 160] },
-      { id: 'c27', name: 'Natu Kodi Country Chicken Curry', emoji: '🐓', desc: 'Country chicken in rich masala', prices: [100, 150, 200] }
+      { id: 'c12', name: 'BT Chicken Curry', emoji: '🍗', desc: 'Signature slow-cooked chicken curry', price: 16.99, spice: true },
+      { id: 'c13', name: 'Butter Chicken', emoji: '🧈', desc: 'Creamy tomato butter chicken', price: 16.99 },
+      { id: 'c14', name: 'Chicken Tikka Masala', emoji: '🍗', desc: 'Grilled chicken in masala sauce', price: 16.99, spice: true },
+      { id: 'c15', name: 'Kara-hi Chicken', emoji: '🥘', desc: 'Wok-cooked spiced chicken', price: 16.99, spice: true },
+      { id: 'c16', name: 'BT Mutton Curry', emoji: '🐑', desc: 'Rich slow-cooked mutton curry', price: 18.99, spice: true },
+      { id: 'c17', name: 'Dum Ka Ghosh', emoji: '🥩', desc: 'Hyderabadi slow-cooked meat', price: 18.99, spice: true },
+      { id: 'c18', name: 'BT Fish Curry', emoji: '🐟', desc: 'Coastal spiced fish curry', price: 18.99, spice: true },
+      { id: 'c19', name: 'BT Shrimp Curry', emoji: '🍤', desc: 'Spiced shrimp in rich gravy', price: 18.99, spice: true },
+      { id: 'c20', name: 'Keema Curry', emoji: '🥩', desc: 'Spiced minced meat curry', price: 18.99, spice: true },
+      { id: 'c21', name: 'Egg Masala', emoji: '🥚', desc: 'Boiled eggs in spiced masala', price: 16.99, spice: true },
+      { id: 'c22', name: 'Egg Burji', emoji: '🍳', desc: 'Spiced scrambled eggs', price: 16.99, spice: true },
+      { id: 'c23', name: 'Dum-Ka-Murg', emoji: '🍗', desc: 'Hyderabadi slow-cooked chicken', price: 16.99, spice: true },
+      { id: 'c24', name: 'Natu Kodi Country Chicken Curry', emoji: '🐓', desc: 'Country chicken in rich masala', price: 17.99, spice: true }
     ]
   },
   rice: {
     veg: [
-      { id: 'r1', name: 'Vegetable Fried Rice', emoji: '🍚', desc: 'Wok-fried basmati with vegetables', prices: [65, 85, 120] },
-      { id: 'r2', name: 'Veg Noodles', emoji: '🍜', desc: 'Stir-fried noodles with vegetables', prices: [65, 85, 120] },
-      { id: 'r3', name: 'Schezwan Veg Fried Rice', emoji: '🔥', desc: 'Spicy Schezwan vegetable rice', prices: [65, 85, 120] },
-      { id: 'r4', name: 'Schezwan Veg Noodles', emoji: '🔥', desc: 'Spicy Schezwan vegetable noodles', prices: [65, 85, 120] }
+      { id: 'r1', name: 'Vegetable Fried Rice', emoji: '🍚', desc: 'Wok-fried basmati with vegetables', price: 15.99, spice: true },
+      { id: 'r2', name: 'Schezwan Veg Fried Rice', emoji: '🔥', desc: 'Spicy Schezwan vegetable rice', price: 15.99, spice: true },
+      { id: 'r3', name: 'Schezwan Veg Noodles', emoji: '🔥', desc: 'Spicy Schezwan vegetable noodles', price: 15.99, spice: true }
     ],
     nonVeg: [
-      { id: 'r5', name: 'Egg Fried Rice', emoji: '🍳', desc: 'Wok-fried rice with eggs', prices: [70, 90, 125] },
-      { id: 'r6', name: 'Chicken Fried Rice', emoji: '🍗', desc: 'Wok-fried rice with chicken', prices: [90, 120, 160] },
-      { id: 'r7', name: 'Shrimp Fried Rice', emoji: '🍤', desc: 'Wok-fried rice with shrimp', prices: [100, 150, 200] },
-      { id: 'r8', name: 'Chicken Noodles', emoji: '🍜', desc: 'Stir-fried noodles with chicken', prices: [90, 120, 160] },
-      { id: 'r9', name: 'Shrimp Noodles', emoji: '🍜', desc: 'Stir-fried noodles with shrimp', prices: [100, 150, 200] },
-      { id: 'r10', name: 'Schezwan Chicken Fried Rice', emoji: '🔥', desc: 'Spicy Schezwan chicken rice', prices: [90, 120, 160] },
-      { id: 'r11', name: 'Schezwan Chicken Noodles', emoji: '🔥', desc: 'Spicy Schezwan chicken noodles', prices: [90, 120, 160] }
+      { id: 'r4', name: 'Egg Fried Rice', emoji: '🍳', desc: 'Wok-fried rice with eggs', price: 16.99, spice: true },
+      { id: 'r5', name: 'Chicken Fried Rice', emoji: '🍗', desc: 'Wok-fried rice with chicken', price: 17.99, spice: true },
+      { id: 'r6', name: 'Shrimp Fried Rice', emoji: '🍤', desc: 'Wok-fried rice with shrimp', price: 18.99, spice: true },
+      { id: 'r7', name: 'Chicken Noodles', emoji: '🍜', desc: 'Stir-fried noodles with chicken', price: 17.99, spice: true },
+      { id: 'r8', name: 'Shrimp Noodles', emoji: '🍜', desc: 'Stir-fried noodles with shrimp', price: 18.99, spice: true }
+    ]
+  },
+  naans: {
+    veg: [
+      { id: 'n1', name: 'Butter Naan', emoji: '🫓', desc: 'Soft leavened bread with butter', price: 2.99 },
+      { id: 'n2', name: 'Garlic Naan', emoji: '🧄', desc: 'Naan topped with garlic and herbs', price: 3.49 },
+      { id: 'n3', name: 'Plain Naan', emoji: '🫓', desc: 'Classic plain leavened bread', price: 2.99 },
+      { id: 'n4', name: 'Onion Kulcha', emoji: '🧅', desc: 'Stuffed bread with spiced onion', price: 4.99 },
+      { id: 'n5', name: 'Paneer Naan', emoji: '🧀', desc: 'Naan stuffed with spiced paneer', price: 4.99 }
+    ],
+    nonVeg: [
+      { id: 'n6', name: 'Chicken Tikka Naan', emoji: '🍗', desc: 'Naan stuffed with chicken tikka', price: 5.99 }
     ]
   },
   sides: {
     veg: [
-      { id: 's1', name: 'Raita', emoji: '🥛', desc: 'Cooling yogurt with cucumber', prices: [55, 75, 100] },
-      { id: 's2', name: 'Salan', emoji: '🍲', desc: 'Peanut sesame curry accompaniment', prices: [55, 75, 100] }
+      { id: 's1', name: 'Raita', emoji: '🥛', desc: 'Cooling yogurt with cucumber', price: 1.99 },
+      { id: 's2', name: 'Salan', emoji: '🍲', desc: 'Peanut sesame curry accompaniment', price: 1.99 }
     ],
     nonVeg: []
   },
   desserts: {
     veg: [
-      { id: 'd1', name: 'Double Ka Meeta', emoji: '🍞', desc: 'Hyderabadi bread pudding with saffron', prices: [50, 75, 100] },
-      { id: 'd2', name: 'Rasmalai', emoji: '🍮', desc: 'Soft cheese dumplings in saffron milk', prices: [50, 75, 100] },
-      { id: 'd3', name: 'Gulab Jamun', emoji: '🍯', desc: 'Soft milk dumplings in rose syrup', prices: [50, 75, 100] }
+      { id: 'd1', name: 'Double Ka Meeta', emoji: '🍞', desc: 'Hyderabadi bread pudding with saffron', price: 6.99 },
+      { id: 'd2', name: 'Rasmalai', emoji: '🍮', desc: 'Soft cheese dumplings in saffron milk', price: 4.99 },
+      { id: 'd3', name: 'Gulab Jamun', emoji: '🍯', desc: 'Soft milk dumplings in rose syrup', price: 5.99 }
     ],
     nonVeg: []
   }
@@ -1147,6 +1349,11 @@ const _supa = supabase.createClient(
 );
 
 function loadData() {
+  // Reset menu if version changed (new single-price format)
+  if (ls('menuVersion', 1) < 2) {
+    lsSet('menuData', DEFAULT_MENU);
+    lsSet('menuVersion', 2);
+  }
   menuData = ls('menuData', DEFAULT_MENU);
   hoursData = ls('hours', DEFAULT_HOURS);
   deliveryData = ls('delivery', DEFAULT_DELIVERY);
@@ -1230,6 +1437,7 @@ function navigateTo(page) {
 
   if (page === 'menu') renderMenu();
   if (page === 'about') renderAboutHours();
+  if (page === 'profile') renderProfilePage();
 }
 
 function handleHash() {
@@ -1238,6 +1446,7 @@ function handleHash() {
   if (hash === 'menu') { navigateTo('menu'); return; }
   if (hash === 'catering') { navigateTo('catering'); return; }
   if (hash === 'about') { navigateTo('about'); return; }
+  if (hash === 'profile') { navigateTo('profile'); return; }
   navigateTo('home');
 }
 
@@ -1270,7 +1479,7 @@ function renderMenu() {
 
   const catNames = {
     appetizers: 'Appetizers', biryanis: 'Biryanis', curries: 'Curries',
-    rice: 'Rice & Noodles', sides: 'Sides', desserts: 'Desserts'
+    rice: 'Rice & Noodles', naans: 'Naans & Breads', sides: 'Sides', desserts: 'Desserts'
   };
 
   html += `<div class="category-section active">
@@ -1281,19 +1490,19 @@ function renderMenu() {
     let out = `<div class="menu-grid">`;
     items.forEach(item => {
       const oos = outOfStock[item.id] ? 'out-of-stock' : '';
-      // NOTE: Replace emoji span with <img src="/images/${item.id}.jpg" alt="${item.name}" class="menu-emoji" style="width:3rem;height:3rem;object-fit:cover;border-radius:4px"> when food photos are available
-      const itemJson = encodeURIComponent(JSON.stringify({id:item.id,name:item.name,emoji:item.emoji}));
+      const safeName = item.name.replace(/'/g,"\\'");
+      const addBtn = item.spice
+        ? `<button class="add-cart-btn spice-pick" onclick="openSpiceModal('${item.id}','${safeName}','${item.emoji}',${item.price})">Add 🌶️</button>`
+        : `<button class="add-cart-btn" onclick="addToCart('${item.id}','${safeName}','${item.emoji}',null,${item.price})">Add to Cart</button>`;
       out += `<div class="menu-card ${oos}" data-id="${item.id}">
         <div class="type-badge ${type}"></div>
         <span class="menu-emoji">${item.emoji}</span>
         <div class="menu-card-name">${item.name}</div>
         <div class="menu-card-desc">${item.desc}</div>
-        <div class="price-table" title="Tap a size to add to cart">
-          <div class="price-cell" onclick="addToCart('${item.id}','${item.name.replace(/'/g,"\\'")}','${item.emoji}',0,${item.prices[0]})"><span class="price-label">Small</span><span class="price-val">$${item.prices[0]}</span></div>
-          <div class="price-cell" onclick="addToCart('${item.id}','${item.name.replace(/'/g,"\\'")}','${item.emoji}',1,${item.prices[1]})"><span class="price-label">Medium</span><span class="price-val">$${item.prices[1]}</span></div>
-          <div class="price-cell" onclick="addToCart('${item.id}','${item.name.replace(/'/g,"\\'")}','${item.emoji}',2,${item.prices[2]})"><span class="price-label">Large</span><span class="price-val">$${item.prices[2]}</span></div>
+        <div class="menu-card-bottom">
+          <span class="item-price">$${item.price.toFixed(2)}</span>
+          ${oos ? '<span style="font-size:.75rem;color:#e53935;font-weight:500">OUT OF STOCK</span>' : addBtn}
         </div>
-        <div style="margin-top:10px;font-size:.72rem;opacity:.35;text-align:center;letter-spacing:.5px">TAP A SIZE TO ADD TO CART</div>
       </div>`;
     });
     out += '</div>';
@@ -1437,6 +1646,7 @@ function switchAdminPanel(panel) {
   if (panel === 'orders') renderOrders();
   if (panel === 'inquiries') renderInquiries();
   if (panel === 'announcements') renderAnnouncements();
+  if (panel === 'rewards') renderRewardsAdmin();
 }
 
 // ---- DASHBOARD ----
@@ -1513,9 +1723,8 @@ function renderMenuManager() {
       <td style="font-weight:500">${item.name}</td>
       <td><span class="type-badge ${item.type}" style="position:relative;top:0;right:0;display:inline-flex"></span> ${item.type}</td>
       <td>
-        $<input class="inline-price" type="number" value="${item.prices[0]}" onchange="updatePrice('${cat}','${item.id}',0,this.value)">
-        $<input class="inline-price" type="number" value="${item.prices[1]}" onchange="updatePrice('${cat}','${item.id}',1,this.value)">
-        $<input class="inline-price" type="number" value="${item.prices[2]}" onchange="updatePrice('${cat}','${item.id}',2,this.value)">
+        $<input class="inline-price" type="number" step="0.01" value="${(item.price||0).toFixed(2)}" onchange="updatePrice('${cat}','${item.id}',this.value)">
+        ${item.spice ? '<span style="font-size:.75rem;opacity:.6">🌶️ spice</span>' : ''}
       </td>
       <td>
         <label class="toggle-switch">
@@ -1529,18 +1738,18 @@ function renderMenuManager() {
   document.getElementById('menu-manager-table').innerHTML = `
     <div class="admin-card-title">Items in ${cat} (${items.length})</div>
     <table class="admin-table">
-      <thead><tr><th></th><th>Name</th><th>Type</th><th>S / M / L Prices</th><th>In Stock</th><th></th></tr></thead>
+      <thead><tr><th></th><th>Name</th><th>Type</th><th>Price</th><th>In Stock</th><th></th></tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
 }
 
-function updatePrice(cat, id, idx, val) {
+function updatePrice(cat, id, val) {
   const section = menuData[cat];
   ['veg','nonVeg'].forEach(type => {
     const arr = section[type] || [];
     const item = arr.find(i => i.id === id);
     if (item) {
-      item.prices[idx] = Number(val);
+      item.price = Number(val);
       lsSet('menuData', menuData);
     }
   });
@@ -1570,16 +1779,14 @@ function addMenuItem() {
     name,
     emoji: document.getElementById('ni-emoji').value || '🍽️',
     desc: document.getElementById('ni-desc').value || '',
-    prices: [
-      Number(document.getElementById('ni-s').value) || 0,
-      Number(document.getElementById('ni-m').value) || 0,
-      Number(document.getElementById('ni-l').value) || 0
-    ]
+    price: Number(document.getElementById('ni-price').value) || 0,
+    spice: document.getElementById('ni-spice').checked
   };
   if (!menuData[cat][typeKey]) menuData[cat][typeKey] = [];
   menuData[cat][typeKey].push(newItem);
   lsSet('menuData', menuData);
-  ['ni-name','ni-emoji','ni-desc','ni-s','ni-m','ni-l'].forEach(id => document.getElementById(id).value = '');
+  ['ni-name','ni-emoji','ni-desc','ni-price'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('ni-spice').checked = false;
   document.getElementById('mm-cat-filter').value = cat;
   renderMenuManager();
 }
@@ -1745,15 +1952,13 @@ function clearAnnouncement() {
 
 // ==================== CART ====================
 let cart = [];
-const SIZE_NAMES = ['Small', 'Medium', 'Large'];
 
-function addToCart(id, name, emoji, sizeIdx, price) {
-  // Check if same item+size already in cart
-  const existing = cart.find(c => c.id === id && c.sizeIdx === sizeIdx);
+function addToCart(id, name, emoji, spice, price) {
+  const existing = cart.find(c => c.id === id && c.spice === spice);
   if (existing) {
     existing.qty++;
   } else {
-    cart.push({ id, name, emoji, sizeIdx, sizeName: SIZE_NAMES[sizeIdx], price, qty: 1 });
+    cart.push({ id, name, emoji, spice, price, qty: 1 });
   }
   updateCartUI();
   openCart();
@@ -1808,28 +2013,29 @@ function renderCartItems() {
   if (cart.length === 0) {
     list.innerHTML = `<div class="cart-empty">
       <div class="cart-empty-icon">🛒</div>
-      <p>Your cart is empty.<br>Tap any tray size on the menu to add items.</p>
+      <p>Your cart is empty.<br>Browse the menu and add items to get started.</p>
     </div>`;
     if (footer) footer.style.display = 'none';
     return;
   }
 
   if (footer) footer.style.display = 'block';
-  if (subtotalEl) subtotalEl.textContent = '$' + cartTotal();
+  if (subtotalEl) subtotalEl.textContent = '$' + cartTotal().toFixed(2);
 
+  const spiceLabel = { mild: '🟢 Mild', medium: '🟡 Medium', spicy: '🔴 Spicy' };
   list.innerHTML = cart.map((item, i) => `
     <div class="cart-item">
       <span class="cart-item-emoji">${item.emoji}</span>
       <div class="cart-item-info">
         <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-size">${item.sizeName} Tray · $${item.price} each</div>
+        <div class="cart-item-size">${item.spice ? spiceLabel[item.spice] + ' · ' : ''}$${item.price.toFixed(2)} each</div>
       </div>
       <div class="cart-qty">
         <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
         <span class="qty-val">${item.qty}</span>
         <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
       </div>
-      <div class="cart-item-price">$${item.price * item.qty}</div>
+      <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
       <button class="cart-remove" onclick="removeFromCart(${i})" title="Remove">✕</button>
     </div>
   `).join('');
@@ -1853,10 +2059,18 @@ let selectedOrderType = 'pickup';
 function openCheckout() {
   if (cart.length === 0) return;
   closeCart();
-  // Reset form state
   document.getElementById('checkout-form-wrap').style.display = 'block';
   document.getElementById('order-confirm').style.display = 'none';
   renderCheckoutSummary();
+  // Prefill for logged-in users
+  if (currentUser) {
+    const nameEl = document.getElementById('co-name');
+    const phoneEl = document.getElementById('co-phone');
+    const emailEl = document.getElementById('co-email');
+    if (nameEl && !nameEl.value) nameEl.value = currentUser.name || '';
+    if (phoneEl && !phoneEl.value) phoneEl.value = currentUser.phone || '';
+    if (emailEl && !emailEl.value) emailEl.value = currentUser.email || '';
+  }
   document.getElementById('checkout-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1876,13 +2090,14 @@ function setOrderType(type) {
 function renderCheckoutSummary() {
   const el = document.getElementById('checkout-summary-items');
   if (!el) return;
+  const spiceLabel = { mild: 'Mild', medium: 'Medium', spicy: 'Spicy' };
   let html = cart.map(item => `
     <div class="checkout-summary-item">
-      <span>${item.emoji} ${item.name} (${item.sizeName}) × ${item.qty}</span>
-      <span>$${item.price * item.qty}</span>
+      <span>${item.emoji} ${item.name}${item.spice ? ' (' + spiceLabel[item.spice] + ')' : ''} × ${item.qty}</span>
+      <span>$${(item.price * item.qty).toFixed(2)}</span>
     </div>
   `).join('');
-  html += `<div class="checkout-summary-item"><span>Total</span><span>$${cartTotal()}</span></div>`;
+  html += `<div class="checkout-summary-item"><span>Total</span><span>$${cartTotal().toFixed(2)}</span></div>`;
   el.innerHTML = html;
 }
 
@@ -1898,6 +2113,8 @@ async function placeOrder() {
   const btn = document.querySelector('#checkout-form-wrap .btn-primary');
   if (btn) { btn.disabled = true; btn.textContent = 'Placing order...'; }
 
+  const { data: { user } } = await _supa.auth.getUser();
+  const total = cartTotal();
   const { error } = await _supa.from('orders').insert({
     order_num: orderNum,
     customer_name: name,
@@ -1907,9 +2124,19 @@ async function placeOrder() {
     address: document.getElementById('co-address').value.trim(),
     notes: document.getElementById('co-notes').value.trim(),
     items: cart.map(c => ({ ...c })),
-    subtotal: cartTotal(),
-    status: 'new'
+    subtotal: total,
+    status: 'new',
+    user_id: user ? user.id : null
   });
+  // Award points if logged in
+  if (!error && user) {
+    const pts = Math.floor(total * 10);
+    const { data: prof } = await _supa.from('profiles').select('points').eq('id', user.id).single();
+    const newPts = (prof ? prof.points : 0) + pts;
+    await _supa.from('profiles').update({ points: newPts }).eq('id', user.id);
+    if (currentUser) currentUser.points = newPts;
+    updateNavUser();
+  }
 
   if (btn) { btn.disabled = false; btn.textContent = 'Place Order'; }
 
@@ -1953,7 +2180,8 @@ async function renderOrders() {
   let html = `<div style="margin-bottom:16px;font-size:.85rem;opacity:.6">${orders.length} total order(s) · ${newOrders} new</div>`;
   orders.forEach(order => {
     const date = new Date(order.created_at).toLocaleString('en-US', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
-    const itemsHtml = (order.items||[]).map(i => `<span style="display:inline-block;background:rgba(232,160,32,.08);border:1px solid var(--border);padding:2px 8px;border-radius:2px;font-size:.75rem;margin:2px">${i.emoji} ${i.name} – ${i.sizeName} ×${i.qty}</span>`).join('');
+    const spiceLabels = { mild: 'Mild', medium: 'Medium', spicy: 'Spicy' };
+    const itemsHtml = (order.items||[]).map(i => `<span style="display:inline-block;background:rgba(232,160,32,.08);border:1px solid var(--border);padding:2px 8px;border-radius:2px;font-size:.75rem;margin:2px">${i.emoji} ${i.name}${i.spice ? ' – ' + spiceLabels[i.spice] : ''} ×${i.qty}</span>`).join('');
     html += `
       <div style="border:1px solid var(--border);border-radius:4px;padding:20px;margin-bottom:12px;background:rgba(255,255,255,.02)">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:12px">
@@ -1980,7 +2208,16 @@ async function renderOrders() {
             ${order.status==='confirmed' ? `<button class="admin-action-btn" onclick="updateOrderStatus(${order.id},'ready')">Mark Ready</button>` : ''}
             ${order.status==='ready' ? `<button class="admin-action-btn" onclick="updateOrderStatus(${order.id},'completed')">Complete</button>` : ''}
             ${order.status==='completed' ? `<span style="font-size:.8rem;opacity:.4">Completed</span>` : ''}
+            <button class="admin-action-btn" onclick="adminToggleOrderChat(${order.id})">💬 Chat</button>
             <button class="admin-action-btn danger" onclick="deleteOrder(${order.id})">Delete</button>
+          </div>
+        </div>
+        <div id="admin-chat-${order.id}" style="display:none;margin-top:12px;border:1px solid var(--border)">
+          <div style="padding:8px 12px;background:rgba(255,255,255,.03);font-size:.78rem;opacity:.6;border-bottom:1px solid var(--border)">💬 Chat — ${order.order_num}</div>
+          <div class="order-chat-messages" id="admin-chat-msgs-${order.id}" style="min-height:60px"></div>
+          <div class="order-chat-input">
+            <input type="text" id="admin-chat-input-${order.id}" placeholder="Reply to customer..." onkeydown="if(event.key==='Enter')adminSendOrderMsg(${order.id})">
+            <button onclick="adminSendOrderMsg(${order.id})">Send</button>
           </div>
         </div>
       </div>`;
@@ -1998,15 +2235,404 @@ async function deleteOrder(id) {
   renderOrders();
 }
 
+// ==================== SPICE MODAL ====================
+let pendingSpiceItem = null;
+
+function openSpiceModal(id, name, emoji, price) {
+  pendingSpiceItem = { id, name, emoji, price };
+  document.getElementById('spice-item-name').textContent = name;
+  document.getElementById('spice-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSpiceModal() {
+  pendingSpiceItem = null;
+  document.getElementById('spice-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function confirmSpice(level) {
+  if (!pendingSpiceItem) return;
+  const { id, name, emoji, price } = pendingSpiceItem;
+  closeSpiceModal();
+  addToCart(id, name, emoji, level, price);
+}
+
+// ==================== AUTH ====================
+let currentUser = null; // { id, email, name, phone, points }
+
+async function initAuth() {
+  const { data: { user } } = await _supa.auth.getUser();
+  if (user) await loadUserProfile(user);
+
+  _supa.auth.onAuthStateChange(async (event, session) => {
+    if (session && session.user) {
+      await loadUserProfile(session.user);
+    } else {
+      currentUser = null;
+      updateNavUser();
+    }
+  });
+}
+
+async function loadUserProfile(user) {
+  const { data: prof } = await _supa.from('profiles').select('*').eq('id', user.id).single();
+  currentUser = {
+    id: user.id,
+    email: user.email,
+    name: prof ? prof.name : user.email.split('@')[0],
+    phone: prof ? prof.phone : '',
+    points: prof ? prof.points : 0
+  };
+  updateNavUser();
+}
+
+function updateNavUser() {
+  const signinBtn = document.getElementById('nav-signin-btn');
+  const userBtn = document.getElementById('nav-user-btn');
+  const userNameEl = document.getElementById('nav-user-name');
+  const mobileSignin = document.getElementById('mobile-signin-link');
+  const mobileProfile = document.getElementById('mobile-profile-link');
+  const mobileSignout = document.getElementById('mobile-signout-link');
+
+  if (currentUser) {
+    if (signinBtn) signinBtn.style.display = 'none';
+    if (userBtn) { userBtn.style.display = 'flex'; }
+    if (userNameEl) userNameEl.textContent = currentUser.name;
+    if (mobileSignin) mobileSignin.style.display = 'none';
+    if (mobileProfile) mobileProfile.style.display = '';
+    if (mobileSignout) mobileSignout.style.display = '';
+  } else {
+    if (signinBtn) signinBtn.style.display = '';
+    if (userBtn) userBtn.style.display = 'none';
+    if (mobileSignin) mobileSignin.style.display = '';
+    if (mobileProfile) mobileProfile.style.display = 'none';
+    if (mobileSignout) mobileSignout.style.display = 'none';
+  }
+}
+
+function openAuthModal() {
+  document.getElementById('auth-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  switchAuthTab('signin');
+}
+
+function closeAuthModal() {
+  document.getElementById('auth-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.auth-form-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('section-' + tab).classList.add('active');
+  document.getElementById('signin-error').style.display = 'none';
+  document.getElementById('signup-error').style.display = 'none';
+}
+
+async function doSignIn() {
+  const email = document.getElementById('signin-email').value.trim();
+  const password = document.getElementById('signin-password').value;
+  const errEl = document.getElementById('signin-error');
+  errEl.style.display = 'none';
+
+  const { error } = await _supa.auth.signInWithPassword({ email, password });
+  if (error) {
+    errEl.textContent = error.message;
+    errEl.style.display = 'block';
+    return;
+  }
+  closeAuthModal();
+}
+
+async function doSignUp() {
+  const name = document.getElementById('signup-name').value.trim();
+  const phone = document.getElementById('signup-phone').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const password = document.getElementById('signup-password').value;
+  const errEl = document.getElementById('signup-error');
+  errEl.style.display = 'none';
+
+  if (!name) { errEl.textContent = 'Name is required.'; errEl.style.display = 'block'; return; }
+  if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; errEl.style.display = 'block'; return; }
+
+  const { data, error } = await _supa.auth.signUp({ email, password });
+  if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; return; }
+
+  if (data.user) {
+    await _supa.from('profiles').insert({ id: data.user.id, name, phone, points: 0 });
+  }
+  closeAuthModal();
+}
+
+async function doSignOut() {
+  await _supa.auth.signOut();
+  currentUser = null;
+  updateNavUser();
+  closeUserDropdown();
+  if (currentPage === 'profile') navigateTo('home');
+}
+
+function toggleUserDropdown() {
+  document.getElementById('user-dropdown').classList.toggle('open');
+}
+
+function closeUserDropdown() {
+  document.getElementById('user-dropdown').classList.remove('open');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  const wrap = document.querySelector('.nav-user-wrap');
+  if (wrap && !wrap.contains(e.target)) closeUserDropdown();
+});
+
+// ==================== PROFILE PAGE ====================
+async function renderProfilePage() {
+  if (!currentUser) {
+    // Not logged in — show login prompt
+    document.getElementById('profile-name-display').textContent = 'Sign In to View Orders';
+    document.getElementById('profile-email-display').textContent = '';
+    document.getElementById('profile-points').textContent = '0';
+    document.getElementById('profile-orders-list').innerHTML = `
+      <div style="text-align:center;padding:40px 0">
+        <p style="opacity:.6;margin-bottom:16px">Sign in to see your past orders and rewards.</p>
+        <button class="btn-primary" onclick="openAuthModal()">Sign In / Create Account</button>
+      </div>`;
+    document.getElementById('profile-rewards-list').innerHTML = '';
+    return;
+  }
+
+  // Refresh profile
+  const { data: prof } = await _supa.from('profiles').select('*').eq('id', currentUser.id).single();
+  if (prof) { currentUser.points = prof.points; currentUser.name = prof.name; }
+
+  document.getElementById('profile-name-display').textContent = currentUser.name;
+  document.getElementById('profile-email-display').textContent = currentUser.email;
+  document.getElementById('profile-points').textContent = currentUser.points || 0;
+
+  // Load rewards
+  await loadProfileRewards();
+
+  // Load past orders
+  const { data: orders } = await _supa.from('orders').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+  const ordersEl = document.getElementById('profile-orders-list');
+  if (!orders || orders.length === 0) {
+    ordersEl.innerHTML = '<p style="opacity:.5;font-size:.85rem">No orders yet. <a href="#" onclick="navigateTo(\'menu\');return false" style="color:var(--accent)">Browse our menu →</a></p>';
+    return;
+  }
+  const spiceLabel = { mild: 'Mild', medium: 'Medium', spicy: 'Spicy' };
+  orders.forEach(o => { _pastOrdersMap[o.id] = o.items || []; });
+  ordersEl.innerHTML = orders.map(order => {
+    const date = new Date(order.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const itemList = (order.items||[]).map(i => `${i.emoji} ${i.name}${i.spice ? ' (' + spiceLabel[i.spice] + ')' : ''} ×${i.qty}`).join(', ');
+    const statusColors = { new: '#81C784', confirmed: 'var(--accent)', ready: '#64B5F6', completed: 'rgba(255,255,255,.4)' };
+    return `<div class="past-order-card">
+      <div class="past-order-header">
+        <span class="past-order-num">${order.order_num}</span>
+        <span style="font-size:.8rem;color:${statusColors[order.status]||'var(--cream)'};font-weight:500;text-transform:uppercase">${order.status}</span>
+      </div>
+      <div class="past-order-items">${itemList}</div>
+      <div class="past-order-footer">
+        <span style="font-family:var(--font-display);font-size:1.1rem;color:var(--accent)">$${(order.subtotal||0).toFixed(2)}</span>
+        <span style="font-size:.78rem;opacity:.5">${date} · ${order.order_type}</span>
+        <div style="display:flex;gap:8px">
+          <button class="reorder-btn" onclick="reorderById(${order.id})">Reorder</button>
+          <button class="chat-btn" onclick="toggleProfileOrderChat(${order.id})">💬 Chat</button>
+        </div>
+      </div>
+      <div id="profile-chat-${order.id}" style="display:none">
+        <div class="order-chat-messages" id="profile-chat-msgs-${order.id}" style="min-height:60px"></div>
+        <div class="order-chat-input">
+          <input type="text" id="profile-chat-input-${order.id}" placeholder="Ask about your order..." onkeydown="if(event.key==='Enter')userSendOrderMsg(${order.id})">
+          <button onclick="userSendOrderMsg(${order.id})">Send</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function loadProfileRewards() {
+  const { data: rewards } = await _supa.from('reward_items').select('*').eq('active', true).order('points_required');
+  const el = document.getElementById('profile-rewards-list');
+  if (!rewards || rewards.length === 0) {
+    el.innerHTML = '<p style="opacity:.5;font-size:.85rem">No rewards available yet. Keep ordering to earn points!</p>';
+    return;
+  }
+  const userPts = currentUser ? (currentUser.points || 0) : 0;
+  el.innerHTML = `<div class="reward-grid">${rewards.map(r => {
+    const canRedeem = userPts >= r.points_required;
+    return `<div class="reward-card">
+      <div class="reward-emoji">${r.emoji}</div>
+      <div class="reward-name">${r.name}</div>
+      <div class="reward-pts">${r.points_required} pts</div>
+      <button class="redeem-btn" ${canRedeem ? '' : 'disabled'} onclick="redeemReward(${r.id},'${r.name.replace(/'/g,"\\'")}',${r.points_required})">${canRedeem ? 'Redeem' : 'Need ' + (r.points_required - userPts) + ' more'}</button>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+async function redeemReward(rewardId, rewardName, pts) {
+  if (!currentUser) return;
+  if (!confirm(`Redeem "${rewardName}" for ${pts} BT Points?`)) return;
+  const { data: prof } = await _supa.from('profiles').select('points').eq('id', currentUser.id).single();
+  const currentPts = prof ? prof.points : 0;
+  if (currentPts < pts) { alert('Not enough points.'); return; }
+  const newPts = currentPts - pts;
+  await _supa.from('profiles').update({ points: newPts }).eq('id', currentUser.id);
+  currentUser.points = newPts;
+  updateNavUser();
+  alert(`🎉 "${rewardName}" redeemed! We'll apply it to your next order. Show this screen to your server.`);
+  renderProfilePage();
+}
+
+function reorderById(orderId) {
+  const items = _pastOrdersMap[orderId];
+  if (!items || items.length === 0) return;
+  items.forEach(item => {
+    const existing = cart.find(c => c.id === item.id && c.spice === item.spice);
+    if (existing) {
+      existing.qty += item.qty;
+    } else {
+      cart.push({ id: item.id, name: item.name, emoji: item.emoji, spice: item.spice || null, price: item.price, qty: item.qty });
+    }
+  });
+  updateCartUI();
+  openCart();
+}
+
+// ==================== ORDER CHAT ====================
+const openChatOrders = {};
+const _pastOrdersMap = {}; // orderId → items, for reorder
+
+function toggleProfileOrderChat(orderId) {
+  const el = document.getElementById('profile-chat-' + orderId);
+  if (!el) return;
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    loadOrderChatMessages(orderId, 'profile');
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+function adminToggleOrderChat(orderId) {
+  const el = document.getElementById('admin-chat-' + orderId);
+  if (!el) return;
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    loadOrderChatMessages(orderId, 'admin');
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+async function loadOrderChatMessages(orderId, context) {
+  const msgsId = context === 'admin' ? 'admin-chat-msgs-' + orderId : 'profile-chat-msgs-' + orderId;
+  const el = document.getElementById(msgsId);
+  if (!el) return;
+
+  const { data: messages } = await _supa.from('order_messages').select('*').eq('order_id', orderId).order('created_at');
+  renderChatMessages(el, messages || []);
+}
+
+function renderChatMessages(el, messages) {
+  if (messages.length === 0) {
+    el.innerHTML = '<p style="text-align:center;opacity:.4;font-size:.8rem;padding:16px">No messages yet</p>';
+    return;
+  }
+  el.innerHTML = messages.map(msg => {
+    const time = new Date(msg.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    return `<div class="chat-msg ${msg.sender}">
+      ${msg.message}
+      <div class="chat-msg-time">${msg.sender === 'admin' ? 'Restaurant' : 'You'} · ${time}</div>
+    </div>`;
+  }).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+async function userSendOrderMsg(orderId) {
+  const input = document.getElementById('profile-chat-input-' + orderId);
+  if (!input || !input.value.trim()) return;
+  const msg = input.value.trim();
+  input.value = '';
+  await _supa.from('order_messages').insert({ order_id: orderId, sender: 'user', message: msg });
+  loadOrderChatMessages(orderId, 'profile');
+}
+
+async function adminSendOrderMsg(orderId) {
+  const input = document.getElementById('admin-chat-input-' + orderId);
+  if (!input || !input.value.trim()) return;
+  const msg = input.value.trim();
+  input.value = '';
+  await _supa.from('order_messages').insert({ order_id: orderId, sender: 'admin', message: msg });
+  loadOrderChatMessages(orderId, 'admin');
+}
+
+// ==================== REWARDS ADMIN ====================
+async function renderRewardsAdmin() {
+  const el = document.getElementById('rewards-admin-list');
+  if (!el) return;
+  const { data: rewards } = await _supa.from('reward_items').select('*').order('created_at', { ascending: false });
+  if (!rewards || rewards.length === 0) {
+    el.innerHTML = '<p style="opacity:.5;font-size:.85rem">No rewards yet. Add one above.</p>';
+    return;
+  }
+  el.innerHTML = `<div class="reward-admin-grid">${rewards.map(r => `
+    <div class="reward-admin-card ${r.active ? '' : 'inactive'}">
+      <div style="font-size:1.8rem;margin-bottom:6px">${r.emoji}</div>
+      <div style="font-weight:500;font-size:.9rem;margin-bottom:4px">${r.name}</div>
+      <div style="font-family:var(--font-display);color:var(--gold);margin-bottom:10px">${r.points_required} pts</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:6px;font-size:.75rem;cursor:pointer">
+          <input type="checkbox" ${r.active?'checked':''} onchange="toggleRewardActive(${r.id},this.checked)"> Active
+        </label>
+        <button class="admin-action-btn danger" style="font-size:.72rem;padding:4px 10px" onclick="deleteReward(${r.id})">Delete</button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+async function adminAddReward() {
+  const emoji = document.getElementById('rw-emoji').value.trim() || '🎁';
+  const name = document.getElementById('rw-name').value.trim();
+  const pts = Number(document.getElementById('rw-pts').value);
+  if (!name || !pts) { alert('Name and points required.'); return; }
+  await _supa.from('reward_items').insert({ emoji, name, points_required: pts, active: true });
+  document.getElementById('rw-emoji').value = '';
+  document.getElementById('rw-name').value = '';
+  document.getElementById('rw-pts').value = '';
+  renderRewardsAdmin();
+}
+
+async function toggleRewardActive(id, active) {
+  await _supa.from('reward_items').update({ active }).eq('id', id);
+  renderRewardsAdmin();
+}
+
+async function deleteReward(id) {
+  if (!confirm('Delete this reward?')) return;
+  await _supa.from('reward_items').delete().eq('id', id);
+  renderRewardsAdmin();
+}
+
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', () => {
   loadData();
   loadAnnouncement();
   updateStatusBadge();
   updateCartUI();
+  initAuth();
   // Refresh status every minute
   setInterval(() => { loadData(); updateStatusBadge(); }, 60000);
   handleHash();
+  // Close auth overlay on background click
+  document.getElementById('auth-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeAuthModal();
+  });
+  // Close spice overlay on background click
+  document.getElementById('spice-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeSpiceModal();
+  });
   // Close checkout on overlay click
   document.getElementById('checkout-overlay').addEventListener('click', function(e) {
     if (e.target === this) closeCheckout();
