@@ -2135,18 +2135,26 @@ async function placeOrder() {
     status: 'new',
     user_id: user ? user.id : null
   });
-  // Award points if logged in (non-blocking)
+  // Award points if logged in
   if (!error && user) {
     try {
       const pts = Math.floor(total * 10);
-      const { data: prof } = await _supa.from('profiles').select('points').eq('id', user.id).maybeSingle();
+      const { data: prof, error: profErr } = await _supa.from('profiles').select('points').eq('id', user.id).maybeSingle();
+      if (profErr) { console.error('Points fetch error:', profErr); }
+      const currentPts = prof ? (prof.points || 0) : 0;
+      const newPts = currentPts + pts;
       if (prof) {
-        const newPts = (prof.points || 0) + pts;
-        await _supa.from('profiles').update({ points: newPts }).eq('id', user.id);
-        if (currentUser) currentUser.points = newPts;
-        updateNavUser();
+        const { error: upErr } = await _supa.from('profiles').update({ points: newPts }).eq('id', user.id);
+        if (upErr) { console.error('Points update error:', upErr); }
+      } else {
+        // Profile row missing — create it now
+        const { error: insErr } = await _supa.from('profiles').insert({ id: user.id, name: name, phone: phone, points: newPts });
+        if (insErr) { console.error('Profile insert error:', insErr); }
       }
-    } catch(e) { console.log('Points update skipped', e); }
+      if (currentUser) { currentUser.points = newPts; updateNavUser(); }
+      const ptsEl = document.getElementById('profile-points');
+      if (ptsEl) ptsEl.textContent = newPts;
+    } catch(e) { console.error('Points error:', e); }
   }
 
   if (btn) { btn.disabled = false; btn.textContent = 'Place Order'; }
