@@ -229,6 +229,77 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
 #floating-cta .icon{font-size:1.1rem}
 @media(max-width:768px){#floating-cta{bottom:20px;right:16px;font-size:.8rem;padding:12px 18px;gap:6px}}
 
+/* CATERING MENU */
+.catering-menu-section{padding:60px 24px;max-width:1000px;margin:0 auto}
+.catering-menu-note{font-family:var(--font-sub);font-style:italic;color:var(--cream);opacity:.65;text-align:center;margin-bottom:32px;font-size:.95rem}
+.cat-category{margin-bottom:36px;border-radius:6px;overflow:hidden;border:1px solid var(--border)}
+.cat-category-header{background:var(--accent);color:#1A1208;font-family:var(--font-display);font-size:1rem;letter-spacing:2px;padding:10px 16px;text-transform:uppercase}
+.cat-item-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-top:1px solid var(--border);background:var(--card-bg);gap:12px;transition:background .15s}
+.cat-item-row:hover{background:var(--card-bg2)}
+.cat-item-name{font-family:var(--font-sub);font-size:.9rem;color:var(--cream);flex:1;min-width:0;padding-right:8px}
+.cat-item-controls{display:flex;gap:5px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.cat-size-btn{background:rgba(255,255,255,.05);border:1px solid var(--border2);color:var(--cream);font-family:var(--font-body);font-size:.72rem;padding:5px 9px;border-radius:4px;cursor:pointer;transition:all .15s;white-space:nowrap;line-height:1.3}
+.cat-size-btn:hover{border-color:var(--accent);color:var(--accent)}
+.cat-qty-wrap{display:flex;align-items:center;gap:2px;background:rgba(212,105,42,.12);border:1px solid rgba(212,105,42,.4);border-radius:5px;padding:2px 4px}
+.cat-qty-label{font-size:.7rem;color:var(--accent);padding:0 4px;white-space:nowrap;font-weight:600}
+.cat-qty-btn{background:none;border:none;color:var(--cream);font-size:1rem;width:22px;height:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:3px;line-height:1;transition:background .15s}
+.cat-qty-btn:hover{background:rgba(212,105,42,.25);color:var(--accent)}
+.cat-qty-val{font-size:.85rem;color:var(--cream);min-width:18px;text-align:center;font-weight:600}
+#catering-summary-bar{position:sticky;bottom:0;z-index:40;background:linear-gradient(135deg,#2c1a08,#1A1208);border-top:2px solid var(--accent);padding:12px 24px;box-shadow:0 -4px 20px rgba(0,0,0,.4)}
+.catering-summary-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.catering-summary-left{display:flex;flex-direction:column;gap:2px}
+.catering-summary-count{font-size:.78rem;color:var(--cream);opacity:.7;text-transform:uppercase;letter-spacing:.5px}
+.catering-summary-total{font-family:var(--font-display);font-size:1.4rem;color:var(--accent);letter-spacing:.5px}
+.catering-summary-btn{background:var(--accent);color:#1A1208;border:none;font-family:var(--font-body);font-weight:700;font-size:.82rem;padding:10px 20px;border-radius:50px;cursor:pointer;letter-spacing:.5px;text-transform:uppercase;transition:all .2s;white-space:nowrap}
+.catering-summary-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+#catering-form-items{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;padding:14px 16px;margin-bottom:16px}
+.catering-form-item-line{display:flex;justify-content:space-between;font-size:.82rem;padding:4px 0;border-bottom:1px solid var(--border);color:var(--cream)}
+.catering-form-item-line:last-child{border-bottom:none;padding-top:8px;font-weight:600;color:var(--accent)}
+
+/* INVOICE MODAL */
+#invoice-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.88);overflow-y:auto;padding:20px}
+#invoice-modal.open{display:flex;align-items:flex-start;justify-content:center}
+.invoice-wrap{background:#fff;color:#222;width:100%;max-width:780px;padding:40px;border-radius:4px;font-family:Arial,sans-serif;font-size:.88rem;margin:auto}
+.invoice-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid #ddd}
+.invoice-biz-name{font-size:1.15rem;font-weight:700;color:#222;margin-bottom:4px}
+.invoice-biz-info{font-size:.78rem;color:#555;line-height:1.75}
+.invoice-biz-info a{color:#D4692A;text-decoration:none}
+.invoice-title{font-size:2.2rem;font-weight:900;color:#D4692A;letter-spacing:3px;text-align:right;font-family:Arial,sans-serif}
+.invoice-meta{text-align:right;font-size:.82rem;color:#555;margin-top:8px;line-height:1.8}
+.invoice-bill-row{display:flex;justify-content:space-between;align-items:flex-start;margin:18px 0 22px}
+.invoice-bill-to{font-size:.88rem;line-height:1.75;color:#333}
+.invoice-total-box{background:#D4692A;color:#fff;padding:14px 20px;border-radius:4px;text-align:center;min-width:140px}
+.invoice-total-box-label{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;opacity:.9}
+.invoice-total-box-amt{font-size:1.6rem;font-weight:700;margin-top:2px}
+.invoice-table{width:100%;border-collapse:collapse;margin:0 0 16px}
+.invoice-table th{background:#D4692A;color:#fff;padding:9px 12px;text-align:left;font-size:.82rem;font-weight:600}
+.invoice-table th:not(:first-child){text-align:right}
+.invoice-table td{padding:9px 12px;border-bottom:1px solid #eee;font-size:.82rem;color:#333;vertical-align:top}
+.invoice-table td:not(:first-child){text-align:right}
+.invoice-table .inv-sub td{background:#fafafa;border-top:1px solid #ddd;border-bottom:1px solid #eee}
+.invoice-table .inv-grand td{font-weight:700;font-size:.9rem;background:#fafafa;border-top:1px solid #bbb}
+.invoice-table .inv-due td{font-weight:700;font-size:.9rem;background:#fafafa}
+.invoice-footer-notes{margin-top:20px;padding-top:14px;border-top:1px solid #eee;font-size:.78rem;color:#777;line-height:1.7}
+.invoice-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+.invoice-print-btn{background:#D4692A;color:#fff;border:none;padding:10px 22px;border-radius:4px;cursor:pointer;font-size:.84rem;font-weight:600;transition:background .2s}
+.invoice-print-btn:hover{background:#b8561f}
+.invoice-done-btn{background:none;border:1px solid #bbb;color:#555;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:.84rem;transition:all .2s}
+.invoice-done-btn:hover{border-color:#888;color:#333}
+@media(max-width:768px){
+  .cat-item-row{flex-direction:column;align-items:flex-start;gap:8px}
+  .cat-item-controls{width:100%;justify-content:flex-start;flex-wrap:wrap}
+  .invoice-wrap{padding:20px}
+  .invoice-header{flex-direction:column;gap:14px}
+  .invoice-title{text-align:left}
+  .invoice-bill-row{flex-direction:column;gap:14px}
+  .invoice-meta{text-align:left}
+}
+@media print{
+  #invoice-modal{position:static;background:none;padding:0;display:block!important}
+  .invoice-actions{display:none}
+  body>*:not(#invoice-modal){display:none}
+}
+
 /* CART ICON IN NAV */
 .cart-btn{position:relative;background:none;border:1px solid var(--border);color:var(--cream);padding:7px 14px;font-size:.85rem;display:flex;align-items:center;gap:6px;border-radius:2px;transition:all .2s;cursor:pointer}
 .cart-btn:hover{border-color:var(--accent);color:var(--accent)}
@@ -700,32 +771,22 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
     <p class="section-subtitle" style="margin-bottom:0">Authentic Indian flavors for every occasion</p>
   </div>
 
-  <div class="section" style="padding-bottom:0">
-    <div class="section-label">Tray Sizes</div>
-    <h2 class="section-title">CHOOSE YOUR SIZE</h2>
+  <div class="catering-menu-section">
+    <div class="section-label">Build Your Order</div>
+    <h2 class="section-title">SELECT YOUR ITEMS</h2>
     <div class="divider"></div>
-    <div class="tray-cards" id="tray-size-cards">
-      <div class="tray-card" onclick="selectTraySize('Small')" id="tray-small" style="cursor:pointer">
-        <div class="tray-size">S</div>
-        <div class="tray-name">Small Tray</div>
-        <div class="tray-guests">Serves approximately 15–20 people</div>
-        <div class="tray-price-note">Starting at market price</div>
+    <p class="catering-menu-note">Small tray serves 10–12 · Medium tray serves 18–20 · Large tray serves 25–28</p>
+    <div id="catering-menu-list"></div>
+  </div>
+
+  <div id="catering-summary-bar" style="display:none">
+    <div class="catering-summary-inner">
+      <div class="catering-summary-left">
+        <div class="catering-summary-count" id="cat-item-count">0 trays selected</div>
+        <div class="catering-summary-total" id="cat-total">$0.00</div>
       </div>
-      <div class="tray-card featured" onclick="selectTraySize('Medium')" id="tray-medium" style="cursor:pointer">
-        <div class="tray-featured-badge">Most Popular</div>
-        <div class="tray-size">M</div>
-        <div class="tray-name">Medium Tray</div>
-        <div class="tray-guests">Serves approximately 25–35 people</div>
-        <div class="tray-price-note">Best value for mid-size events</div>
-      </div>
-      <div class="tray-card" onclick="selectTraySize('Large')" id="tray-large" style="cursor:pointer">
-        <div class="tray-size">L</div>
-        <div class="tray-name">Large Tray</div>
-        <div class="tray-guests">Serves approximately 50–70 people</div>
-        <div class="tray-price-note">Ideal for large celebrations</div>
-      </div>
+      <button class="catering-summary-btn" onclick="scrollToCateringForm()">Continue to Form ↓</button>
     </div>
-    <p id="tray-selected-msg" style="text-align:center;margin-top:16px;font-family:var(--font-sub);font-style:italic;color:var(--accent);opacity:0;transition:opacity .3s;font-size:1rem"></p>
   </div>
 
   <div class="event-types">
@@ -737,17 +798,18 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
       <div class="event-item" style="cursor:pointer" onclick="selectEventType('Corporate Event')"><div class="event-icon">🏢</div><div class="event-name">Corporate</div></div>
       <div class="event-item" style="cursor:pointer" onclick="selectEventType('Birthday Party')"><div class="event-icon">🎂</div><div class="event-name">Birthdays</div></div>
       <div class="event-item" style="cursor:pointer" onclick="selectEventType('Graduation')"><div class="event-icon">🎓</div><div class="event-name">Graduations</div></div>
-      <div class="event-item" style="cursor:pointer" onclick="selectEventType('Pooja / Religious Event')"><div class="event-icon">🙏</div><div class="event-name">Pooja & Religious</div></div>
+      <div class="event-item" style="cursor:pointer" onclick="selectEventType('Pooja / Religious Event')"><div class="event-icon">🙏</div><div class="event-name">Pooja &amp; Religious</div></div>
       <div class="event-item" style="cursor:pointer" onclick="selectEventType('Other Celebration')"><div class="event-icon">🎉</div><div class="event-name">Celebrations</div></div>
     </div>
   </div>
 
-  <div class="inquiry-section">
-    <div class="section-label">Get in Touch</div>
-    <h2 class="section-title">INQUIRE NOW</h2>
+  <div class="inquiry-section" id="catering-form-section">
+    <div class="section-label">Your Details</div>
+    <h2 class="section-title">COMPLETE YOUR ORDER</h2>
     <div class="divider"></div>
     <div class="inquiry-form">
-      <form id="catering-form" onsubmit="submitCateringInquiry(event)"><input type="hidden" id="f-tray-size" value="">
+      <form id="catering-form" onsubmit="submitCateringInquiry(event)">
+        <div id="catering-form-items" style="display:none"></div>
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">Full Name *</label>
@@ -782,15 +844,19 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
             <input type="number" class="form-input" id="f-guests" placeholder="Approx. number of guests" min="1">
           </div>
           <div class="form-group full">
+            <label class="form-label">Event / Delivery Address</label>
+            <input type="text" class="form-input" id="f-address" placeholder="Full address for delivery">
+          </div>
+          <div class="form-group full">
             <label class="form-label">Additional Notes</label>
-            <textarea class="form-textarea" id="f-notes" placeholder="Any dietary restrictions, special requests, or questions..."></textarea>
+            <textarea class="form-textarea" id="f-notes" placeholder="Dietary restrictions, special requests..."></textarea>
           </div>
         </div>
-        <button type="submit" class="btn-primary form-submit">Submit Inquiry</button>
+        <button type="submit" class="btn-primary form-submit">Submit Catering Order</button>
       </form>
       <div class="form-success" id="form-success">
-        <h3>Thank You!</h3>
-        <p>We received your inquiry and will contact you within 24 hours.</p>
+        <h3>Order Submitted!</h3>
+        <p>We received your catering order and will be in touch within 24 hours to confirm.</p>
         <p style="margin-top:8px;font-size:.85rem;opacity:.7">For urgent requests call <a href="tel:8182803366" style="color:var(--accent)">(818) 280-3366</a></p>
       </div>
     </div>
@@ -853,6 +919,17 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
       </div>
     </div>
   </footer>
+</div>
+
+<!-- INVOICE MODAL -->
+<div id="invoice-modal">
+  <div class="invoice-wrap">
+    <div id="invoice-content"></div>
+    <div class="invoice-actions">
+      <button class="invoice-print-btn" onclick="printInvoice()">🖨️ Print Invoice</button>
+      <button class="invoice-done-btn" onclick="closeInvoiceModal()">Done</button>
+    </div>
+  </div>
 </div>
 
 <!-- FLOATING CTA -->
@@ -1458,6 +1535,7 @@ function navigateTo(page) {
   if (page === 'menu') renderMenu();
   if (page === 'about') renderAboutHours();
   if (page === 'profile') renderProfilePage();
+  if (page === 'catering') renderCateringMenu();
 }
 
 function handleHash() {
@@ -1575,63 +1653,351 @@ function renderAboutHours() {
   container.innerHTML = html;
 }
 
-// ==================== TRAY SIZE SELECTION ====================
+// ==================== CATERING MENU ====================
+let cateringCart = {};
+
+const CATERING_MENU = [
+  { cat: 'Appetizers (Veg)', items: [
+    {id:'av01',name:'Gobi 65',s:70,m:90,l:125},
+    {id:'av02',name:'Chilli Gobi 65',s:70,m:90,l:125},
+    {id:'av03',name:'Paneer 65',s:80,m:100,l:145},
+    {id:'av04',name:'Chilli Paneer',s:80,m:100,l:145},
+    {id:'av05',name:'Paneer Tikka',s:80,m:100,l:145},
+    {id:'av06',name:'Hariyali Paneer Tikka',s:80,m:100,l:145},
+    {id:'av07',name:'Cut Mirchi',s:70,m:90,l:125},
+    {id:'av08',name:'Mirchi Bajji',s:70,m:90,l:125},
+    {id:'av09',name:'Onion Pakora',s:70,m:90,l:125},
+    {id:'av10',name:'BT Gobi Fry',s:70,m:90,l:125}
+  ]},
+  { cat: 'Appetizers (Non-Veg)', items: [
+    {id:'an01',name:'Chicken Lollipop (30/50/80)',s:90,m:130,l:180},
+    {id:'an02',name:'BT Tandoori Fish (5/10/15)',s:100,m:150,l:200},
+    {id:'an03',name:'BT Chicken Fry',s:90,m:120,l:160},
+    {id:'an04',name:'Chicken 65',s:90,m:120,l:160},
+    {id:'an05',name:'Chilli Chicken',s:90,m:120,l:160},
+    {id:'an06',name:'BT Tandoori Chicken',s:90,m:120,l:160},
+    {id:'an07',name:'BT Tandoori Chicken Spicy',s:90,m:120,l:160},
+    {id:'an08',name:'Chicken Tikka',s:90,m:120,l:160},
+    {id:'an09',name:'Chicken Hariyali Kabob',s:90,m:120,l:160},
+    {id:'an10',name:'Chicken Seekh Kabob',s:90,m:120,l:160},
+    {id:'an11',name:'BT Shrimp Apollo',s:100,m:150,l:200},
+    {id:'an12',name:'Jalapeno Chicken',s:90,m:130,l:180},
+    {id:'an13',name:'BT Goat Sukka/Fry',s:110,m:180,l:240},
+    {id:'an14',name:'Chicken Pepper Fry',s:100,m:140,l:200},
+    {id:'an15',name:'Shrimp Pepper Fry',s:100,m:150,l:200},
+    {id:'an16',name:'BT Fish Apollo',s:90,m:130,l:180},
+    {id:'an17',name:'Malai Kabob',s:90,m:120,l:160},
+    {id:'an18',name:'Kabob Platter',s:90,m:120,l:160}
+  ]},
+  { cat: "Biryani's (Veg)", items: [
+    {id:'bv01',name:'Mix Veg Dum Biryani',s:70,m:90,l:125},
+    {id:'bv02',name:'BT Paneer Biryani',s:80,m:110,l:150}
+  ]},
+  { cat: "Biryani's (Non-Veg)", items: [
+    {id:'bn01',name:'Egg Dum Biryani',s:70,m:90,l:125},
+    {id:'bn02',name:'BT Chicken Dum Biryani',s:90,m:120,l:160},
+    {id:'bn03',name:'Boneless Chicken Biryani',s:90,m:120,l:160},
+    {id:'bn04',name:'BT Chicken Fry Biryani',s:90,m:120,l:160},
+    {id:'bn05',name:'BT Shrimp Dum Biryani',s:100,m:150,l:200},
+    {id:'bn06',name:'BT Goat Dum Biryani',s:100,m:150,l:200},
+    {id:'bn07',name:'BT Natu Kodi Dum Biryani',s:100,m:150,l:200},
+    {id:'bn08',name:'BT Fish Biryani',s:100,m:150,l:200},
+    {id:'bn09',name:'Keema Biryani',s:100,m:150,l:200}
+  ]},
+  { cat: 'Curries (Veg)', items: [
+    {id:'cv01',name:'Rasam',s:50,m:70,l:90},
+    {id:'cv02',name:'Mixed Vegetable Curry',s:55,m:75,l:110},
+    {id:'cv03',name:'Aloo Gobii',s:55,m:75,l:110},
+    {id:'cv04',name:'Mirchi Ka Saalan',s:55,m:75,l:110},
+    {id:'cv05',name:'Chana Masala',s:55,m:75,l:110},
+    {id:'cv06',name:'Sambar',s:55,m:75,l:110},
+    {id:'cv07',name:'Dal Tadka',s:55,m:75,l:110},
+    {id:'cv08',name:'Tomato Curry',s:55,m:75,l:110},
+    {id:'cv09',name:'Bagara Baingan',s:65,m:85,l:120},
+    {id:'cv10',name:'Bhindi Masala',s:95,m:120,l:160},
+    {id:'cv11',name:'Paneer Tikka Masala',s:75,m:100,l:140},
+    {id:'cv12',name:'Bhindi Fry',s:90,m:130,l:180},
+    {id:'cv13',name:'Palak Paneer',s:75,m:100,l:140},
+    {id:'cv14',name:'Malai Kofta',s:75,m:100,l:140}
+  ]},
+  { cat: 'Curries (Non-Veg)', items: [
+    {id:'cn01',name:'BT Chicken Curry',s:90,m:120,l:160},
+    {id:'cn02',name:'Butter Chicken',s:90,m:120,l:160},
+    {id:'cn03',name:'Chicken Tikka Masala',s:90,m:120,l:160},
+    {id:'cn04',name:'Kara-hi Chicken',s:90,m:120,l:160},
+    {id:'cn05',name:'BT Shrimp Curry',s:100,m:150,l:200},
+    {id:'cn06',name:'BT Mutton Curry',s:100,m:150,l:200},
+    {id:'cn07',name:'Dum Ka Ghosh',s:100,m:150,l:200},
+    {id:'cn08',name:'BT Fish Curry',s:100,m:150,l:200},
+    {id:'cn09',name:'Keema Curry',s:100,m:150,l:200},
+    {id:'cn10',name:'Egg Masala',s:65,m:85,l:120},
+    {id:'cn11',name:'Egg Burji',s:75,m:100,l:125},
+    {id:'cn12',name:'Dum-Ka-Murg',s:90,m:120,l:160},
+    {id:'cn13',name:'Natu Kodi (Country Chicken) Curry',s:100,m:150,l:200}
+  ]},
+  { cat: 'Rice / Noodles', items: [
+    {id:'rn01',name:'Vegetable Fried Rice',s:65,m:85,l:120},
+    {id:'rn02',name:'Egg Fried Rice',s:70,m:90,l:125},
+    {id:'rn03',name:'Chicken Fried Rice',s:90,m:120,l:160},
+    {id:'rn04',name:'Schezwan Chicken Fried Rice',s:90,m:120,l:160},
+    {id:'rn05',name:'Schezwan Veg Fried Rice',s:65,m:85,l:120},
+    {id:'rn06',name:'Shrimp Fried Rice',s:100,m:150,l:200},
+    {id:'rn07',name:'Veg Noodles',s:65,m:85,l:120},
+    {id:'rn08',name:'Chicken Noodles',s:90,m:120,l:160},
+    {id:'rn09',name:'Shrimp Noodles',s:100,m:150,l:200},
+    {id:'rn10',name:'Schezwan Chicken Noodles',s:90,m:120,l:160},
+    {id:'rn11',name:'Schezwan Veg Noodles',s:65,m:85,l:120}
+  ]},
+  { cat: "Roti's / Breads", perPiece: true, items: [
+    {id:'rb01',name:'Plain Naan',pp:2.99},
+    {id:'rb02',name:'Butter Naan',pp:2.99},
+    {id:'rb03',name:'Garlic Naan',pp:3.49},
+    {id:'rb04',name:'Onion Kulcha',pp:4.99},
+    {id:'rb05',name:'Paneer Naan',pp:4.99},
+    {id:'rb06',name:'Chicken Tikka Naan',pp:5.99}
+  ]},
+  { cat: 'Dessert', items: [
+    {id:'ds01',name:'Double Ka Meeta',s:50,m:75,l:100},
+    {id:'ds02',name:'Ras Malai',s:50,m:75,l:100},
+    {id:'ds03',name:'Gulab Jamun',s:50,m:75,l:100}
+  ]}
+];
+
+function renderCateringMenu() {
+  const container = document.getElementById('catering-menu-list');
+  if (!container) return;
+  container.innerHTML = CATERING_MENU.map(cat =>
+    `<div class="cat-category">
+      <div class="cat-category-header">${cat.cat}</div>
+      ${cat.items.map(item => _renderCatItem(item, !!cat.perPiece)).join('')}
+    </div>`
+  ).join('');
+}
+
+function _renderCatItem(item, isPerPiece) {
+  if (isPerPiece) {
+    const qty = cateringCart[item.id]?.qty || 0;
+    return `<div class="cat-item-row" id="cat-row-${item.id}">
+      <div class="cat-item-name">${_esc(item.name)} <span style="color:var(--accent);font-size:.78rem">$${item.pp.toFixed(2)}/ea</span></div>
+      <div class="cat-item-controls">
+        <div class="cat-qty-wrap">
+          <button class="cat-qty-btn" onclick="catBreadQty('${item.id}',${item.pp},-1)">−</button>
+          <span class="cat-qty-val" id="cat-qty-${item.id}">${qty}</span>
+          <button class="cat-qty-btn" onclick="catBreadQty('${item.id}',${item.pp},1)">+</button>
+        </div>
+      </div>
+    </div>`;
+  }
+  const sL = {s:'S',m:'M',l:'L'};
+  const sN = {s:'Small (10-12)',m:'Medium (18-20)',l:'Large (25-28)'};
+  return `<div class="cat-item-row" id="cat-row-${item.id}">
+    <div class="cat-item-name">${_esc(item.name)}</div>
+    <div class="cat-item-controls" id="cat-ctrl-${item.id}">
+      ${['s','m','l'].map(sz => {
+        const price = item[sz];
+        const k = item.id+'_'+sz;
+        const qty = cateringCart[k]?.qty || 0;
+        if (qty > 0) {
+          return `<div class="cat-qty-wrap">
+            <span class="cat-qty-label">${sL[sz]} $${price}</span>
+            <button class="cat-qty-btn" onclick="catTrayQty('${item.id}','${sz}',${price},-1)">−</button>
+            <span class="cat-qty-val" id="cat-qty-${k}">${qty}</span>
+            <button class="cat-qty-btn" onclick="catTrayQty('${item.id}','${sz}',${price},1)">+</button>
+          </div>`;
+        }
+        return `<button class="cat-size-btn" onclick="catTrayQty('${item.id}','${sz}',${price},1)">${sL[sz]} $${price}</button>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+function catTrayQty(id, sz, price, delta) {
+  const k = id + '_' + sz;
+  const sN = {s:'Small (10-12)',m:'Medium (18-20)',l:'Large (25-28)'};
+  const itemData = CATERING_MENU.flatMap(c=>c.items).find(i=>i.id===id);
+  if (!itemData) return;
+  if (!cateringCart[k]) cateringCart[k] = {id:k, name:itemData.name, size:sN[sz], price, qty:0};
+  cateringCart[k].qty = Math.max(0, cateringCart[k].qty + delta);
+  if (cateringCart[k].qty <= 0) delete cateringCart[k];
+  const row = document.getElementById('cat-row-' + id);
+  if (row) row.outerHTML = _renderCatItem(itemData, false);
+  updateCateringSummary();
+}
+
+function catBreadQty(id, price, delta) {
+  const itemData = CATERING_MENU.flatMap(c=>c.items).find(i=>i.id===id);
+  if (!itemData) return;
+  if (!cateringCart[id]) cateringCart[id] = {id, name:itemData.name, size:'Per Piece', price, qty:0};
+  cateringCart[id].qty = Math.max(0, cateringCart[id].qty + delta);
+  if (cateringCart[id].qty <= 0) delete cateringCart[id];
+  const qtyEl = document.getElementById('cat-qty-' + id);
+  if (qtyEl) qtyEl.textContent = cateringCart[id]?.qty || 0;
+  updateCateringSummary();
+}
+
+function updateCateringSummary() {
+  const items = Object.values(cateringCart);
+  const count = items.reduce((s,i) => s+i.qty, 0);
+  const total = items.reduce((s,i) => s+i.price*i.qty, 0);
+  const bar = document.getElementById('catering-summary-bar');
+  if (bar) bar.style.display = count > 0 ? '' : 'none';
+  const countEl = document.getElementById('cat-item-count');
+  const totalEl = document.getElementById('cat-total');
+  if (countEl) countEl.textContent = count + (count === 1 ? ' item selected' : ' items selected');
+  if (totalEl) totalEl.textContent = '$' + total.toFixed(2) + ' est.';
+  renderCateringFormSummary();
+}
+
+function renderCateringFormSummary() {
+  const el = document.getElementById('catering-form-items');
+  if (!el) return;
+  const items = Object.values(cateringCart);
+  if (!items.length) { el.style.display = 'none'; return; }
+  el.style.display = '';
+  const subtotal = items.reduce((s,i) => s+i.price*i.qty, 0);
+  el.innerHTML = `<div style="font-size:.73rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:10px;font-weight:500">Your Selection</div>` +
+    items.map(i => `<div class="catering-form-item-line"><span>${_esc(i.name)} — ${_esc(i.size)} ×${i.qty}</span><span>$${(i.price*i.qty).toFixed(2)}</span></div>`).join('') +
+    `<div class="catering-form-item-line"><span>Estimated Subtotal (excl. tax)</span><span>$${subtotal.toFixed(2)}</span></div>`;
+}
+
+function scrollToCateringForm() {
+  document.getElementById('catering-form-section')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
 function selectEventType(type) {
   const sel = document.getElementById('f-type');
   if (sel) { sel.value = type; sel.style.borderColor = 'var(--accent)'; }
-  document.querySelectorAll('.event-item').forEach(el => el.style.outline = '');
-  document.getElementById('catering-form').scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-function selectTraySize(size) {
-  // Clear all selections
-  ['tray-small','tray-medium','tray-large'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.outline = '';
-  });
-  // Highlight selected
-  const idMap = {Small:'tray-small', Medium:'tray-medium', Large:'tray-large'};
-  const sel = document.getElementById(idMap[size]);
-  if (sel) sel.style.outline = '3px solid var(--accent)';
-  // Set hidden field
-  const field = document.getElementById('f-tray-size');
-  if (field) field.value = size;
-  // Show confirmation
-  const msg = document.getElementById('tray-selected-msg');
-  if (msg) { msg.textContent = size + ' Tray selected ✓ — now fill out the form below'; msg.style.opacity = '1'; }
-  // Scroll to form smoothly
-  setTimeout(() => { document.getElementById('catering-form').scrollIntoView({behavior:'smooth', block:'start'}); }, 300);
+  document.getElementById('catering-form-section')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 // ==================== CATERING FORM ====================
 async function submitCateringInquiry(e) {
   e.preventDefault();
+  const items = Object.values(cateringCart);
+  if (!items.length) {
+    alert('Please select at least one item from the menu above before submitting.');
+    return;
+  }
   const btn = e.target.querySelector('button[type=submit]');
   if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
 
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const date = document.getElementById('f-date').value;
+  const type = document.getElementById('f-type').value;
+  const guests = document.getElementById('f-guests').value;
+  const notes = document.getElementById('f-notes').value.trim();
+  const address = document.getElementById('f-address')?.value.trim() || '';
+
+  const subtotal = items.reduce((s,i) => s+i.price*i.qty, 0);
+  const taxAmt = subtotal * 0.095;
+  const total = subtotal + taxAmt;
+  const invoiceNum = 'INV' + String(Math.floor(Math.random()*900)+100);
+  const invoiceDate = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const itemsSummary = items.map(i => `${i.name} (${i.size}) x${i.qty} = $${(i.price*i.qty).toFixed(2)}`).join(' | ');
+
   const { error } = await _supa.from('inquiries').insert({
-    name: document.getElementById('f-name').value,
-    phone: document.getElementById('f-phone').value,
-    email: document.getElementById('f-email').value,
-    event_date: document.getElementById('f-date').value,
-    event_type: document.getElementById('f-type').value,
-    tray_size: document.getElementById('f-tray-size').value || 'Not specified',
-    guests: document.getElementById('f-guests').value,
-    notes: document.getElementById('f-notes').value,
+    name, phone, email,
+    event_date: date,
+    event_type: type,
+    tray_size: items.map(i=>`${i.name}(${i.size})x${i.qty}`).join(', '),
+    guests,
+    notes: (notes?notes+'\n\n':'')+'ORDER: '+itemsSummary+`\n\nSubtotal:$${subtotal.toFixed(2)} Tax:$${taxAmt.toFixed(2)} Total:$${total.toFixed(2)} Invoice:${invoiceNum}`,
     status: 'new'
   });
 
-  if (btn) { btn.disabled = false; btn.textContent = 'Submit Inquiry'; }
+  if (btn) { btn.disabled = false; btn.textContent = 'Submit Catering Order'; }
+  if (error) { alert('Error submitting. Please try again or call (818) 280-3366.'); console.error(error); return; }
 
-  if (error) {
-    alert('Error submitting inquiry. Please try again or call us directly.');
-    console.error(error);
-    return;
+  // Email invoice
+  if (window.emailjs) {
+    const ep = {
+      invoice_num: invoiceNum, invoice_date: invoiceDate,
+      customer_name: name, customer_phone: phone, customer_email: email||'Not provided',
+      customer_address: address||'Not provided', event_type: type||'Not specified',
+      event_date: date, order_items: itemsSummary,
+      subtotal: '$'+subtotal.toFixed(2), tax_amount: '$'+taxAmt.toFixed(2),
+      grand_total: '$'+total.toFixed(2), notes: notes||'None'
+    };
+    emailjs.send('service_5js624f','template_ih2urfa',ep,'p7RtWcIqypXH4e5-7').catch(()=>{});
+    if (email) emailjs.send('service_5js624f','TEMPLATE_CATERING_INVOICE',{...ep,to_email:email},'p7RtWcIqypXH4e5-7').catch(()=>{});
   }
 
   document.getElementById('catering-form').style.display = 'none';
   document.getElementById('form-success').style.display = 'block';
+  showInvoiceModal({invoiceNum, invoiceDate, name, phone, email, address, eventType:type, eventDate:date, items, subtotal, taxAmt, total, notes});
 }
+
+// ==================== INVOICE ====================
+function showInvoiceModal({invoiceNum, invoiceDate, name, phone, email, address, eventType, eventDate, items, subtotal, taxAmt, total, notes}) {
+  const fmtDate = d => { try { return new Date(d+'T00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}); } catch(e){ return d||''; } };
+  const rows = items.map(i => `<tr>
+    <td><strong>${_esc(i.name)}</strong><br><span style="color:#888;font-size:.75rem">${_esc(i.size)}</span></td>
+    <td>$${i.price.toFixed(2)}</td>
+    <td>${i.qty}</td>
+    <td>$${(i.price*i.qty).toFixed(2)}</td>
+  </tr>`).join('');
+
+  document.getElementById('invoice-content').innerHTML = `
+    <div class="invoice-header">
+      <div>
+        <div class="invoice-biz-name">Biryani Temptations</div>
+        <div class="invoice-biz-info">
+          Business # 818.280.3366<br>
+          9042 Owensmouth Ave, Unit 34<br>
+          Canoga Park, CA 91304<br>
+          818.280.3366<br>
+          <a href="mailto:BiryaniTemptations@gmail.com">BiryaniTemptations@gmail.com</a>
+        </div>
+      </div>
+      <div>
+        <div class="invoice-title">INVOICE</div>
+        <div class="invoice-meta">Invoice #: &nbsp;<strong>${_esc(invoiceNum)}</strong><br>Date: &nbsp;<strong>${_esc(invoiceDate)}</strong></div>
+      </div>
+    </div>
+    <div class="invoice-bill-row">
+      <div class="invoice-bill-to">
+        <strong>${_esc(name)}</strong><br>
+        ${address?_esc(address)+'<br>':''}
+        ${phone?_esc(phone)+'<br>':''}
+        ${email?_esc(email):''}
+      </div>
+      <div class="invoice-total-box">
+        <div class="invoice-total-box-label">Total Due</div>
+        <div class="invoice-total-box-amt">$${total.toFixed(2)}</div>
+      </div>
+    </div>
+    <table class="invoice-table">
+      <thead><tr><th>Item</th><th>Price</th><th>Quantity</th><th>Total</th></tr></thead>
+      <tbody>
+        ${rows}
+        <tr class="inv-sub"><td colspan="2"></td><td>Subtotal</td><td>$${subtotal.toFixed(2)}</td></tr>
+        <tr class="inv-sub"><td colspan="2"></td><td>Tax (9.5%)</td><td>$${taxAmt.toFixed(2)}</td></tr>
+        <tr class="inv-grand"><td colspan="2"></td><td>Grand Total</td><td>$${total.toFixed(2)}</td></tr>
+        <tr class="inv-sub"><td colspan="2"></td><td>Paid</td><td>$0.00</td></tr>
+        <tr class="inv-due"><td colspan="2"></td><td><strong>Due</strong></td><td><strong>$${total.toFixed(2)}</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="invoice-footer-notes">
+      ${eventDate?'Event Date: '+fmtDate(eventDate)+'<br>':''}
+      ${eventType?'Event Type: '+_esc(eventType)+'<br>':''}
+      ${notes?'Notes: '+_esc(notes):''}
+    </div>`;
+  document.getElementById('invoice-modal').classList.add('open');
+}
+
+function closeInvoiceModal() {
+  document.getElementById('invoice-modal').classList.remove('open');
+  document.getElementById('catering-form').style.display = '';
+  document.getElementById('catering-form').reset();
+  document.getElementById('form-success').style.display = 'none';
+  cateringCart = {};
+  renderCateringMenu();
+  updateCateringSummary();
+}
+
+function printInvoice() { window.print(); }
 
 // ==================== ADMIN AUTH ====================
 function doLogin() {
