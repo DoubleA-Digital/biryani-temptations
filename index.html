@@ -577,6 +577,17 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
 </style>
 </head>
 <body>
+<script>
+// Immediately hide public site if loading admin to prevent flash
+(function(){
+  if(location.hash==='#admin'){
+    try{
+      const authed=JSON.parse(localStorage.getItem('bt_adminAuth'));
+      if(authed) document.documentElement.style.visibility='hidden';
+    }catch(e){}
+  }
+})();
+</script>
 
 <!-- ANNOUNCEMENT BANNER -->
 <div id="announcement-banner">
@@ -1547,9 +1558,11 @@ function navigateTo(page) {
       document.getElementById('admin-login').classList.add('active');
     }
     location.hash = '#admin';
+    document.documentElement.style.visibility = '';
     return;
   }
 
+  document.documentElement.style.visibility = '';
   const pageEl = document.getElementById(page + '-page');
   if (pageEl) {
     pageEl.classList.add('active');
