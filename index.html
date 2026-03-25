@@ -2227,7 +2227,7 @@ async function renderOrders() {
             ${order.status==='confirmed' ? `<button class="admin-action-btn" onclick="updateOrderStatus(${order.id},'ready')">Mark Ready</button>` : ''}
             ${order.status==='ready' ? `<button class="admin-action-btn" onclick="updateOrderStatus(${order.id},'completed')">Complete</button>` : ''}
             ${order.status==='completed' ? `<span style="font-size:.8rem;opacity:.4">Completed</span>` : ''}
-            <button class="admin-action-btn" onclick="adminToggleOrderChat(${order.id})">💬 Chat</button>
+            <button class="admin-action-btn" style="position:relative" onclick="adminToggleOrderChat(${order.id})">💬 Chat<span id="admin-chat-dot-${order.id}" style="display:none;position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:#e53935;border-radius:50%;border:2px solid #1A1208"></span></button>
             <button class="admin-action-btn danger" onclick="deleteOrder(${order.id})">Delete</button>
           </div>
         </div>
@@ -2461,7 +2461,7 @@ async function renderProfilePage() {
         <span style="font-size:.78rem;opacity:.5">${date} · ${order.order_type}</span>
         <div style="display:flex;gap:8px">
           <button class="reorder-btn" onclick="reorderById(${order.id})">Reorder</button>
-          <button class="chat-btn" onclick="toggleProfileOrderChat(${order.id})">💬 Chat <span id="chat-new-${order.id}" style="display:none;background:#64B5F6;color:#1A1208;font-size:.7rem;padding:1px 6px;border-radius:10px;font-weight:700">NEW</span></button>
+          <button class="chat-btn" style="position:relative" onclick="toggleProfileOrderChat(${order.id})">💬 Chat<span id="chat-new-${order.id}" style="display:none;position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:#e53935;border-radius:50%;border:2px solid #1A1208"></span></button>
         </div>
       </div>
       <div id="profile-chat-${order.id}" style="display:none">
@@ -2610,7 +2610,8 @@ async function userSendOrderMsg(orderId) {
   if (!input || !input.value.trim()) return;
   const msg = input.value.trim();
   input.value = '';
-  await _supa.from('order_messages').insert({ order_id: orderId, sender: 'user', message: msg });
+  const { error } = await _supa.from('order_messages').insert({ order_id: orderId, sender: 'user', message: msg });
+  if (error) { console.error('Chat send error:', error); input.value = msg; alert('Could not send message. Please try again.'); return; }
   _markChatRead(orderId, 'user');
   loadOrderChatMessages(orderId, 'profile');
 }
@@ -2641,12 +2642,18 @@ async function updateAdminChatBadge() {
   const unread = Object.entries(latestByOrder).filter(([orderId, ts]) => {
     return new Date(ts).getTime() > _chatLastRead(orderId, 'admin');
   });
+  // Update global nav badge
   if (unread.length > 0) {
     badge.style.display = 'inline';
     badge.textContent = '💬 ' + unread.length;
   } else {
     badge.style.display = 'none';
   }
+  // Update per-order red dots
+  Object.entries(latestByOrder).forEach(([orderId, ts]) => {
+    const dot = document.getElementById('admin-chat-dot-' + orderId);
+    if (dot) dot.style.display = new Date(ts).getTime() > _chatLastRead(orderId, 'admin') ? 'block' : 'none';
+  });
 }
 
 // Check for unread admin replies → show NEW badge on user's chat buttons
