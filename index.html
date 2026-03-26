@@ -442,6 +442,8 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
 .hours-day-name{font-weight:500;font-size:.9rem}
 .hours-time-inputs{display:flex;align-items:center;gap:8px;font-size:.85rem;opacity:.7}
 .inquiry-detail{background:rgba(255,255,255,.02);padding:12px;border-radius:4px;font-size:.82rem;line-height:1.7;margin-top:8px;border:1px solid var(--border)}
+.inq-grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid var(--border)}
+@media(max-width:600px){.inq-grid-2col{grid-template-columns:1fr!important}}
 .announcement-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--cream);font-family:var(--font-body);font-size:.9rem;padding:12px;outline:none;border-radius:2px;resize:vertical;min-height:80px}
 .announcement-input:focus{border-color:var(--accent)}
 .delivery-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -2558,6 +2560,65 @@ function saveDelivery() {
 }
 
 // ---- INQUIRIES ----
+function _parseInquiryNotes(notes) {
+  // Returns { scheduledTime, orderItems, subtotal, tax, total, invoice, extraNotes }
+  if (!notes) return {};
+  let scheduledTime = '', orderRaw = '', subtotal = '', tax = '', total = '', invoice = '', extraNotes = '';
+
+  // Extract scheduled time (new format)
+  const timeMatch = notes.match(/Scheduled Time:([^\s]+)/);
+  if (timeMatch) scheduledTime = timeMatch[1];
+
+  // Old format: "Delivery time 7:00PM"
+  if (!scheduledTime) {
+    const oldTime = notes.match(/Delivery time ([^\s]+(?:\s*[AaPp][Mm])?)/);
+    if (oldTime) scheduledTime = oldTime[1];
+  }
+
+  // Extract ORDER: block
+  const orderMatch = notes.match(/ORDER:([\s\S]+?)(?=Scheduled Time:|Subtotal:|$)/);
+  if (orderMatch) orderRaw = orderMatch[1].trim();
+
+  // Extract totals
+  const subMatch = notes.match(/Subtotal:\$?([\d.]+)/);
+  const taxMatch = notes.match(/Tax:\$?([\d.]+)/);
+  const totMatch = notes.match(/Total:\$?([\d.]+)/);
+  const invMatch = notes.match(/Invoice:(\S+)/);
+  if (subMatch) subtotal = subMatch[1];
+  if (taxMatch) tax = taxMatch[1];
+  if (totMatch) total = totMatch[1];
+  if (invMatch) invoice = invMatch[1];
+
+  // Extra notes = everything before ORDER:
+  const beforeOrder = notes.split(/ORDER:/)[0].replace(/Delivery time[^\n]*/,'').trim();
+  if (beforeOrder) extraNotes = beforeOrder;
+
+  // Parse order items: "Item Name (Size) x2 = $180.00 | ..."
+  const items = [];
+  if (orderRaw) {
+    orderRaw.split('|').forEach(part => {
+      part = part.trim();
+      // Format: "Item Name (Size (range)) x2 = $180.00"
+      const m = part.match(/^(.+?)\s*x(\d+)\s*=\s*\$?([\d.]+)$/);
+      if (m) {
+        // Split name and size — size is in last parenthetical
+        const full = m[1].trim();
+        const sizeMatch = full.match(/^(.*?)\s*(\([^)]+\))\s*$/);
+        items.push({
+          name: sizeMatch ? sizeMatch[1].trim() : full,
+          size: sizeMatch ? sizeMatch[2] : '',
+          qty: m[2],
+          lineTotal: m[3]
+        });
+      } else if (part) {
+        items.push({ name: part, size: '', qty: '', lineTotal: '' });
+      }
+    });
+  }
+
+  return { scheduledTime, items, subtotal, tax, total, invoice, extraNotes };
+}
+
 async function renderInquiries() {
   const el = document.getElementById('inquiries-list');
   if (!el) return;
@@ -2571,32 +2632,114 @@ async function renderInquiries() {
   if (badge) { if (newCount > 0) { badge.style.display = 'inline'; badge.textContent = newCount; } else badge.style.display = 'none'; }
 
   if (!inquiries || inquiries.length === 0) {
-    el.innerHTML = '<p style="opacity:.5;font-size:.85rem">No inquiries yet.</p>';
+    el.innerHTML = '<p style="opacity:.5;font-size:.85rem">No catering inquiries yet.</p>';
     return;
   }
-  let html = `<table class="admin-table">
-    <thead><tr><th>Name</th><th>Event</th><th>Tray Size</th><th>Date</th><th>Guests</th><th>Status</th><th>Actions</th></tr></thead>
-    <tbody>`;
+
+  const statusColor = { new: '#81C784', read: 'var(--accent)', responded: 'rgba(255,255,255,.3)' };
+  const fmtDate = d => { try { return new Date(d+'T12:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}); } catch(e){ return d||'—'; } };
+  const fmtTime = t => { if (!t) return ''; try { const [h,m] = t.split(':').map(Number); const ap = h>=12?'PM':'AM'; const hh = h>12?h-12:(h===0?12:h); return hh+':'+(m||0).toString().padStart(2,'0')+' '+ap; } catch(e){ return t; } };
+
+  let html = `<div style="font-size:.82rem;opacity:.5;margin-bottom:16px">${inquiries.length} catering order(s) · ${newCount} new</div>`;
+
   inquiries.forEach(inq => {
-    html += `<tr>
-      <td>
-        <strong>${inq.name}</strong><br>
-        <span style="font-size:.78rem;opacity:.6">${inq.phone} · ${inq.email}</span>
-        ${inq.notes ? `<div class="inquiry-detail">${_esc(inq.notes)}</div>` : ''}
-      </td>
-      <td>${inq.event_type||'—'}</td>
-      <td>${inq.tray_size||'—'}</td>
-      <td>${inq.event_date||'—'}</td>
-      <td>${inq.guests||'—'}</td>
-      <td><span class="badge badge-${inq.status}">${inq.status}</span></td>
-      <td style="display:flex;gap:4px;flex-wrap:wrap">
+    const d = new Date(inq.created_at).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    const parsed = _parseInquiryNotes(inq.notes);
+
+    // Build items table rows
+    let itemRows = '';
+    if (parsed.items && parsed.items.length) {
+      itemRows = parsed.items.map(it => `
+        <tr>
+          <td style="padding:6px 10px;font-weight:500">${_esc(it.name)}</td>
+          <td style="padding:6px 10px;color:var(--accent)">${_esc(it.size)}</td>
+          <td style="padding:6px 10px;text-align:center">×${_esc(it.qty)}</td>
+          <td style="padding:6px 10px;text-align:right">${it.lineTotal?'$'+it.lineTotal:''}</td>
+        </tr>`).join('');
+    } else if (inq.tray_size) {
+      // Fallback: parse tray_size field
+      itemRows = inq.tray_size.split(',').map(s => `<tr><td colspan="4" style="padding:6px 10px">${_esc(s.trim())}</td></tr>`).join('');
+    }
+
+    const hasItems = itemRows !== '';
+    const statusBadge = `<span style="background:${statusColor[inq.status]||'rgba(255,255,255,.2)'};color:#1A1208;font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px">${inq.status}</span>`;
+
+    html += `
+    <div style="border:1px solid var(--border2);border-radius:6px;margin-bottom:16px;overflow:hidden">
+
+      <!-- Header bar -->
+      <div style="background:rgba(212,105,42,.08);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--border)">
+        <div>
+          <span style="font-family:var(--font-display);font-size:1.2rem;color:var(--cream)">${_esc(inq.name)}</span>
+          <span style="font-size:.78rem;opacity:.5;margin-left:12px">Submitted ${d}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          ${statusBadge}
+          ${parsed.invoice ? `<span style="font-size:.78rem;opacity:.5">${_esc(parsed.invoice)}</span>` : ''}
+        </div>
+      </div>
+
+      <div class="inq-grid-2col">
+
+        <!-- Contact -->
+        <div style="padding:14px 20px;border-right:1px solid var(--border)">
+          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px">Contact</div>
+          <div style="font-size:.88rem;line-height:1.8">
+            📞 ${_esc(inq.phone||'—')}<br>
+            ✉️ ${_esc(inq.email||'—')}
+          </div>
+        </div>
+
+        <!-- Event details -->
+        <div style="padding:14px 20px">
+          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px">Event Details</div>
+          <div style="font-size:.88rem;line-height:1.9">
+            📅 <strong>${inq.event_date ? fmtDate(inq.event_date) : '—'}</strong><br>
+            ${parsed.scheduledTime ? `⏰ <strong>${fmtTime(parsed.scheduledTime)}</strong><br>` : ''}
+            🎉 ${_esc(inq.event_type||'Not specified')}<br>
+            👥 ${inq.guests ? inq.guests + ' guests' : '—'}
+          </div>
+        </div>
+      </div>
+
+      ${hasItems ? `
+      <!-- Items ordered -->
+      <div style="padding:14px 20px;border-bottom:1px solid var(--border)">
+        <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:10px">Items Ordered</div>
+        <table style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr style="background:rgba(255,255,255,.04);font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;opacity:.6">
+              <th style="padding:6px 10px;text-align:left">Item</th>
+              <th style="padding:6px 10px;text-align:left">Tray Size</th>
+              <th style="padding:6px 10px;text-align:center">Qty</th>
+              <th style="padding:6px 10px;text-align:right">Price</th>
+            </tr>
+          </thead>
+          <tbody style="font-size:.85rem">${itemRows}</tbody>
+          ${parsed.subtotal ? `
+          <tfoot style="border-top:1px solid var(--border);font-size:.82rem">
+            <tr><td colspan="3" style="padding:5px 10px;text-align:right;opacity:.6">Subtotal</td><td style="padding:5px 10px;text-align:right">$${parsed.subtotal}</td></tr>
+            <tr><td colspan="3" style="padding:5px 10px;text-align:right;opacity:.6">Tax (9.5%)</td><td style="padding:5px 10px;text-align:right">$${parsed.tax}</td></tr>
+            <tr style="font-weight:700;color:var(--accent)"><td colspan="3" style="padding:6px 10px;text-align:right">Total</td><td style="padding:6px 10px;text-align:right;font-size:1rem">$${parsed.total}</td></tr>
+          </tfoot>` : ''}
+        </table>
+      </div>` : ''}
+
+      ${parsed.extraNotes ? `
+      <!-- Notes -->
+      <div style="padding:12px 20px;border-bottom:1px solid var(--border);font-size:.82rem;opacity:.7;font-style:italic">
+        💬 ${_esc(parsed.extraNotes)}
+      </div>` : ''}
+
+      <!-- Actions -->
+      <div style="padding:12px 20px;display:flex;gap:8px;flex-wrap:wrap">
         ${inq.status!=='responded'?`<button class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'responded')">Mark Responded</button>`:''}
         ${inq.status==='new'?`<button class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'read')">Mark Read</button>`:''}
         <button class="admin-action-btn danger" onclick="deleteInquiry(${inq.id})">Delete</button>
-      </td>
-    </tr>`;
+      </div>
+    </div>`;
   });
-  html += '</tbody></table>';
+
   el.innerHTML = html;
 }
 
