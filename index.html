@@ -1555,6 +1555,7 @@ function navigateTo(page) {
     if (adminAuthed) {
       document.getElementById('admin-app').classList.add('active');
       renderAdminDashboard();
+      startAdminRealtime();
     } else {
       document.getElementById('admin-login').classList.add('active');
     }
@@ -2187,6 +2188,36 @@ function resetAnalytics() {
   renderAnalytics(_anPeriod);
 }
 
+// ==================== ADMIN REALTIME ====================
+let _adminRealtimeChannel = null;
+
+function startAdminRealtime() {
+  if (_adminRealtimeChannel) return;
+  _adminRealtimeChannel = _supa.channel('admin-rt')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
+      // Auto-refresh orders panel if it's open
+      const panel = document.getElementById('panel-orders');
+      if (panel && panel.classList.contains('active')) renderOrders();
+      // Always update dashboard badge
+      _updateNewOrdersBadge();
+    })
+    .subscribe();
+}
+
+function stopAdminRealtime() {
+  if (_adminRealtimeChannel) {
+    _supa.removeChannel(_adminRealtimeChannel);
+    _adminRealtimeChannel = null;
+  }
+}
+
+async function _updateNewOrdersBadge() {
+  const { data } = await _supa.from('orders').select('id').eq('status','new').not('admin_hidden','is',true);
+  const count = (data||[]).length;
+  const ob = document.getElementById('admin-orders-badge');
+  if (ob) { ob.style.display = count > 0 ? 'inline' : 'none'; if (count > 0) ob.textContent = count; }
+}
+
 // ==================== ADMIN AUTH ====================
 function doLogin() {
   const pw = document.getElementById('admin-pw').value;
@@ -2195,6 +2226,7 @@ function doLogin() {
     lsSet('adminAuth', true);
     document.getElementById('login-error').style.display = 'none';
     navigateTo('admin');
+    startAdminRealtime();
   } else {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('admin-pw').value = '';
@@ -2203,6 +2235,7 @@ function doLogin() {
 function adminLogout() {
   adminAuthed = false;
   lsSet('adminAuth', false);
+  stopAdminRealtime();
   navigateTo('admin');
 }
 
@@ -2704,7 +2737,17 @@ async function placeOrder() {
   const orderNotes = document.getElementById('co-notes').value.trim();
   const orderAddress = document.getElementById('co-address').value.trim();
 
-  const { error } = await _supa.from('orders').insert({
+  // Show confirmation IMMEDIATELY — optimistic UI
+  if (btn) { btn.disabled = false; btn.textContent = 'Place Order'; }
+  const spL = { mild:'Mild', medium:'Medium', spicy:'Spicy' };
+  const itemLines = cart.map(c => `<div style="display:flex;justify-content:space-between"><span>${c.emoji} ${_esc(c.name)}${c.spice?' ('+spL[c.spice]+')':''} ×${c.qty}</span><span>$${(c.price*c.qty).toFixed(2)}</span></div>`).join('');
+  document.getElementById('order-num-display').textContent = orderNum;
+  document.getElementById('order-confirm-summary').innerHTML = itemLines + `<div style="border-top:1px solid rgba(255,255,255,.1);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-weight:600"><span>Total</span><span>$${total.toFixed(2)}</span></div>`;
+  document.getElementById('checkout-form-wrap').style.display = 'none';
+  document.getElementById('order-confirm').style.display = 'block';
+
+  // Insert to DB in background — never blocks the customer
+  _supa.from('orders').insert({
     order_num: orderNum,
     customer_name: name,
     customer_phone: phone,
@@ -2716,23 +2759,9 @@ async function placeOrder() {
     subtotal: total,
     status: 'new',
     user_id: userId
+  }).then(({ error }) => {
+    if (error) console.error('Order save error:', error);
   });
-
-  if (btn) { btn.disabled = false; btn.textContent = 'Place Order'; }
-
-  if (error) {
-    alert('Error placing order. Please try again or call us directly.');
-    console.error(error);
-    return;
-  }
-
-  // Show confirmation immediately — no waiting
-  document.getElementById('order-num-display').textContent = orderNum;
-  const spL = { mild:'Mild', medium:'Medium', spicy:'Spicy' };
-  const itemLines = cart.map(c => `<div style="display:flex;justify-content:space-between"><span>${c.emoji} ${_esc(c.name)}${c.spice?' ('+spL[c.spice]+')':''} ×${c.qty}</span><span>$${(c.price*c.qty).toFixed(2)}</span></div>`).join('');
-  document.getElementById('order-confirm-summary').innerHTML = itemLines + `<div style="border-top:1px solid rgba(255,255,255,.1);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-weight:600"><span>Total</span><span>$${total.toFixed(2)}</span></div>`;
-  document.getElementById('checkout-form-wrap').style.display = 'none';
-  document.getElementById('order-confirm').style.display = 'block';
 
   // Points update — runs in background, doesn't block confirmation
   if (userId) {
@@ -3061,7 +3090,6 @@ async function renderProfilePage() {
         <div style="display:flex;gap:8px">
           <button class="reorder-btn" onclick="reorderById(${order.id})">Reorder</button>
           <button class="chat-btn" style="position:relative" onclick="toggleProfileOrderChat(${order.id})">💬 Chat<span id="chat-new-${order.id}" style="display:none;position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:#e53935;border-radius:50%;border:2px solid #1A1208"></span></button>
-          ${order.status === 'new' ? `<button id="cancel-btn-${order.id}" class="reorder-btn" style="background:transparent;border-color:rgba(229,57,53,.5);color:#e53935" onclick="cancelOrder(${order.id})">Cancel Order</button>` : ''}
           <button id="del-btn-${order.id}" class="reorder-btn" style="background:transparent;border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.35);padding:5px 10px;font-size:.75rem" onclick="deleteUserOrder(${order.id})" title="Remove from history">🗑</button>
         </div>
       </div>
