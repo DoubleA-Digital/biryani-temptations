@@ -850,6 +850,10 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
             <input type="date" class="form-input" id="f-date" required>
           </div>
           <div class="form-group">
+            <label class="form-label">Scheduled Time *</label>
+            <input type="time" class="form-input" id="f-time" required>
+          </div>
+          <div class="form-group">
             <label class="form-label">Event Type</label>
             <select class="form-select" id="f-type">
               <option value="">Select event type</option>
@@ -1082,6 +1086,12 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
         <div id="checkout-summary-items"></div>
       </div>
 
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <input type="text" class="form-input" id="co-coupon" placeholder="Coupon code (optional)" style="flex:1;text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+        <button type="button" class="admin-action-btn" style="white-space:nowrap;padding:0 16px" onclick="applyCoupon()">Apply</button>
+      </div>
+      <div id="coupon-msg" style="font-size:.82rem;margin-bottom:12px;margin-top:-10px"></div>
+
       <button class="btn-primary" style="width:100%;padding:16px;font-size:1rem" onclick="placeOrder()">Place Order</button>
     </div>
 
@@ -1142,6 +1152,9 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
     </div>
     <div class="admin-nav-item" data-panel="rewards" onclick="switchAdminPanel('rewards')">
       <span class="nav-icon">🎁</span> Rewards
+    </div>
+    <div class="admin-nav-item" data-panel="coupons" onclick="switchAdminPanel('coupons')">
+      <span class="nav-icon">🏷️</span> Coupons
     </div>
     <div class="admin-nav-item" data-panel="analytics" onclick="switchAdminPanel('analytics')">
       <span class="nav-icon">📊</span> Analytics
@@ -1293,6 +1306,29 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
       <div class="admin-card">
         <div class="admin-card-title">Current Rewards</div>
         <div id="rewards-admin-list"><p style="opacity:.5;font-size:.85rem">No rewards yet. Add one above.</p></div>
+      </div>
+    </div>
+
+    <!-- COUPONS MANAGER -->
+    <div class="admin-panel" id="panel-coupons">
+      <div class="admin-page-title">Coupons</div>
+      <div class="admin-page-sub">Create discount codes customers can enter at checkout</div>
+      <div class="admin-card">
+        <div class="admin-card-title">Add Coupon Code</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+          <input class="admin-input" id="cp-code" placeholder="Code (e.g. SAVE10)" style="width:150px;text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+          <select class="admin-select" id="cp-type" style="width:130px">
+            <option value="pct">Percent (%)</option>
+            <option value="fixed">Fixed ($)</option>
+          </select>
+          <input class="admin-input" id="cp-value" type="number" min="0" step="0.01" placeholder="Value" style="width:100px">
+          <button class="btn-admin-add" onclick="adminAddCoupon()">+ Add Coupon</button>
+        </div>
+        <p style="font-size:.78rem;opacity:.5;margin-top:8px">Percent discounts reduce the order subtotal by that percentage. Fixed discounts remove a flat dollar amount.</p>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-title">Active Coupons</div>
+        <div id="coupons-admin-list"><p style="opacity:.5;font-size:.85rem">No coupons yet. Add one above.</p></div>
       </div>
     </div>
 
@@ -1494,6 +1530,7 @@ function loadData() {
   deliveryData = ls('delivery', DEFAULT_DELIVERY);
   outOfStock = ls('outOfStock', {});
   adminAuthed = ls('adminAuth', false);
+  cart = ls('bt_cart', []);
 }
 
 // ==================== OPEN/CLOSED ====================
@@ -1547,7 +1584,7 @@ function navigateTo(page) {
   document.getElementById('admin-login').classList.remove('active');
   document.getElementById('admin-app').classList.remove('active');
   document.getElementById('main-nav').style.display = '';
-  document.getElementById('floating-cta').style.display = '';
+  document.getElementById('floating-cta').style.display = page === 'home' ? '' : 'none';
 
   if (page === 'admin') {
     document.getElementById('main-nav').style.display = 'none';
@@ -1630,16 +1667,21 @@ function renderMenu() {
     items.forEach(item => {
       const oos = outOfStock[item.id] ? 'out-of-stock' : '';
       const safeName = item.name.replace(/'/g,"\\'");
+      const discPct = item.discount > 0 ? item.discount : 0;
+      const finalPrice = discPct > 0 ? item.price * (1 - discPct / 100) : item.price;
       const addBtn = item.spice
-        ? `<button class="add-cart-btn spice-pick" onclick="openSpiceModal('${item.id}','${safeName}','${item.emoji}',${item.price})">Add 🌶️</button>`
-        : `<button class="add-cart-btn" onclick="addToCart('${item.id}','${safeName}','${item.emoji}',null,${item.price})">Add to Cart</button>`;
+        ? `<button class="add-cart-btn spice-pick" onclick="openSpiceModal('${item.id}','${safeName}','${item.emoji}',${finalPrice})">Add 🌶️</button>`
+        : `<button class="add-cart-btn" onclick="addToCart('${item.id}','${safeName}','${item.emoji}',null,${finalPrice})">Add to Cart</button>`;
+      const priceHtml = discPct > 0
+        ? `<span class="item-price"><span style="text-decoration:line-through;opacity:.5;font-size:.8em;margin-right:4px">$${item.price.toFixed(2)}</span>$${finalPrice.toFixed(2)} <span style="background:#e53935;color:#fff;font-size:.65em;padding:2px 5px;border-radius:3px;margin-left:2px">${discPct}% OFF</span></span>`
+        : `<span class="item-price">$${item.price.toFixed(2)}</span>`;
       out += `<div class="menu-card ${oos}" data-id="${item.id}">
         <div class="type-badge ${type}"></div>
         <span class="menu-emoji">${item.emoji}</span>
         <div class="menu-card-name">${item.name}</div>
         <div class="menu-card-desc">${item.desc}</div>
         <div class="menu-card-bottom">
-          <span class="item-price">$${item.price.toFixed(2)}</span>
+          ${priceHtml}
           ${oos ? '<span style="font-size:.75rem;color:#e53935;font-weight:500">OUT OF STOCK</span>' : addBtn}
         </div>
       </div>`;
@@ -1926,6 +1968,7 @@ async function submitCateringInquiry(e) {
   const phone = document.getElementById('f-phone').value.trim();
   const email = document.getElementById('f-email').value.trim();
   const date = document.getElementById('f-date').value;
+  const scheduledTime = document.getElementById('f-time').value;
   const type = document.getElementById('f-type').value;
   const guests = document.getElementById('f-guests').value;
   const notes = document.getElementById('f-notes').value.trim();
@@ -1944,7 +1987,7 @@ async function submitCateringInquiry(e) {
     event_type: type,
     tray_size: items.map(i=>`${i.name}(${i.size})x${i.qty}`).join(', '),
     guests,
-    notes: (notes?notes+'\n\n':'')+'ORDER: '+itemsSummary+`\n\nSubtotal:$${subtotal.toFixed(2)} Tax:$${taxAmt.toFixed(2)} Total:$${total.toFixed(2)} Invoice:${invoiceNum}`,
+    notes: (notes?notes+'\n\n':'')+'ORDER: '+itemsSummary+`\n\nScheduled Time:${scheduledTime||'Not specified'} Subtotal:$${subtotal.toFixed(2)} Tax:$${taxAmt.toFixed(2)} Total:$${total.toFixed(2)} Invoice:${invoiceNum}`,
     status: 'new'
   });
 
@@ -1967,11 +2010,11 @@ async function submitCateringInquiry(e) {
 
   document.getElementById('catering-form').style.display = 'none';
   document.getElementById('form-success').style.display = 'block';
-  showInvoiceModal({invoiceNum, invoiceDate, name, phone, email, address, eventType:type, eventDate:date, items, subtotal, taxAmt, total, notes});
+  showInvoiceModal({invoiceNum, invoiceDate, name, phone, email, address, eventType:type, eventDate:date, scheduledTime, items, subtotal, taxAmt, total, notes});
 }
 
 // ==================== INVOICE ====================
-function showInvoiceModal({invoiceNum, invoiceDate, name, phone, email, address, eventType, eventDate, items, subtotal, taxAmt, total, notes}) {
+function showInvoiceModal({invoiceNum, invoiceDate, name, phone, email, address, eventType, eventDate, scheduledTime, items, subtotal, taxAmt, total, notes}) {
   const fmtDate = d => { try { return new Date(d+'T00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}); } catch(e){ return d||''; } };
   const rows = items.map(i => `<tr>
     <td><strong>${_esc(i.name)}</strong><br><span style="color:#888;font-size:.75rem">${_esc(i.size)}</span></td>
@@ -2022,6 +2065,7 @@ function showInvoiceModal({invoiceNum, invoiceDate, name, phone, email, address,
     </table>
     <div class="invoice-footer-notes">
       ${eventDate?'Event Date: '+fmtDate(eventDate)+'<br>':''}
+      ${scheduledTime?'Scheduled Time: '+_esc(scheduledTime)+'<br>':''}
       ${eventType?'Event Type: '+_esc(eventType)+'<br>':''}
       ${notes?'Notes: '+_esc(notes):''}
     </div>`;
@@ -2254,6 +2298,7 @@ function switchAdminPanel(panel) {
   if (panel === 'inquiries') renderInquiries();
   if (panel === 'announcements') renderAnnouncements();
   if (panel === 'rewards') renderRewardsAdmin();
+  if (panel === 'coupons') renderCouponsAdmin();
   if (panel === 'analytics') renderAnalytics();
 }
 
@@ -2335,6 +2380,9 @@ function renderMenuManager() {
         ${item.spice ? '<span style="font-size:.75rem;opacity:.6">🌶️ spice</span>' : ''}
       </td>
       <td>
+        <input class="inline-price" type="number" min="0" max="100" step="1" value="${(item.discount||0)}" onchange="updateDiscount('${cat}','${item.id}',this.value)" style="width:60px">%
+      </td>
+      <td>
         <label class="toggle-switch">
           <input type="checkbox" ${outOfStock[item.id]?'':'checked'} onchange="toggleOOS('${item.id}',!this.checked)">
           <span class="toggle-slider"></span>
@@ -2346,7 +2394,7 @@ function renderMenuManager() {
   document.getElementById('menu-manager-table').innerHTML = `
     <div class="admin-card-title">Items in ${cat} (${items.length})</div>
     <table class="admin-table">
-      <thead><tr><th></th><th>Name</th><th>Type</th><th>Price</th><th>In Stock</th><th></th></tr></thead>
+      <thead><tr><th></th><th>Name</th><th>Type</th><th>Price</th><th>Discount %</th><th>In Stock</th><th></th></tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
 }
@@ -2358,6 +2406,18 @@ function updatePrice(cat, id, val) {
     const item = arr.find(i => i.id === id);
     if (item) {
       item.price = Number(val);
+      lsSet('menuData', menuData);
+    }
+  });
+}
+
+function updateDiscount(cat, id, val) {
+  const section = menuData[cat];
+  ['veg','nonVeg'].forEach(type => {
+    const arr = section[type] || [];
+    const item = arr.find(i => i.id === id);
+    if (item) {
+      item.discount = Math.max(0, Math.min(100, Number(val)));
       lsSet('menuData', menuData);
     }
   });
@@ -2608,7 +2668,8 @@ function updateCartUI() {
   // Show mobile cart btn when there are items
   const mb = document.getElementById('mobile-cart-btn');
   if (mb) mb.style.display = count > 0 ? 'flex' : 'none';
-
+  // Persist cart across page refreshes
+  lsSet('bt_cart', cart);
   renderCartItems();
 }
 
@@ -2672,10 +2733,45 @@ function closeCart() {
 
 // ==================== CHECKOUT ====================
 let selectedOrderType = 'pickup';
+let appliedCoupon = null; // { code, type: 'pct'|'fixed', value }
+
+const TAX_RATE = 0.095;
+
+function getOrderTotals() {
+  const subtotal = cartTotal();
+  let discount = 0;
+  if (appliedCoupon) {
+    discount = appliedCoupon.type === 'pct'
+      ? subtotal * (appliedCoupon.value / 100)
+      : Math.min(appliedCoupon.value, subtotal);
+  }
+  const discounted = subtotal - discount;
+  const tax = discounted * TAX_RATE;
+  const total = discounted + tax;
+  return { subtotal, discount, discounted, tax, total };
+}
+
+function applyCoupon() {
+  const code = (document.getElementById('co-coupon')?.value || '').trim().toUpperCase();
+  const msgEl = document.getElementById('coupon-msg');
+  if (!code) { if (msgEl) msgEl.textContent = ''; return; }
+  const coupons = ls('bt_coupons', []);
+  const found = coupons.find(c => c.code.toUpperCase() === code && c.active !== false);
+  if (!found) {
+    appliedCoupon = null;
+    if (msgEl) { msgEl.style.color = '#e53935'; msgEl.textContent = 'Invalid or expired coupon code.'; }
+  } else {
+    appliedCoupon = found;
+    const disc = found.type === 'pct' ? found.value + '% off' : '$' + Number(found.value).toFixed(2) + ' off';
+    if (msgEl) { msgEl.style.color = '#4CAF50'; msgEl.textContent = '✓ Coupon applied — ' + disc; }
+  }
+  renderCheckoutSummary();
+}
 
 function openCheckout() {
   if (cart.length === 0) return;
   closeCart();
+  appliedCoupon = null;
   document.getElementById('checkout-form-wrap').style.display = 'block';
   document.getElementById('order-confirm').style.display = 'none';
   renderCheckoutSummary();
@@ -2688,13 +2784,19 @@ function openCheckout() {
     if (phoneEl && !phoneEl.value) phoneEl.value = currentUser.phone || '';
     if (emailEl && !emailEl.value) emailEl.value = currentUser.email || '';
   }
+  const couponInput = document.getElementById('co-coupon');
+  if (couponInput) couponInput.value = '';
+  const couponMsg = document.getElementById('coupon-msg');
+  if (couponMsg) couponMsg.textContent = '';
   document.getElementById('checkout-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  document.getElementById('floating-cta').style.display = 'none';
 }
 
 function closeCheckout() {
   document.getElementById('checkout-overlay').classList.remove('open');
   document.body.style.overflow = '';
+  if (currentPage === 'home') document.getElementById('floating-cta').style.display = '';
 }
 
 function setOrderType(type) {
@@ -2708,13 +2810,17 @@ function renderCheckoutSummary() {
   const el = document.getElementById('checkout-summary-items');
   if (!el) return;
   const spiceLabel = { mild: 'Mild', medium: 'Medium', spicy: 'Spicy' };
+  const { subtotal, discount, tax, total } = getOrderTotals();
   let html = cart.map(item => `
     <div class="checkout-summary-item">
       <span>${item.emoji} ${item.name}${item.spice ? ' (' + spiceLabel[item.spice] + ')' : ''} × ${item.qty}</span>
       <span>$${(item.price * item.qty).toFixed(2)}</span>
     </div>
   `).join('');
-  html += `<div class="checkout-summary-item"><span>Total</span><span>$${cartTotal().toFixed(2)}</span></div>`;
+  html += `<div class="checkout-summary-item" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>`;
+  if (discount > 0) html += `<div class="checkout-summary-item" style="color:#4CAF50"><span>Discount (${appliedCoupon.code})</span><span>−$${discount.toFixed(2)}</span></div>`;
+  html += `<div class="checkout-summary-item"><span>Tax (9.5%)</span><span>$${tax.toFixed(2)}</span></div>`;
+  html += `<div class="checkout-summary-item" style="font-weight:600;font-size:1rem"><span>Total</span><span>$${total.toFixed(2)}</span></div>`;
   el.innerHTML = html;
 }
 
@@ -2732,7 +2838,7 @@ async function placeOrder() {
 
   // Use cached currentUser — avoids extra network call to getUser()
   const userId = currentUser ? currentUser.id : null;
-  const total = cartTotal();
+  const { subtotal: orderSubtotal, discount: orderDiscount, tax: orderTax, total } = getOrderTotals();
   const customerEmail = document.getElementById('co-email').value.trim();
   const orderNotes = document.getElementById('co-notes').value.trim();
   const orderAddress = document.getElementById('co-address').value.trim();
@@ -2741,10 +2847,18 @@ async function placeOrder() {
   if (btn) { btn.disabled = false; btn.textContent = 'Place Order'; }
   const spL = { mild:'Mild', medium:'Medium', spicy:'Spicy' };
   const itemLines = cart.map(c => `<div style="display:flex;justify-content:space-between"><span>${c.emoji} ${_esc(c.name)}${c.spice?' ('+spL[c.spice]+')':''} ×${c.qty}</span><span>$${(c.price*c.qty).toFixed(2)}</span></div>`).join('');
+  const discountLine = orderDiscount > 0 ? `<div style="display:flex;justify-content:space-between;color:#4CAF50"><span>Discount (${appliedCoupon.code})</span><span>−$${orderDiscount.toFixed(2)}</span></div>` : '';
   document.getElementById('order-num-display').textContent = orderNum;
-  document.getElementById('order-confirm-summary').innerHTML = itemLines + `<div style="border-top:1px solid rgba(255,255,255,.1);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-weight:600"><span>Total</span><span>$${total.toFixed(2)}</span></div>`;
+  document.getElementById('order-confirm-summary').innerHTML = itemLines + `<div style="border-top:1px solid rgba(255,255,255,.1);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between"><span>Subtotal</span><span>$${orderSubtotal.toFixed(2)}</span></div>${discountLine}<div style="display:flex;justify-content:space-between"><span>Tax (9.5%)</span><span>$${orderTax.toFixed(2)}</span></div><div style="display:flex;justify-content:space-between;font-weight:600;margin-top:4px"><span>Total</span><span>$${total.toFixed(2)}</span></div>`;
   document.getElementById('checkout-form-wrap').style.display = 'none';
   document.getElementById('order-confirm').style.display = 'block';
+
+  // Clear cart immediately so refresh doesn't re-show it
+  const cartSnapshot = cart.map(c => ({ ...c }));
+  cart = [];
+  lsSet('bt_cart', []);
+  updateCartUI();
+  appliedCoupon = null;
 
   // Insert to DB in background — never blocks the customer
   _supa.from('orders').insert({
@@ -2755,7 +2869,7 @@ async function placeOrder() {
     order_type: selectedOrderType,
     address: orderAddress,
     notes: orderNotes,
-    items: cart.map(c => ({ ...c })),
+    items: cartSnapshot,
     subtotal: total,
     status: 'new',
     user_id: userId
@@ -2782,7 +2896,7 @@ async function placeOrder() {
 
   // Emails — fire and forget, never block the user
   if (window.emailjs) {
-    const itemSummary = cart.map(c => `${c.emoji} ${c.name}${c.spice?' ('+spL[c.spice]+')':''} x${c.qty}`).join(', ');
+    const itemSummary = cartSnapshot.map(c => `${c.emoji} ${c.name}${c.spice?' ('+spL[c.spice]+')':''} x${c.qty}`).join(', ');
     const emailParams = {
       order_num: orderNum, customer_name: name, customer_phone: phone,
       customer_email: customerEmail || 'Not provided', order_type: selectedOrderType,
@@ -3447,6 +3561,53 @@ async function deleteReward(id) {
   if (!confirm('Delete this reward?')) return;
   await _supa.from('reward_items').delete().eq('id', id);
   renderRewardsAdmin();
+}
+
+// ==================== COUPONS ADMIN ====================
+function adminAddCoupon() {
+  const code = (document.getElementById('cp-code').value || '').trim().toUpperCase();
+  const type = document.getElementById('cp-type').value;
+  const value = Number(document.getElementById('cp-value').value);
+  if (!code || !value) { alert('Enter a coupon code and value.'); return; }
+  const coupons = ls('bt_coupons', []);
+  if (coupons.find(c => c.code === code)) { alert('A coupon with this code already exists.'); return; }
+  coupons.push({ code, type, value, active: true });
+  lsSet('bt_coupons', coupons);
+  document.getElementById('cp-code').value = '';
+  document.getElementById('cp-value').value = '';
+  renderCouponsAdmin();
+}
+
+function deleteCoupon(code) {
+  if (!confirm('Delete coupon ' + code + '?')) return;
+  const coupons = ls('bt_coupons', []).filter(c => c.code !== code);
+  lsSet('bt_coupons', coupons);
+  renderCouponsAdmin();
+}
+
+function toggleCoupon(code, active) {
+  const coupons = ls('bt_coupons', []);
+  const c = coupons.find(x => x.code === code);
+  if (c) c.active = active;
+  lsSet('bt_coupons', coupons);
+  renderCouponsAdmin();
+}
+
+function renderCouponsAdmin() {
+  const el = document.getElementById('coupons-admin-list');
+  if (!el) return;
+  const coupons = ls('bt_coupons', []);
+  if (!coupons.length) { el.innerHTML = '<p style="opacity:.5;font-size:.85rem">No coupons yet. Add one above.</p>'; return; }
+  el.innerHTML = `<table class="admin-table">
+    <thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Active</th><th></th></tr></thead>
+    <tbody>${coupons.map(c => `<tr>
+      <td><strong>${_esc(c.code)}</strong></td>
+      <td>${c.type === 'pct' ? 'Percent' : 'Fixed $'}</td>
+      <td>${c.type === 'pct' ? c.value + '%' : '$' + Number(c.value).toFixed(2)}</td>
+      <td><label class="toggle-switch"><input type="checkbox" ${c.active?'checked':''} onchange="toggleCoupon('${c.code}',this.checked)"><span class="toggle-slider"></span></label></td>
+      <td><button class="admin-action-btn danger" onclick="deleteCoupon('${c.code}')">Delete</button></td>
+    </tr>`).join('')}</tbody>
+  </table>`;
 }
 
 // ==================== INIT ====================
