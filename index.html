@@ -1210,16 +1210,6 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
               <div id="email-toggle-label" style="font-size:.78rem;opacity:.7;margin-top:2px"></div>
             </div>
           </div>
-          <div style="display:flex;align-items:center;gap:14px">
-            <label class="toggle-switch">
-              <input type="checkbox" id="catering-tax-toggle" onchange="setCateringTax(this.checked)">
-              <span class="toggle-slider"></span>
-            </label>
-            <div>
-              <div style="font-size:.88rem;font-weight:500">🧾 Catering Tax (9.5%)</div>
-              <div id="catering-tax-label" style="font-size:.78rem;opacity:.7;margin-top:2px"></div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -2057,7 +2047,7 @@ async function submitCateringInquiry(e) {
   const address = document.getElementById('f-address')?.value.trim() || '';
 
   const subtotal = items.reduce((s,i) => s+i.price*i.qty, 0);
-  const taxAmt = ls('bt_catering_tax', true) ? subtotal * 0.095 : 0;
+  const taxAmt = subtotal * 0.095;
   const total = subtotal + taxAmt;
   const invoiceNum = 'INV' + String(Math.floor(Math.random()*900)+100);
   const invoiceDate = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
@@ -2408,11 +2398,6 @@ async function renderAdminDashboard() {
   const elbl = document.getElementById('email-toggle-label');
   if (etog) etog.checked = emailEnabled;
   if (elbl) { elbl.textContent = emailEnabled ? 'ON — owner & customer emails active' : 'OFF — no emails will be sent'; elbl.style.color = emailEnabled ? '#4CAF50' : '#e53935'; }
-  const cTax = ls('bt_catering_tax', true);
-  const ctog = document.getElementById('catering-tax-toggle');
-  const clbl = document.getElementById('catering-tax-label');
-  if (ctog) ctog.checked = cTax;
-  if (clbl) { clbl.textContent = cTax ? 'ON — 9.5% tax added to catering invoices' : 'OFF — no tax on catering orders'; clbl.style.color = cTax ? '#4CAF50' : 'var(--accent)'; }
 
   const announcement = ls('announcement', '');
   const open = isOpenNow();
@@ -2735,9 +2720,12 @@ async function renderInquiries() {
 
   let html = `<div style="font-size:.82rem;opacity:.5;margin-bottom:16px">${inquiries.length} catering order(s) · ${newCount} new</div>`;
 
+  const noTaxSet = ls('bt_inq_notax', {});
+
   inquiries.forEach(inq => {
     const d = new Date(inq.created_at).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
     const parsed = _parseInquiryNotes(inq.notes);
+    const taxRemoved = !!noTaxSet[inq.id];
 
     // Build items table rows
     let itemRows = '';
@@ -2809,12 +2797,16 @@ async function renderInquiries() {
             </tr>
           </thead>
           <tbody style="font-size:.85rem">${itemRows}</tbody>
-          ${parsed.subtotal ? `
-          <tfoot style="border-top:1px solid var(--border);font-size:.82rem">
-            <tr><td colspan="3" style="padding:5px 10px;text-align:right;opacity:.6">Subtotal</td><td style="padding:5px 10px;text-align:right">$${parsed.subtotal}</td></tr>
-            <tr><td colspan="3" style="padding:5px 10px;text-align:right;opacity:.6">Tax (9.5%)</td><td style="padding:5px 10px;text-align:right">$${parsed.tax}</td></tr>
-            <tr style="font-weight:700;color:var(--accent)"><td colspan="3" style="padding:6px 10px;text-align:right">Total</td><td style="padding:6px 10px;text-align:right;font-size:1rem">$${parsed.total}</td></tr>
-          </tfoot>` : ''}
+          ${parsed.subtotal ? (() => {
+            const sub = parseFloat(parsed.subtotal);
+            const displayTax = taxRemoved ? 0 : parseFloat(parsed.tax||0);
+            const displayTotal = taxRemoved ? sub : parseFloat(parsed.total||sub);
+            return `<tfoot style="border-top:1px solid var(--border);font-size:.82rem">
+              <tr><td colspan="3" style="padding:5px 10px;text-align:right;opacity:.6">Subtotal</td><td style="padding:5px 10px;text-align:right">$${sub.toFixed(2)}</td></tr>
+              <tr><td colspan="3" style="padding:5px 10px;text-align:right;opacity:.6">Tax (9.5%)</td><td style="padding:5px 10px;text-align:right;${taxRemoved?'text-decoration:line-through;color:#e53935':''}">${taxRemoved?'<span style="color:#4CAF50;text-decoration:none">Removed</span>':'$'+parseFloat(parsed.tax||0).toFixed(2)}</td></tr>
+              <tr style="font-weight:700;color:var(--accent)"><td colspan="3" style="padding:6px 10px;text-align:right">Total</td><td style="padding:6px 10px;text-align:right;font-size:1rem">$${displayTotal.toFixed(2)}</td></tr>
+            </tfoot>`;
+          })() : ''}
         </table>
       </div>` : ''}
 
@@ -2825,15 +2817,24 @@ async function renderInquiries() {
       </div>` : ''}
 
       <!-- Actions -->
-      <div style="padding:12px 20px;display:flex;gap:8px;flex-wrap:wrap">
+      <div style="padding:12px 20px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
         ${inq.status!=='responded'?`<button class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'responded')">Mark Responded</button>`:''}
         ${inq.status==='new'?`<button class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'read')">Mark Read</button>`:''}
+        ${parsed.subtotal ? `<button class="admin-action-btn" style="${taxRemoved?'background:rgba(76,175,80,.15);border-color:rgba(76,175,80,.4);color:#81C784':''}" onclick="toggleInquiryTax(${inq.id})">${taxRemoved?'✓ Tax Removed — Restore':'🧾 Remove Tax'}</button>` : ''}
         <button class="admin-action-btn danger" onclick="deleteInquiry(${inq.id})">Delete</button>
       </div>
     </div>`;
   });
 
   el.innerHTML = html;
+}
+
+function toggleInquiryTax(id) {
+  const noTaxSet = ls('bt_inq_notax', {});
+  if (noTaxSet[id]) delete noTaxSet[id];
+  else noTaxSet[id] = true;
+  lsSet('bt_inq_notax', noTaxSet);
+  renderInquiries();
 }
 
 async function updateInquiryStatus(id, status) {
@@ -2859,11 +2860,6 @@ function setEmailsEnabled(val) {
   lsSet('bt_emails_enabled', val);
   const lbl = document.getElementById('email-toggle-label');
   if (lbl) { lbl.textContent = val ? 'ON — owner & customer emails active' : 'OFF — no emails will be sent'; lbl.style.color = val ? '#4CAF50' : '#e53935'; }
-}
-function setCateringTax(val) {
-  lsSet('bt_catering_tax', val);
-  const lbl = document.getElementById('catering-tax-label');
-  if (lbl) { lbl.textContent = val ? 'ON — 9.5% tax added to catering invoices' : 'OFF — no tax on catering orders'; lbl.style.color = val ? '#4CAF50' : 'var(--accent)'; }
 }
 
 function saveAnnouncement() {
