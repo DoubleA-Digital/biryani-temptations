@@ -3036,7 +3036,7 @@ async function renderProfilePage() {
   await loadProfileRewards();
 
   // Load past orders
-  const { data: orders } = await _supa.from('orders').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+  const { data: orders } = await _supa.from('orders').select('*').eq('user_id', currentUser.id).not('user_hidden', 'is', true).order('created_at', { ascending: false });
   const ordersEl = document.getElementById('profile-orders-list');
   if (!orders || orders.length === 0) {
     ordersEl.innerHTML = '<p style="opacity:.5;font-size:.85rem">No orders yet. <a href="#" onclick="navigateTo(\'menu\');return false" style="color:var(--accent)">Browse our menu →</a></p>';
@@ -3062,6 +3062,7 @@ async function renderProfilePage() {
           <button class="reorder-btn" onclick="reorderById(${order.id})">Reorder</button>
           <button class="chat-btn" style="position:relative" onclick="toggleProfileOrderChat(${order.id})">💬 Chat<span id="chat-new-${order.id}" style="display:none;position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:#e53935;border-radius:50%;border:2px solid #1A1208"></span></button>
           ${order.status === 'new' ? `<button id="cancel-btn-${order.id}" class="reorder-btn" style="background:transparent;border-color:rgba(229,57,53,.5);color:#e53935" onclick="cancelOrder(${order.id})">Cancel Order</button>` : ''}
+          <button id="del-btn-${order.id}" class="reorder-btn" style="background:transparent;border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.35);padding:5px 10px;font-size:.75rem" onclick="deleteUserOrder(${order.id})" title="Remove from history">🗑</button>
         </div>
       </div>
       <div id="profile-chat-${order.id}" style="display:none">
@@ -3171,6 +3172,34 @@ async function cancelOrder(orderId) {
     return;
   }
   renderProfilePage();
+}
+
+async function deleteUserOrder(orderId) {
+  const btn = document.getElementById('del-btn-' + orderId);
+  if (!btn) return;
+  if (btn.dataset.confirm !== 'yes') {
+    btn.dataset.confirm = 'yes';
+    btn.textContent = '✕ Confirm';
+    btn.style.borderColor = 'rgba(229,57,53,.5)';
+    btn.style.color = '#e53935';
+    setTimeout(() => {
+      if (btn.dataset.confirm === 'yes') {
+        btn.dataset.confirm = '';
+        btn.textContent = '🗑';
+        btn.style.borderColor = 'rgba(255,255,255,.15)';
+        btn.style.color = 'rgba(255,255,255,.35)';
+      }
+    }, 3000);
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = '...';
+  const { error } = await _supa.from('orders').update({ user_hidden: true }).eq('id', orderId).eq('user_id', currentUser.id);
+  if (error) { btn.disabled = false; btn.textContent = '🗑'; btn.dataset.confirm = ''; console.error(error); return; }
+  // Fade out the card then re-render
+  const card = btn.closest('.past-order-card');
+  if (card) { card.style.transition = 'opacity .3s'; card.style.opacity = '0'; setTimeout(() => renderProfilePage(), 300); }
+  else renderProfilePage();
 }
 
 // ==================== ORDER CHAT ====================
