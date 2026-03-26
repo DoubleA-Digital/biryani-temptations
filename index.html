@@ -2721,11 +2721,13 @@ async function renderInquiries() {
   let html = `<div style="font-size:.82rem;opacity:.5;margin-bottom:16px">${inquiries.length} catering order(s) · ${newCount} new</div>`;
 
   const noTaxSet = ls('bt_inq_notax', {});
+  const discountSet = ls('bt_inq_discount', {});
 
   inquiries.forEach(inq => {
     const d = new Date(inq.created_at).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
     const parsed = _parseInquiryNotes(inq.notes);
     const taxRemoved = !!noTaxSet[inq.id];
+    const inqDiscount = discountSet[inq.id] || null; // { type:'pct'|'fixed', value: number }
 
     // Build items table rows
     let itemRows = '';
@@ -2799,11 +2801,16 @@ async function renderInquiries() {
           <tbody style="font-size:.85rem">${itemRows}</tbody>
           ${parsed.subtotal ? (() => {
             const sub = parseFloat(parsed.subtotal);
-            const displayTax = taxRemoved ? 0 : parseFloat(parsed.tax||0);
-            const displayTotal = taxRemoved ? sub : parseFloat(parsed.total||sub);
+            const discAmt = inqDiscount
+              ? (inqDiscount.type === 'pct' ? sub * (inqDiscount.value / 100) : Math.min(inqDiscount.value, sub))
+              : 0;
+            const discountedSub = sub - discAmt;
+            const displayTax = taxRemoved ? 0 : discountedSub * 0.095;
+            const displayTotal = discountedSub + displayTax;
             return `<tfoot style="border-top:1px solid var(--border);font-size:.82rem">
               <tr><td colspan="3" style="padding:5px 10px;text-align:right;opacity:.6">Subtotal</td><td style="padding:5px 10px;text-align:right">$${sub.toFixed(2)}</td></tr>
-              <tr><td colspan="3" style="padding:5px 10px;text-align:right;opacity:.6">Tax (9.5%)</td><td style="padding:5px 10px;text-align:right;${taxRemoved?'text-decoration:line-through;color:#e53935':''}">${taxRemoved?'<span style="color:#4CAF50;text-decoration:none">Removed</span>':'$'+parseFloat(parsed.tax||0).toFixed(2)}</td></tr>
+              ${discAmt > 0 ? `<tr><td colspan="3" style="padding:5px 10px;text-align:right;color:#4CAF50">Discount (${inqDiscount.type==='pct'?inqDiscount.value+'%':'$'+inqDiscount.value.toFixed(2)})</td><td style="padding:5px 10px;text-align:right;color:#4CAF50">−$${discAmt.toFixed(2)}</td></tr>` : ''}
+              <tr><td colspan="3" style="padding:5px 10px;text-align:right;opacity:.6">Tax (9.5%)</td><td style="padding:5px 10px;text-align:right">${taxRemoved?'<span style="color:#4CAF50">Removed</span>':'$'+displayTax.toFixed(2)}</td></tr>
               <tr style="font-weight:700;color:var(--accent)"><td colspan="3" style="padding:6px 10px;text-align:right">Total</td><td style="padding:6px 10px;text-align:right;font-size:1rem">$${displayTotal.toFixed(2)}</td></tr>
             </tfoot>`;
           })() : ''}
@@ -2817,11 +2824,25 @@ async function renderInquiries() {
       </div>` : ''}
 
       <!-- Actions -->
-      <div style="padding:12px 20px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        ${inq.status!=='responded'?`<button class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'responded')">Mark Responded</button>`:''}
-        ${inq.status==='new'?`<button class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'read')">Mark Read</button>`:''}
-        ${parsed.subtotal ? `<button class="admin-action-btn" style="${taxRemoved?'background:rgba(76,175,80,.15);border-color:rgba(76,175,80,.4);color:#81C784':''}" onclick="toggleInquiryTax(${inq.id})">${taxRemoved?'✓ Tax Removed — Restore':'🧾 Remove Tax'}</button>` : ''}
-        <button class="admin-action-btn danger" onclick="deleteInquiry(${inq.id})">Delete</button>
+      <div style="padding:12px 20px;border-top:1px solid var(--border)">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:${parsed.subtotal?'10px':'0'}">
+          ${inq.status!=='responded'?`<button class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'responded')">Mark Responded</button>`:''}
+          ${inq.status==='new'?`<button class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'read')">Mark Read</button>`:''}
+          ${parsed.subtotal ? `<button class="admin-action-btn" style="${taxRemoved?'background:rgba(76,175,80,.15);border-color:rgba(76,175,80,.4);color:#81C784':''}" onclick="toggleInquiryTax(${inq.id})">${taxRemoved?'✓ Tax Removed — Restore':'🧾 Remove Tax'}</button>` : ''}
+          <button class="admin-action-btn danger" onclick="deleteInquiry(${inq.id})">Delete</button>
+        </div>
+        ${parsed.subtotal ? `
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-size:.78rem;opacity:.6;white-space:nowrap">💸 Discount:</span>
+          <select class="admin-select" id="inq-disc-type-${inq.id}" style="width:110px;font-size:.78rem;padding:5px 8px">
+            <option value="pct" ${inqDiscount&&inqDiscount.type==='pct'?'selected':''}>Percent (%)</option>
+            <option value="fixed" ${inqDiscount&&inqDiscount.type==='fixed'?'selected':''}>Fixed ($)</option>
+          </select>
+          <input type="number" class="admin-input" id="inq-disc-val-${inq.id}" min="0" step="0.01" placeholder="e.g. 10" value="${inqDiscount?inqDiscount.value:''}" style="width:90px;font-size:.78rem;padding:5px 8px">
+          <button class="admin-action-btn" onclick="applyInquiryDiscount(${inq.id})" style="padding:5px 12px;font-size:.78rem">Apply</button>
+          ${inqDiscount ? `<button class="admin-action-btn danger" onclick="removeInquiryDiscount(${inq.id})" style="padding:5px 12px;font-size:.78rem">Remove</button>` : ''}
+          ${inqDiscount ? `<span style="font-size:.78rem;color:#4CAF50">✓ ${inqDiscount.type==='pct'?inqDiscount.value+'% off':'$'+Number(inqDiscount.value).toFixed(2)+' off'} applied</span>` : ''}
+        </div>` : ''}
       </div>
     </div>`;
   });
@@ -2834,6 +2855,23 @@ function toggleInquiryTax(id) {
   if (noTaxSet[id]) delete noTaxSet[id];
   else noTaxSet[id] = true;
   lsSet('bt_inq_notax', noTaxSet);
+  renderInquiries();
+}
+
+function applyInquiryDiscount(id) {
+  const type = document.getElementById('inq-disc-type-' + id)?.value;
+  const value = parseFloat(document.getElementById('inq-disc-val-' + id)?.value);
+  if (!value || value <= 0) { alert('Enter a valid discount value.'); return; }
+  const discountSet = ls('bt_inq_discount', {});
+  discountSet[id] = { type, value };
+  lsSet('bt_inq_discount', discountSet);
+  renderInquiries();
+}
+
+function removeInquiryDiscount(id) {
+  const discountSet = ls('bt_inq_discount', {});
+  delete discountSet[id];
+  lsSet('bt_inq_discount', discountSet);
   renderInquiries();
 }
 
