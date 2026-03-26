@@ -1179,6 +1179,17 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
         <div class="admin-card-title">Recent Inquiries</div>
         <div id="dashboard-inquiries"></div>
       </div>
+      <div class="admin-card">
+        <div class="admin-card-title">📧 Email Notifications</div>
+        <p style="font-size:.85rem;opacity:.7;margin-bottom:14px">Controls both the owner order alert and the customer receipt email. Turn off if emails are causing issues.</p>
+        <div style="display:flex;align-items:center;gap:16px">
+          <label class="toggle-switch">
+            <input type="checkbox" id="email-toggle" onchange="setEmailsEnabled(this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
+          <span id="email-toggle-label" style="font-size:.9rem"></span>
+        </div>
+      </div>
     </div>
 
     <!-- MENU MANAGER -->
@@ -1285,17 +1296,6 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
       </div>
     </div>
 
-      <div class="admin-card">
-        <div class="admin-card-title">📧 Email Notifications</div>
-        <p style="font-size:.85rem;opacity:.7;margin-bottom:14px">Controls both the owner order alert and the customer receipt email. Turn off if emails are causing issues.</p>
-        <div style="display:flex;align-items:center;gap:16px">
-          <label class="toggle-switch">
-            <input type="checkbox" id="email-toggle" onchange="setEmailsEnabled(this.checked)">
-            <span class="toggle-slider"></span>
-          </label>
-          <span id="email-toggle-label" style="font-size:.9rem"></span>
-        </div>
-      </div>
     </div>
 
     <!-- REWARDS MANAGER -->
@@ -2321,6 +2321,13 @@ function switchAdminPanel(panel) {
 
 // ---- DASHBOARD ----
 async function renderAdminDashboard() {
+  // Sync email toggle state
+  const emailEnabled = ls('bt_emails_enabled', true);
+  const etog = document.getElementById('email-toggle');
+  const elbl = document.getElementById('email-toggle-label');
+  if (etog) etog.checked = emailEnabled;
+  if (elbl) { elbl.textContent = emailEnabled ? 'Emails ON — customers and owner will receive emails' : 'Emails OFF — no emails will be sent'; elbl.style.color = emailEnabled ? '#4CAF50' : '#e53935'; }
+
   const announcement = ls('announcement', '');
   const open = isOpenNow();
   const totalItems = Object.values(menuData).reduce((acc, cat) => acc + (cat.veg||[]).length + (cat.nonVeg||[]).length, 0);
@@ -2760,12 +2767,6 @@ function renderAnnouncements() {
   const preview = document.getElementById('announcement-preview');
   if (msg) { preview.textContent = msg; preview.style.opacity = '1'; }
   else { preview.textContent = 'No active announcement'; preview.style.opacity = '.4'; }
-  // Sync email toggle
-  const enabled = ls('bt_emails_enabled', true);
-  const tog = document.getElementById('email-toggle');
-  const lbl = document.getElementById('email-toggle-label');
-  if (tog) tog.checked = enabled;
-  if (lbl) { lbl.textContent = enabled ? 'Emails ON — customers and owner will receive emails' : 'Emails OFF — no emails will be sent'; lbl.style.color = enabled ? '#4CAF50' : '#e53935'; }
 }
 
 function setEmailsEnabled(val) {
