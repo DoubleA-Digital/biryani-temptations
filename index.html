@@ -595,6 +595,152 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
 .reward-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px}
 .reward-admin-card{background:var(--card-bg);border:1px solid var(--border);padding:16px;position:relative}
 .reward-admin-card.inactive{opacity:.5}
+
+/* ══════════════════════════════════════
+   3D EFFECTS
+══════════════════════════════════════ */
+
+/* Hero logo — floating bob */
+.hero-logo-img {
+  animation: heroEntrance .9s .15s ease both, logoBob 5s 1.1s ease-in-out infinite !important;
+  transform-style: preserve-3d;
+}
+@keyframes logoBob {
+  0%,100% { transform: translateY(0) rotateX(0deg); filter: drop-shadow(0 4px 24px rgba(212,105,42,.4)) drop-shadow(0 2px 8px rgba(0,0,0,.6)); }
+  50%      { transform: translateY(-10px) rotateX(3deg); filter: drop-shadow(0 18px 36px rgba(212,105,42,.55)) drop-shadow(0 8px 20px rgba(0,0,0,.5)); }
+}
+
+/* Hero title — 3D layered text shadow */
+.hero-title-3d {
+  text-shadow:
+    1px 1px 0 rgba(212,105,42,.6),
+    2px 2px 0 rgba(180,80,20,.45),
+    3px 3px 0 rgba(140,60,10,.3),
+    4px 4px 0 rgba(100,40,5,.2),
+    5px 5px 12px rgba(0,0,0,.4);
+}
+
+/* Hero subtitle — soft depth */
+.hero-subtitle {
+  text-shadow: 0 2px 12px rgba(0,0,0,.5);
+}
+
+/* Parallax hero layers */
+.hero-parallax-layer {
+  position: absolute; inset: 0; pointer-events: none;
+  will-change: transform;
+}
+.hero-parallax-slow  { transform: translateY(var(--py-slow, 0px)); }
+.hero-parallax-mid   { transform: translateY(var(--py-mid,  0px)); }
+.hero-parallax-fast  { transform: translateY(var(--py-fast, 0px)); }
+
+/* Particles canvas */
+#hero-particles {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+}
+
+/* Menu card — 3D tilt */
+.menu-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform .08s ease, border-color .2s, box-shadow .2s !important;
+}
+.menu-card.tilt-reset {
+  transition: transform .5s cubic-bezier(.25,.46,.45,.94), border-color .2s, box-shadow .2s !important;
+}
+.menu-card-shine {
+  position: absolute; inset: 0; border-radius: 6px; pointer-events: none; z-index: 10;
+  background: radial-gradient(circle at var(--shine-x, 50%) var(--shine-y, 50%), rgba(255,255,255,.08) 0%, transparent 65%);
+  opacity: 0; transition: opacity .2s;
+}
+.menu-card:hover .menu-card-shine { opacity: 1; }
+
+/* Tray cards 3D tilt */
+.tray-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform .08s ease, border-color .2s, box-shadow .2s !important;
+}
+.tray-card.tilt-reset {
+  transition: transform .5s cubic-bezier(.25,.46,.45,.94), border-color .2s, box-shadow .2s !important;
+}
+
+/* Scroll reveal — 3D entrance */
+.reveal-3d {
+  opacity: 0;
+  transform: perspective(800px) rotateX(12deg) translateY(40px);
+  transition: opacity .65s ease, transform .65s cubic-bezier(.25,.46,.45,.94);
+}
+.reveal-3d.visible {
+  opacity: 1;
+  transform: perspective(800px) rotateX(0deg) translateY(0);
+}
+
+/* Features strip items — staggered 3D */
+.feature-item.reveal-3d { transition-delay: calc(var(--i,0) * 90ms); }
+
+/* Footer 3D border glow on hover */
+footer {
+  transition: box-shadow .3s;
+}
+footer:hover {
+  box-shadow: 0 -4px 40px rgba(212,105,42,.08);
+}
+
+/* Floating CTA 3D pulse */
+#floating-cta {
+  animation: ctaFloat 3.5s ease-in-out infinite;
+}
+@keyframes ctaFloat {
+  0%,100% { transform: translateY(0) scale(1); box-shadow: 0 4px 20px rgba(212,105,42,.45); }
+  50%      { transform: translateY(-5px) scale(1.02); box-shadow: 0 12px 32px rgba(212,105,42,.6); }
+}
+#floating-cta:hover {
+  animation: none;
+  transform: translateY(-3px) scale(1.04) !important;
+}
+
+/* Section dividers — animated gradient line */
+.divider {
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent3), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Nav — 3D glass depth on scroll */
+#main-nav.scrolled {
+  box-shadow: 0 4px 32px rgba(0,0,0,.5), 0 1px 0 rgba(212,105,42,.15);
+  background: rgba(18,10,2,0.99);
+}
+
+/* Cart drawer — slide with 3D depth */
+#cart-drawer {
+  transform-origin: right center;
+}
+#cart-drawer.open {
+  right: 0;
+  box-shadow: -8px 0 40px rgba(0,0,0,.6), -2px 0 0 rgba(212,105,42,.1);
+}
+
+/* Price cells — 3D pop on hover */
+.price-cell {
+  transform-style: preserve-3d;
+  transition: all .2s cubic-bezier(.34,1.56,.64,1) !important;
+}
+.price-cell:hover {
+  transform: translateY(-3px) scale(1.04) !important;
+  box-shadow: 0 8px 20px rgba(212,105,42,.25) !important;
+}
+
+/* ── Scroll number counter animation ── */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 </style>
 </head>
 <body>
@@ -4178,5 +4324,265 @@ window.addEventListener('hashchange', handleHash);
     <p id="po-error" style="color:#e53935;font-size:.82rem;margin-top:8px;display:none"></p>
   </div>
 </div>
+
+<script>
+/* ══════════════════════════════════════
+   3D EFFECTS — INIT
+══════════════════════════════════════ */
+(function() {
+
+  /* ── 1. Hero title 3D text shadow ── */
+  function applyHeroTitle() {
+    const titles = document.querySelectorAll('.hero-title, .hero-eyebrow');
+    // Only target the main hero title (the big one on the hero page)
+    const heroSection = document.querySelector('.hero-section');
+    if (heroSection) {
+      const big = heroSection.querySelector('h1, .hero-title');
+      if (big) big.classList.add('hero-title-3d');
+    }
+  }
+
+  /* ── 2. Hero particle canvas ── */
+  function initParticles() {
+    const heroSection = document.querySelector('.hero-section');
+    if (!heroSection) return;
+    const canvas = document.createElement('canvas');
+    canvas.id = 'hero-particles';
+    heroSection.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    const NUM = 38;
+
+    function resize() {
+      canvas.width  = heroSection.offsetWidth;
+      canvas.height = heroSection.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    for (let i = 0; i < NUM; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.6 + 0.4,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        a: Math.random() * 0.5 + 0.1
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(212,105,42,${p.a})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
+  /* ── 3. Parallax on scroll ── */
+  function initParallax() {
+    const heroSection = document.querySelector('.hero-section');
+    if (!heroSection) return;
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const heroH = heroSection.offsetHeight;
+          if (scrollY < heroH) {
+            const slow = scrollY * 0.15;
+            const mid  = scrollY * 0.3;
+            const fast = scrollY * 0.55;
+            heroSection.style.setProperty('--py-slow', slow + 'px');
+            heroSection.style.setProperty('--py-mid',  mid  + 'px');
+            heroSection.style.setProperty('--py-fast', fast + 'px');
+            // Content moves up slightly slower
+            const content = heroSection.querySelector('.hero-content');
+            if (content) content.style.transform = `translateY(${scrollY * 0.25}px)`;
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+
+  /* ── 4. Nav shadow on scroll ── */
+  function initNavScroll() {
+    const nav = document.getElementById('main-nav');
+    if (!nav) return;
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+  }
+
+  /* ── 5. 3D card tilt ── */
+  function addShineEl(card) {
+    if (card.querySelector('.menu-card-shine')) return;
+    const shine = document.createElement('div');
+    shine.className = 'menu-card-shine';
+    card.appendChild(shine);
+  }
+
+  function applyTilt(el, e, maxTilt = 12) {
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top  + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width  / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    const rotX = -dy * maxTilt;
+    const rotY =  dx * maxTilt;
+    el.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(8px)`;
+    el.style.boxShadow = `${-rotY * 1.5}px ${rotX * 1.5}px 32px rgba(212,105,42,0.22)`;
+    // shine
+    const shine = el.querySelector('.menu-card-shine');
+    if (shine) {
+      const sx = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1);
+      const sy = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1);
+      shine.style.setProperty('--shine-x', sx + '%');
+      shine.style.setProperty('--shine-y', sy + '%');
+    }
+  }
+
+  function resetTilt(el) {
+    el.classList.add('tilt-reset');
+    el.style.transform = '';
+    el.style.boxShadow = '';
+    setTimeout(() => el.classList.remove('tilt-reset'), 500);
+  }
+
+  function initTiltCards() {
+    // Apply to menu cards & tray cards
+    function attachTilt(selector, maxTilt) {
+      document.querySelectorAll(selector).forEach(card => {
+        addShineEl(card);
+        card.addEventListener('mousemove', e => applyTilt(card, e, maxTilt));
+        card.addEventListener('mouseleave', () => resetTilt(card));
+      });
+    }
+    attachTilt('.menu-card', 12);
+    attachTilt('.tray-card', 8);
+    attachTilt('.event-item', 7);
+
+    // Re-attach on DOM changes (menu renders dynamically)
+    const observer = new MutationObserver(() => {
+      attachTilt('.menu-card', 12);
+      attachTilt('.tray-card', 8);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* ── 6. Scroll reveal — 3D entrance ── */
+  function initScrollReveal() {
+    const targets = [
+      '.features-strip .feature-item',
+      '.tray-card',
+      '.event-item',
+      '.about-info-card',
+      '.inquiry-form',
+      '.menu-card',
+      '.cat-category',
+      '.footer-inner > div'
+    ];
+
+    // Tag with reveal-3d
+    targets.forEach(sel => {
+      document.querySelectorAll(sel).forEach((el, i) => {
+        el.classList.add('reveal-3d');
+        el.style.setProperty('--i', i);
+      });
+    });
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal-3d').forEach(el => io.observe(el));
+
+    // Re-run on dynamic content
+    const mo = new MutationObserver(() => {
+      document.querySelectorAll('.reveal-3d:not([data-observed])').forEach(el => {
+        el.dataset.observed = '1';
+        io.observe(el);
+      });
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* ── 7. Hero section mouse parallax (subtle 3D depth) ── */
+  function initMouseParallax() {
+    const heroSection = document.querySelector('.hero-section');
+    if (!heroSection) return;
+    const content = heroSection.querySelector('.hero-content');
+    const logo    = heroSection.querySelector('.hero-logo-img');
+    if (!content) return;
+
+    heroSection.addEventListener('mousemove', e => {
+      const rect = heroSection.getBoundingClientRect();
+      const cx = rect.width  / 2;
+      const cy = rect.height / 2;
+      const dx = (e.clientX - rect.left - cx) / cx;
+      const dy = (e.clientY - rect.top  - cy) / cy;
+
+      content.style.transform = `
+        perspective(900px)
+        rotateX(${-dy * 3}deg)
+        rotateY(${ dx * 3}deg)
+        translateY(${window.scrollY * 0.25}px)
+      `;
+      if (logo) {
+        logo.style.transform = `
+          perspective(900px)
+          rotateX(${-dy * 5}deg)
+          rotateY(${ dx * 5}deg)
+          translateZ(20px)
+        `;
+      }
+    });
+
+    heroSection.addEventListener('mouseleave', () => {
+      if (content) content.style.transition = 'transform .6s ease';
+      if (logo) logo.style.transition = 'transform .6s ease';
+      setTimeout(() => {
+        if (content) { content.style.transform = `translateY(${window.scrollY * 0.25}px)`; content.style.transition = ''; }
+        if (logo) { logo.style.transform = ''; logo.style.transition = ''; }
+      }, 600);
+    });
+  }
+
+  /* ── BOOT ── */
+  function boot() {
+    applyHeroTitle();
+    initParticles();
+    initParallax();
+    initNavScroll();
+    initTiltCards();
+    initScrollReveal();
+    initMouseParallax();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+})();
+</script>
 </body>
 </html>
