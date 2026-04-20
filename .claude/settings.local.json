@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n \"</textarea>\\\\|</input>\\\\|</div>$\\\\|</body>\" /Users/aarushgurram/BiryaniTemptations/index.html)"
+    ]
+  }
+}
