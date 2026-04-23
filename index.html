@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://api.emailjs.com; frame-ancestors 'none';">
+
 <title>Biryani Temptations — Authentic Indian Catering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,6 +36,15 @@
   --font-display: 'Bebas Neue', sans-serif;
   --font-sub: 'Cormorant Garamond', serif;
   --font-body: 'DM Sans', sans-serif;
+  --shadow-sm: 0 2px 8px rgba(4,2,0,0.4);
+  --shadow-md: 0 8px 24px rgba(4,2,0,0.5);
+  --shadow-lg: 0 16px 48px rgba(4,2,0,0.6);
+  --shadow-accent: 0 8px 28px rgba(212,105,42,0.45);
+  --shadow-accent-sm: 0 4px 16px rgba(212,105,42,0.3);
+  --spacing-section: 80px;
+  --max-width: 1200px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -60,7 +74,7 @@ img{max-width:100%;display:block}
 .status-open .dot{background:#4CAF50;box-shadow:0 0 6px #4CAF50}
 .status-closed .dot{background:#e53935;box-shadow:0 0 6px #e53935}
 .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px;cursor:pointer}
-.hamburger span{display:block;width:24px;height:2px;background:var(--cream);transition:all .3s}
+.hamburger span{display:block;width:24px;height:2px;background:var(--cream);transition:transform 0.3s ease, opacity 0.3s ease, width 0.3s ease}
 .mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(22,14,4,.99);border-bottom:1px solid var(--border2);z-index:99;padding:20px 24px;flex-direction:column;gap:16px}
 .mobile-menu.open{display:flex}
 .mobile-menu a{font-size:1.1rem;color:var(--cream);padding:8px 0;border-bottom:1px solid var(--border)}
@@ -86,9 +100,9 @@ img{max-width:100%;display:block}
 .hero-subtitle{font-family:var(--font-sub);font-style:italic;font-size:clamp(1.1rem,3vw,1.4rem);color:var(--cream);opacity:.75;margin-bottom:40px;animation:heroEntrance .9s .3s ease both}
 .hero-eyebrow{font-family:var(--font-body);font-size:.8rem;font-weight:500;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:20px;animation:heroEntrance .9s .1s ease both}
 .hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:heroEntrance .9s .4s ease both}
-.btn-primary{background:linear-gradient(135deg,var(--accent) 0%,var(--accent3) 100%);color:#fff;padding:14px 32px;font-family:var(--font-body);font-weight:600;font-size:.95rem;border:none;letter-spacing:.5px;transition:all .25s;text-transform:uppercase;box-shadow:0 4px 20px rgba(212,105,42,.4)}
-.btn-primary:hover{background:linear-gradient(135deg,var(--accent2) 0%,var(--accent) 100%);transform:translateY(-2px);box-shadow:0 8px 28px rgba(212,105,42,.5)}
-.btn-outline{background:transparent;color:var(--cream);padding:14px 32px;font-family:var(--font-body);font-weight:400;font-size:.95rem;border:1px solid rgba(212,105,42,.5);letter-spacing:.5px;transition:all .2s;text-transform:uppercase}
+.btn-primary{background:linear-gradient(135deg,var(--accent) 0%,var(--accent3) 100%);color:#fff;padding:14px 32px;font-family:var(--font-body);font-weight:600;font-size:.95rem;border:none;letter-spacing:.5px;transition:background 0.25s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;text-transform:uppercase;box-shadow:0 4px 20px rgba(212,105,42,.4)}
+.btn-primary:hover{background:linear-gradient(135deg,var(--accent2) 0%,var(--accent) 100%);transform:translateY(-2px);box-shadow:var(--shadow-accent)}
+.btn-outline{background:transparent;color:var(--cream);padding:14px 32px;font-family:var(--font-body);font-weight:400;font-size:.95rem;border:1px solid rgba(212,105,42,.5);letter-spacing:.5px;transition:border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);text-transform:uppercase}
 .btn-outline:hover{border-color:var(--accent);color:var(--accent);background:rgba(212,105,42,.08);transform:translateY(-2px)}
 .hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.4;animation:bounce 2s infinite}
 .hero-scroll span{font-size:.7rem;letter-spacing:2px;text-transform:uppercase}
@@ -104,7 +118,7 @@ img{max-width:100%;display:block}
 .feature-desc{font-size:.8rem;opacity:.65;line-height:1.6}
 
 /* SECTION STYLES */
-.section{padding:80px 24px;max-width:1200px;margin:0 auto}
+.section{padding:var(--spacing-section) 24px;max-width:var(--max-width);margin:0 auto}
 .section-label{font-family:var(--font-body);font-size:.75rem;font-weight:500;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
 .section-title{font-family:var(--font-display);font-size:clamp(2.5rem,6vw,4rem);color:var(--cream);line-height:1;margin-bottom:16px}
 .section-subtitle{font-family:var(--font-sub);font-style:italic;font-size:1.15rem;color:var(--cream);opacity:.7;margin-bottom:48px}
@@ -117,14 +131,14 @@ img{max-width:100%;display:block}
 .menu-header .section-subtitle{margin-bottom:24px}
 .menu-controls{display:flex;flex-direction:column;align-items:center;gap:12px;padding-bottom:0}
 .veg-filter{display:flex;gap:8px;margin-bottom:4px}
-.filter-btn{padding:8px 20px;border:1px solid var(--border2);background:rgba(255,255,255,.03);color:var(--cream);font-family:var(--font-body);font-size:.85rem;border-radius:4px;transition:all .2s;display:flex;align-items:center;gap:6px}
-.filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 14px rgba(212,105,42,.4)}
+.filter-btn{padding:8px 20px;border:1px solid var(--border2);background:rgba(255,255,255,.03);color:var(--cream);font-family:var(--font-body);font-size:.85rem;border-radius:4px;transition:background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;display:flex;align-items:center;gap:6px}
+.filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:var(--shadow-accent-sm)}
 .filter-btn .indicator{width:10px;height:10px;border-radius:50%;display:inline-block}
 .veg-indicator{background:#4CAF50}
 .nonveg-indicator{background:#e53935}
 .category-tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;width:100%;max-width:900px}
 .category-tabs::-webkit-scrollbar{display:none}
-.cat-tab{padding:14px 24px;background:transparent;border:none;color:var(--cream);font-family:var(--font-body);font-size:.9rem;font-weight:400;opacity:.55;transition:all .2s;white-space:nowrap;border-bottom:3px solid transparent;cursor:pointer}
+.cat-tab{padding:14px 24px;background:transparent;border:none;color:var(--cream);font-family:var(--font-body);font-size:.9rem;font-weight:400;opacity:.55;transition:color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;white-space:nowrap;border-bottom:3px solid transparent;cursor:pointer}
 .cat-tab.active{color:var(--accent);opacity:1;border-bottom-color:var(--accent);font-weight:500}
 .cat-tab:hover{opacity:.9;color:var(--accent3)}
 .menu-grid-section{padding:40px 24px;max-width:1200px;margin:0 auto;background:var(--bg)}
@@ -140,8 +154,8 @@ img{max-width:100%;display:block}
 .menu-card.out-of-stock::after{content:'Out of Stock';position:absolute;inset:0;background:rgba(20,12,4,.88);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.4rem;color:#e53935;backdrop-filter:blur(3px);z-index:4}
 .menu-emoji{font-size:3rem;margin-bottom:12px;display:block;line-height:1}
 .menu-card.has-photo{padding:0;min-height:290px;display:flex;flex-direction:column;justify-content:flex-end}
-.menu-card-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:brightness(1.35) contrast(1.08) saturate(1.4) vibrance(1.2);border-radius:6px;transition:filter .3s ease,transform .3s ease}
-.menu-card.has-photo:hover .menu-card-photo{filter:brightness(1.5) contrast(1.1) saturate(1.5);transform:scale(1.04)}
+.menu-card-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:brightness(1.1) contrast(1.05) saturate(1.2);border-radius:6px;aspect-ratio:4/3;transition:filter .3s ease,transform .3s ease}
+.menu-card.has-photo:hover .menu-card-photo{filter:brightness(1.2) contrast(1.08) saturate(1.3);transform:scale(1.04)}
 .menu-card-photo-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,3,0,.78) 0%,rgba(8,3,0,.35) 45%,rgba(8,3,0,.05) 100%);z-index:1;border-radius:6px}
 .menu-card-content{position:relative;z-index:2;padding:16px 18px 18px}
 .menu-card-content .menu-card-name{text-shadow:0 1px 4px rgba(0,0,0,.8)}
@@ -154,7 +168,7 @@ img{max-width:100%;display:block}
 .price-cell:hover .price-label::after{content:' +';color:var(--accent)}
 .price-cell:active{transform:scale(.97)}
 .price-label{font-size:.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--accent);opacity:.9;display:block;margin-bottom:2px}
-.price-val{font-family:var(--font-body);font-size:.95rem;font-weight:600;color:var(--cream)}
+.price-val{font-family:var(--font-body);font-size:.95rem;font-weight:600;color:var(--cream);font-variant-numeric:tabular-nums}
 .type-badge{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;border:1.5px solid;z-index:3}
 .type-badge.veg{border-color:#4CAF50}
 .type-badge.veg::after{content:'';width:8px;height:8px;border-radius:50%;background:#4CAF50;display:block}
@@ -188,8 +202,9 @@ img{max-width:100%;display:block}
 .form-group{display:flex;flex-direction:column;gap:8px}
 .form-group.full{grid-column:1/-1}
 .form-label{font-size:.8rem;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--accent);opacity:.9}
-.form-input,.form-select,.form-textarea{background:rgba(255,255,255,.04);border:1px solid var(--border2);color:var(--cream);font-family:var(--font-body);font-size:.9rem;padding:12px 14px;outline:none;transition:border-color .2s,box-shadow .2s;border-radius:3px;width:100%}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(212,105,42,.12)}
+.form-input,.form-select,.form-textarea{background:rgba(255,255,255,.04);border:1px solid var(--border2);color:var(--cream);font-family:var(--font-body);font-size:.9rem;padding:12px 14px;transition:border-color .2s,box-shadow .2s;border-radius:3px;width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(212,105,42,.12);outline:none}
+.form-input:focus:not(:focus-visible),.form-select:focus:not(:focus-visible),.form-textarea:focus:not(:focus-visible){outline:none}
 .form-select{-webkit-appearance:auto;appearance:auto;cursor:pointer}
 .form-select option{background:#2A1C0C;color:#F5EDD6}
 .form-textarea{resize:vertical;min-height:100px}
@@ -256,7 +271,7 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
 .catering-summary-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .catering-summary-left{display:flex;flex-direction:column;gap:2px}
 .catering-summary-count{font-size:.78rem;color:var(--cream);opacity:.7;text-transform:uppercase;letter-spacing:.5px}
-.catering-summary-total{font-family:var(--font-display);font-size:1.4rem;color:var(--accent);letter-spacing:.5px}
+.catering-summary-total{font-family:var(--font-display);font-size:1.4rem;color:var(--accent);letter-spacing:.5px;font-variant-numeric:tabular-nums}
 .catering-summary-btn{background:var(--accent);color:#1A1208;border:none;font-family:var(--font-body);font-weight:700;font-size:.82rem;padding:10px 20px;border-radius:50px;cursor:pointer;letter-spacing:.5px;text-transform:uppercase;transition:all .2s;white-space:nowrap}
 .catering-summary-btn:hover{background:var(--accent2);transform:translateY(-1px)}
 #catering-form-items{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;padding:14px 16px;margin-bottom:16px}
@@ -350,7 +365,7 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
 .cart-footer{padding:20px 24px;border-top:1px solid var(--border);background:var(--card-bg)}
 .cart-subtotal{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .cart-subtotal-label{font-family:var(--font-sub);font-size:1.1rem;color:var(--cream);opacity:.8}
-.cart-subtotal-val{font-family:var(--font-display);font-size:1.6rem;color:var(--accent)}
+.cart-subtotal-val{font-family:var(--font-display);font-size:1.6rem;color:var(--accent);font-variant-numeric:tabular-nums}
 .cart-checkout-btn{width:100%;padding:16px;background:var(--accent);color:#1A1208;font-family:var(--font-body);font-weight:600;font-size:1rem;border:none;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:background .2s}
 .cart-checkout-btn:hover{background:var(--accent2)}
 
@@ -419,7 +434,7 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
 .admin-card-title{font-family:var(--font-sub);font-size:1.1rem;font-weight:600;color:var(--accent);margin-bottom:16px}
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px}
 .stat-card{background:var(--card-bg);border:1px solid var(--border);border-radius:4px;padding:20px;text-align:center}
-.stat-num{font-family:var(--font-display);font-size:2.5rem;color:var(--accent);line-height:1}
+.stat-num{font-family:var(--font-display);font-size:2.5rem;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
 .stat-label{font-size:.8rem;opacity:.6;margin-top:4px;text-transform:uppercase;letter-spacing:1px}
 .admin-table{width:100%;border-collapse:collapse;font-size:.85rem}
 .admin-table th{text-align:left;padding:10px 12px;background:rgba(232,160,32,.08);color:var(--accent);font-weight:500;font-size:.75rem;text-transform:uppercase;letter-spacing:1px}
@@ -503,7 +518,7 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
 
 /* MENU CARD BOTTOM (single price) */
 .menu-card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:8px}
-.item-price{font-family:var(--font-display);font-size:1.5rem;color:var(--accent);letter-spacing:.5px}
+.item-price{font-family:var(--font-display);font-size:1.5rem;color:var(--accent);letter-spacing:.5px;font-variant-numeric:tabular-nums}
 .add-cart-btn{background:var(--accent);color:#fff;border:none;padding:8px 16px;font-family:var(--font-body);font-size:.82rem;font-weight:600;cursor:pointer;letter-spacing:.3px;transition:background .2s,transform .15s;white-space:nowrap}
 .add-cart-btn:hover{background:var(--accent2);transform:translateY(-1px)}
 .add-cart-btn.spice-pick{background:linear-gradient(135deg,#D4692A,#c44c1a)}
@@ -742,9 +757,35 @@ footer:hover {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* SKIP LINK */
+.skip-link { position:absolute; top:-40px; left:16px; background:var(--accent); color:#fff; padding:8px 16px; border-radius:0 0 8px 8px; font-size:14px; font-weight:600; z-index:9999; transition:top 0.2s ease; }
+.skip-link:focus { top:0; }
+
+/* FOCUS VISIBLE */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* REVEAL ANIMATION */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ANNOUNCEMENT BANNER SLIDE-IN */
+#announcement-banner { animation: bannerSlide 0.4s var(--ease) both; }
+@keyframes bannerSlide { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* FADE UP FOR SECTION TRANSITIONS */
+@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+/* DISABLED BUTTON STATES */
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; transition: opacity 0.2s ease; }
+.btn-outline:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* REMOVE FOCUS OUTLINE ONLY FOR MOUSE USERS */
+:focus:not(:focus-visible) { outline: none; }
 </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to content</a>
 <script>
 // Immediately hide public site if loading admin to prevent flash
 (function(){
@@ -760,7 +801,7 @@ footer:hover {
 <!-- ANNOUNCEMENT BANNER -->
 <div id="announcement-banner">
   <span id="announcement-text"></span>
-  <button class="close-banner" onclick="closeBanner()" aria-label="Close">✕</button>
+  <button type="button" class="close-banner" onclick="closeBanner()" aria-label="Close">✕</button>
 </div>
 
 <!-- MAIN NAV (shown on public pages) -->
@@ -775,10 +816,10 @@ footer:hover {
     <li><a href="#" onclick="navigateTo('about');return false">About</a></li>
     <li><a href="#" onclick="navigateTo('about');return false">Contact</a></li>
     <li><div id="status-badge" class="status-badge status-closed"><span class="dot"></span><span id="status-text">CLOSED</span></div></li>
-    <li><button class="cart-btn" onclick="openCart()" aria-label="View Cart">🛒 Cart<span class="cart-count" id="cart-count">0</span></button></li>
+    <li><button type="button" class="cart-btn" onclick="openCart()" aria-label="View Cart">🛒 Cart<span class="cart-count" id="cart-count">0</span></button></li>
     <li class="nav-user-wrap">
-      <button class="nav-signin-btn" id="nav-signin-btn" onclick="openAuthModal()">Sign In</button>
-      <button class="nav-user-btn" id="nav-user-btn" style="display:none" onclick="toggleUserDropdown()">👤 <span id="nav-user-name">Account</span> ▾</button>
+      <button type="button" class="nav-signin-btn" id="nav-signin-btn" onclick="openAuthModal()">Sign In</button>
+      <button type="button" class="nav-user-btn" id="nav-user-btn" style="display:none" onclick="toggleUserDropdown()">👤 <span id="nav-user-name">Account</span> ▾</button>
       <div class="user-dropdown" id="user-dropdown">
         <a onclick="navigateTo('profile');closeUserDropdown()">My Orders &amp; Rewards</a>
         <a onclick="doSignOut()">Sign Out</a>
@@ -786,8 +827,8 @@ footer:hover {
     </li>
   </ul>
   <div style="display:flex;align-items:center;gap:12px">
-  <button class="cart-btn" onclick="openCart()" aria-label="View Cart" style="display:none" id="mobile-cart-btn">🛒<span class="cart-count" id="cart-count-mobile">0</span></button>
-  <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+  <button type="button" class="cart-btn" onclick="openCart()" aria-label="View Cart" style="display:none" id="mobile-cart-btn">🛒<span class="cart-count" id="cart-count-mobile">0</span></button>
+  <button type="button" class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
   </div>
@@ -806,6 +847,7 @@ footer:hover {
 <!-- ==================== PUBLIC PAGES ==================== -->
 
 <!-- HOME PAGE -->
+<div id="main-content"></div>
 <div id="home-page" class="page active">
   <section class="hero-section">
     <div class="hero-bg"></div>
@@ -816,8 +858,8 @@ footer:hover {
            onerror="this.style.display='none'">
       <p class="hero-subtitle">Slow-cooked tradition. Served with soul.</p>
       <div class="hero-ctas">
-        <button class="btn-primary" onclick="navigateTo('menu')">View Menu</button>
-        <button class="btn-outline" onclick="navigateTo('catering')">Inquire for Catering</button>
+        <button type="button" class="btn-primary" onclick="navigateTo('menu')">View Menu</button>
+        <button type="button" class="btn-outline" onclick="navigateTo('catering')">Inquire for Catering</button>
       </div>
     </div>
     <div class="hero-scroll"><span>Scroll</span></div>
@@ -825,22 +867,22 @@ footer:hover {
   <div style="background:var(--bg);padding:60px 0">
     <div class="features-strip">
       <div class="feature-item">
-        <div class="feature-icon">🔥</div>
+        <div class="feature-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);display:block;margin:0 auto"><path d="M12 2c0 4-4 6-4 10a4 4 0 0 0 8 0c0-4-4-6-4-10z"/><path d="M8 17.5A5 5 0 0 0 12 20a5 5 0 0 0 4-2.5"/></svg></div>
         <div class="feature-title">Dum-Style Cooking</div>
         <div class="feature-desc">Slow-sealed pots lock in every layer of flavor</div>
       </div>
       <div class="feature-item">
-        <div class="feature-icon">🌿</div>
+        <div class="feature-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);display:block;margin:0 auto"><path d="M2 22s4-2 8-2 8 2 8 2"/><path d="M12 14c0-4 4-6 4-10"/><path d="M8 4c0 4 4 6 4 10"/></svg></div>
         <div class="feature-title">Fresh Spices Daily</div>
         <div class="feature-desc">Hand-ground masalas made from scratch every morning</div>
       </div>
       <div class="feature-item">
-        <div class="feature-icon">🎉</div>
+        <div class="feature-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);display:block;margin:0 auto"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
         <div class="feature-title">Event Catering</div>
         <div class="feature-desc">Weddings, corporate events, celebrations — we handle it all</div>
       </div>
       <div class="feature-item">
-        <div class="feature-icon">🏆</div>
+        <div class="feature-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);display:block;margin:0 auto"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <div class="feature-title">LA's Finest Biryani</div>
         <div class="feature-desc">Canoga Park's most loved authentic Indian kitchen</div>
       </div>
@@ -853,7 +895,7 @@ footer:hover {
     <p style="font-family:var(--font-sub);font-size:1.15rem;line-height:1.9;color:var(--cream);opacity:.82;font-style:italic;margin-bottom:32px">
       Every grain of basmati tells a story. Our biryanis are layered the old way — spice by spice, slow-cooked in sealed dum pots until the aroma fills every corner. This is not fast food. This is memory served on a plate.
     </p>
-    <button class="btn-primary" onclick="navigateTo('menu')">Explore Full Menu</button>
+    <button type="button" class="btn-primary" onclick="navigateTo('menu')">Explore Full Menu</button>
   </div>
   <div style="background:linear-gradient(180deg,var(--bg3) 0%,var(--card-bg) 100%);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);padding:70px 24px;text-align:center">
     <div class="section-label">Catering Services</div>
@@ -875,7 +917,7 @@ footer:hover {
       </div>
     </div>
     <br><br>
-    <button class="btn-outline" onclick="navigateTo('catering')">Plan Your Event</button>
+    <button type="button" class="btn-outline" onclick="navigateTo('catering')">Plan Your Event</button>
   </div>
   <footer>
     <div class="footer-inner">
@@ -928,18 +970,18 @@ footer:hover {
     <p class="section-subtitle" style="margin-bottom:20px">All items priced per tray · Small / Medium / Large</p>
     <div class="menu-controls">
       <div class="veg-filter">
-        <button class="filter-btn active" id="filter-all" onclick="setVegFilter('all')">All Items</button>
-        <button class="filter-btn" id="filter-veg" onclick="setVegFilter('veg')"><span class="indicator veg-indicator"></span>Veg</button>
-        <button class="filter-btn" id="filter-nonveg" onclick="setVegFilter('nonveg')"><span class="indicator nonveg-indicator"></span>Non-Veg</button>
+        <button type="button" class="filter-btn active" id="filter-all" onclick="setVegFilter('all')">All Items</button>
+        <button type="button" class="filter-btn" id="filter-veg" onclick="setVegFilter('veg')"><span class="indicator veg-indicator"></span>Veg</button>
+        <button type="button" class="filter-btn" id="filter-nonveg" onclick="setVegFilter('nonveg')"><span class="indicator nonveg-indicator"></span>Non-Veg</button>
       </div>
       <div class="category-tabs" id="category-tabs">
-        <button class="cat-tab active" data-cat="appetizers" onclick="setCategory('appetizers')">Appetizers</button>
-        <button class="cat-tab" data-cat="biryanis" onclick="setCategory('biryanis')">Biryanis</button>
-        <button class="cat-tab" data-cat="curries" onclick="setCategory('curries')">Curries</button>
-        <button class="cat-tab" data-cat="rice" onclick="setCategory('rice')">Rice & Noodles</button>
-        <button class="cat-tab" data-cat="naans" onclick="setCategory('naans')">Naans</button>
-        <button class="cat-tab" data-cat="sides" onclick="setCategory('sides')">Sides</button>
-        <button class="cat-tab" data-cat="desserts" onclick="setCategory('desserts')">Desserts</button>
+        <button type="button" class="cat-tab active" data-cat="appetizers" onclick="setCategory('appetizers')">Appetizers</button>
+        <button type="button" class="cat-tab" data-cat="biryanis" onclick="setCategory('biryanis')">Biryanis</button>
+        <button type="button" class="cat-tab" data-cat="curries" onclick="setCategory('curries')">Curries</button>
+        <button type="button" class="cat-tab" data-cat="rice" onclick="setCategory('rice')">Rice & Noodles</button>
+        <button type="button" class="cat-tab" data-cat="naans" onclick="setCategory('naans')">Naans</button>
+        <button type="button" class="cat-tab" data-cat="sides" onclick="setCategory('sides')">Sides</button>
+        <button type="button" class="cat-tab" data-cat="desserts" onclick="setCategory('desserts')">Desserts</button>
       </div>
     </div>
   </div>
@@ -974,7 +1016,7 @@ footer:hover {
         <div class="catering-summary-count" id="cat-item-count">0 trays selected</div>
         <div class="catering-summary-total" id="cat-total">$0.00</div>
       </div>
-      <button class="catering-summary-btn" onclick="scrollToCateringForm()">Continue to Form ↓</button>
+      <button type="button" class="catering-summary-btn" onclick="scrollToCateringForm()">Continue to Form ↓</button>
     </div>
   </div>
 
@@ -1081,7 +1123,7 @@ footer:hover {
           <div class="info-label">Address</div>
           <div class="info-value">
             9042 Owensmouth Ave, Unit 34<br>Canoga Park, CA 91304<br>
-            <a href="https://maps.google.com/?q=9042+Owensmouth+Ave+Canoga+Park+CA+91304" target="_blank" rel="noopener">Get Directions →</a>
+            <a href="https://maps.google.com/?q=9042+Owensmouth+Ave+Canoga+Park+CA+91304" target="_blank" rel="noopener noreferrer">Get Directions →</a>
           </div>
         </div>
         <div class="info-row">
@@ -1116,11 +1158,11 @@ footer:hover {
 
 <!-- INVOICE MODAL -->
 <div id="invoice-modal">
-  <div class="invoice-wrap">
+  <div class="invoice-wrap" role="dialog" aria-modal="true" aria-label="Invoice">
     <div id="invoice-content"></div>
     <div class="invoice-actions">
-      <button class="invoice-print-btn" onclick="printInvoice()">🖨️ Print Invoice</button>
-      <button class="invoice-done-btn" onclick="closeInvoiceModal()">Done</button>
+      <button type="button" class="invoice-print-btn" onclick="printInvoice()">🖨️ Print Invoice</button>
+      <button type="button" class="invoice-done-btn" onclick="closeInvoiceModal()">Done</button>
     </div>
   </div>
 </div>
@@ -1152,7 +1194,7 @@ footer:hover {
 
 <!-- SPICE LEVEL MODAL -->
 <div id="spice-overlay">
-  <div class="spice-modal">
+  <div class="spice-modal" role="dialog" aria-modal="true" aria-label="Choose Spice Level">
     <h3>SPICE LEVEL</h3>
     <div class="spice-item-name" id="spice-item-name"></div>
     <div class="spice-options">
@@ -1160,24 +1202,24 @@ footer:hover {
       <div class="spice-opt medium" onclick="confirmSpice('medium')"><span class="spice-dot" style="background:#FFC107"></span><div><div style="font-weight:500">Medium</div><div style="font-size:.78rem;opacity:.6">Balanced spice kick</div></div></div>
       <div class="spice-opt spicy" onclick="confirmSpice('spicy')"><span class="spice-dot" style="background:#e53935"></span><div><div style="font-weight:500">Spicy 🔥</div><div style="font-size:.78rem;opacity:.6">Bold, fiery heat</div></div></div>
     </div>
-    <button class="spice-cancel" onclick="closeSpiceModal()">Cancel</button>
+    <button type="button" class="spice-cancel" onclick="closeSpiceModal()">Cancel</button>
   </div>
 </div>
 
 <!-- AUTH MODAL -->
 <div id="auth-overlay">
-  <div class="auth-modal">
-    <button class="auth-close" onclick="closeAuthModal()">✕</button>
+  <div class="auth-modal" role="dialog" aria-modal="true" aria-label="Sign In or Create Account">
+    <button type="button" class="auth-close" onclick="closeAuthModal()">✕</button>
     <h2>MY ACCOUNT</h2>
     <div class="auth-tabs">
-      <button class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
-      <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</button>
+      <button type="button" class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
+      <button type="button" class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</button>
     </div>
     <div class="auth-form-section active" id="section-signin">
       <div class="auth-error" id="signin-error"></div>
       <input class="auth-input" id="signin-email" type="email" placeholder="Email address">
       <input class="auth-input" id="signin-password" type="password" placeholder="Password">
-      <button class="auth-submit" onclick="doSignIn()">Sign In</button>
+      <button type="button" class="auth-submit" onclick="doSignIn()">Sign In</button>
     </div>
     <div class="auth-form-section" id="section-signup">
       <div class="auth-error" id="signup-error"></div>
@@ -1185,22 +1227,22 @@ footer:hover {
       <input class="auth-input" id="signup-phone" type="tel" placeholder="Phone number">
       <input class="auth-input" id="signup-email" type="email" placeholder="Email address">
       <input class="auth-input" id="signup-password" type="password" placeholder="Password (min 6 chars)">
-      <button class="auth-submit" onclick="doSignUp()">Create Account</button>
+      <button type="button" class="auth-submit" onclick="doSignUp()">Create Account</button>
     </div>
   </div>
 </div>
 
-<button id="floating-cta" onclick="navigateTo('menu')" aria-label="Order Now">
-  <span class="icon">🛒</span>Order Now
+<button type="button" id="floating-cta" onclick="navigateTo('menu')" aria-label="Order Now">
+  <span class="icon" aria-hidden="true">🛒</span>Order Now
 </button>
 
 <!-- ==================== CART DRAWER ==================== -->
 <div id="cart-overlay" onclick="closeCart()"></div>
 <div id="cart-drawer">
   <div class="cart-header">
-    <button class="cart-keep-shopping" onclick="closeCart()">← Keep Shopping</button>
+    <button type="button" class="cart-keep-shopping" onclick="closeCart()">← Keep Shopping</button>
     <span class="cart-title">Your Order</span>
-    <button class="cart-close" onclick="closeCart()">✕</button>
+    <button type="button" class="cart-close" onclick="closeCart()" aria-label="Close cart">✕</button>
   </div>
   <div class="cart-items" id="cart-items-list"></div>
   <div class="cart-footer" id="cart-footer" style="display:none">
@@ -1208,39 +1250,39 @@ footer:hover {
       <span class="cart-subtotal-label">Subtotal</span>
       <span class="cart-subtotal-val" id="cart-subtotal">$0</span>
     </div>
-    <button class="cart-checkout-btn" onclick="openCheckout()">Proceed to Checkout →</button>
+    <button type="button" class="cart-checkout-btn" onclick="openCheckout()">Proceed to Checkout →</button>
   </div>
 </div>
 
 <!-- ==================== CHECKOUT MODAL ==================== -->
 <div id="checkout-overlay">
-  <div class="checkout-modal">
-    <button class="checkout-close" onclick="closeCheckout()">✕</button>
+  <div class="checkout-modal" role="dialog" aria-modal="true" aria-label="Checkout">
+    <button type="button" class="checkout-close" onclick="closeCheckout()" aria-label="Close checkout">✕</button>
     <div id="checkout-form-wrap">
       <div class="checkout-modal-title">Checkout</div>
       <div class="checkout-modal-sub">Enter your details to place your order</div>
 
       <div class="checkout-order-type">
-        <button class="order-type-btn active" id="type-pickup" onclick="setOrderType('pickup')">🏪 Pickup</button>
-        <button class="order-type-btn" id="type-delivery" onclick="setOrderType('delivery')">🚗 Delivery</button>
+        <button type="button" class="order-type-btn active" id="type-pickup" onclick="setOrderType('pickup')">🏪 Pickup</button>
+        <button type="button" class="order-type-btn" id="type-delivery" onclick="setOrderType('delivery')">🚗 Delivery</button>
       </div>
 
       <div class="form-grid" style="margin-bottom:16px">
         <div class="form-group">
           <label class="form-label">Full Name *</label>
-          <input type="text" class="form-input" id="co-name" placeholder="Your name" required>
+          <input type="text" class="form-input" id="co-name" placeholder="Your name" required autocomplete="name">
         </div>
         <div class="form-group">
           <label class="form-label">Phone *</label>
-          <input type="tel" class="form-input" id="co-phone" placeholder="(xxx) xxx-xxxx" required>
+          <input type="tel" class="form-input" id="co-phone" placeholder="(xxx) xxx-xxxx" required autocomplete="tel">
         </div>
         <div class="form-group full">
           <label class="form-label">Email <span style="font-weight:400;opacity:.6;font-size:.8rem">(optional — for order receipt)</span></label>
-          <input type="email" class="form-input" id="co-email" placeholder="your@email.com">
+          <input type="email" class="form-input" id="co-email" placeholder="your@email.com" autocomplete="email">
         </div>
         <div class="form-group full" id="checkout-address-group">
           <label class="form-label">Delivery Address *</label>
-          <input type="text" class="form-input" id="co-address" placeholder="Full delivery address">
+          <input type="text" class="form-input" id="co-address" placeholder="Full delivery address" autocomplete="street-address">
         </div>
         <div class="form-group full">
           <label class="form-label">Special Instructions</label>
@@ -1259,7 +1301,7 @@ footer:hover {
       </div>
       <div id="coupon-msg" style="font-size:.82rem;margin-bottom:12px;margin-top:-10px"></div>
 
-      <button class="btn-primary" style="width:100%;padding:16px;font-size:1rem" onclick="placeOrder()">Place Order</button>
+      <button type="button" class="btn-primary" style="width:100%;padding:16px;font-size:1rem" onclick="placeOrder()">Place Order</button>
     </div>
 
     <div class="order-confirm" id="order-confirm">
@@ -1269,7 +1311,7 @@ footer:hover {
       <div id="order-confirm-summary" style="text-align:left;background:rgba(255,255,255,.04);border-radius:8px;padding:14px 16px;margin:16px 0;font-size:.85rem;line-height:1.8"></div>
       <p>We've received your order and will confirm shortly.<br>
       Questions? Call <a href="tel:8182803366" style="color:var(--accent)">(818) 280-3366</a></p>
-      <button class="btn-primary" style="margin-top:24px" onclick="closeCheckout();clearCart()">Done</button>
+      <button type="button" class="btn-primary" style="margin-top:24px" onclick="closeCheckout();clearCart()">Done</button>
     </div>
   </div>
 </div>
@@ -1283,7 +1325,7 @@ footer:hover {
     <h1 id="login-fallback" style="display:none">Biryani Temptations</h1>
     <p>Management Portal</p>
     <input type="password" class="form-input" id="admin-pw" placeholder="Enter password" style="margin-bottom:12px" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="btn-primary" style="width:100%;padding:14px" onclick="doLogin()">Access Dashboard</button>
+    <button type="button" class="btn-primary" style="width:100%;padding:14px" onclick="doLogin()">Access Dashboard</button>
     <div class="login-error" id="login-error">Incorrect password. Try again.</div>
     <div style="margin-top:24px"><a href="#" onclick="navigateTo('home');return false" style="font-size:.8rem;opacity:.5;color:var(--cream)">← Back to site</a></div>
   </div>
@@ -1327,12 +1369,12 @@ footer:hover {
     <div class="admin-nav-item" data-panel="analytics" onclick="switchAdminPanel('analytics')">
       <span class="nav-icon">📊</span> Analytics
     </div>
-    <div class="admin-logout"><button onclick="adminLogout()">Sign Out</button></div>
+    <div class="admin-logout"><button type="button" onclick="adminLogout()">Sign Out</button></div>
   </aside>
 
   <main class="admin-content">
     <div class="admin-mobile-bar">
-      <button class="admin-hamburger" onclick="openAdminSidebar()">☰</button>
+      <button type="button" class="admin-hamburger" onclick="openAdminSidebar()">☰</button>
       <span class="admin-mobile-bar-title" id="admin-mobile-title">Dashboard</span>
     </div>
 
@@ -1411,7 +1453,7 @@ footer:hover {
           <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;opacity:.8;cursor:pointer">
             <input type="checkbox" id="ni-spice"> Has spice level selector 🌶️
           </label>
-          <button class="btn-admin-add" onclick="addMenuItem()">+ Add Item</button>
+          <button type="button" class="btn-admin-add" onclick="addMenuItem()">+ Add Item</button>
         </div>
       </div>
     </div>
@@ -1423,7 +1465,7 @@ footer:hover {
       <div class="admin-card">
         <div id="hours-manager-grid"></div>
         <br>
-        <button class="btn-admin-add" onclick="saveHours()">Save Hours</button>
+        <button type="button" class="btn-admin-add" onclick="saveHours()">Save Hours</button>
       </div>
     </div>
 
@@ -1434,7 +1476,7 @@ footer:hover {
       <div class="admin-card">
         <div class="delivery-grid" id="delivery-grid"></div>
         <br>
-        <button class="btn-admin-add" onclick="saveDelivery()">Save Settings</button>
+        <button type="button" class="btn-admin-add" onclick="saveDelivery()">Save Settings</button>
       </div>
     </div>
 
@@ -1445,7 +1487,7 @@ footer:hover {
           <div class="admin-page-title" style="margin-bottom:0">Orders</div>
           <div class="admin-page-sub" style="margin-bottom:0">View and manage customer orders</div>
         </div>
-        <button class="btn-admin-add" onclick="openPhoneOrderModal()">📞 Place Phone Order</button>
+        <button type="button" class="btn-admin-add" onclick="openPhoneOrderModal()">📞 Place Phone Order</button>
       </div>
       <div class="admin-card" id="orders-list" style="margin-top:20px"></div>
     </div>
@@ -1465,8 +1507,8 @@ footer:hover {
         <div class="admin-card-title">Current Banner Message</div>
         <textarea class="announcement-input" id="announcement-input" placeholder="Enter announcement text... (leave empty to clear)"></textarea>
         <div style="margin-top:12px;display:flex;gap:12px">
-          <button class="btn-admin-add" onclick="saveAnnouncement()">Save &amp; Publish</button>
-          <button class="admin-action-btn danger" onclick="clearAnnouncement()">Clear Banner</button>
+          <button type="button" class="btn-admin-add" onclick="saveAnnouncement()">Save &amp; Publish</button>
+          <button type="button" class="admin-action-btn danger" onclick="clearAnnouncement()">Clear Banner</button>
         </div>
       </div>
       <div class="admin-card">
@@ -1486,14 +1528,14 @@ footer:hover {
           <select class="admin-select" id="rw-menu-item" style="flex:1;min-width:220px">
             <option value="">— Pick a menu item —</option>
           </select>
-          <button class="btn-admin-add" onclick="adminAddReward()">+ Add Reward</button>
+          <button type="button" class="btn-admin-add" onclick="adminAddReward()">+ Add Reward</button>
         </div>
         <p style="font-size:.78rem;opacity:.5;margin-top:8px">When a customer redeems, the selected item is added to their cart for free.</p>
       </div>
       <div class="admin-card" style="border:1px solid rgba(232,160,32,.2);background:rgba(232,160,32,.04)">
         <div class="admin-card-title">⚠️ Reset All Points</div>
         <p style="font-size:.85rem;opacity:.7;margin-bottom:12px">Sets every customer's BT Points balance back to 0.</p>
-        <button class="admin-action-btn danger" onclick="adminResetAllPoints()">Reset Everyone's Points</button>
+        <button type="button" class="admin-action-btn danger" onclick="adminResetAllPoints()">Reset Everyone's Points</button>
       </div>
       <div class="admin-card">
         <div class="admin-card-title">Current Rewards</div>
@@ -1548,7 +1590,7 @@ footer:hover {
             <label style="display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.04);border:1px solid var(--border);padding:5px 10px;border-radius:4px;cursor:pointer"><input type="checkbox" value="desserts"> Desserts</label>
           </div>
         </div>
-        <button class="btn-admin-add" onclick="adminAddCoupon()">+ Add Coupon</button>
+        <button type="button" class="btn-admin-add" onclick="adminAddCoupon()">+ Add Coupon</button>
       </div>
       <div class="admin-card">
         <div class="admin-card-title">Active Coupons</div>
@@ -1561,10 +1603,10 @@ footer:hover {
       <div class="admin-page-title">Analytics</div>
       <div class="admin-page-sub">Revenue and order performance</div>
       <div class="an-tabs">
-        <button class="an-tab" id="an-tab-today" onclick="renderAnalytics('today')">Today</button>
-        <button class="an-tab active" id="an-tab-week" onclick="renderAnalytics('week')">Week</button>
-        <button class="an-tab" id="an-tab-month" onclick="renderAnalytics('month')">Month</button>
-        <button class="an-tab" id="an-tab-6month" onclick="renderAnalytics('6month')">6 Months</button>
+        <button type="button" class="an-tab" id="an-tab-today" onclick="renderAnalytics('today')">Today</button>
+        <button type="button" class="an-tab active" id="an-tab-week" onclick="renderAnalytics('week')">Week</button>
+        <button type="button" class="an-tab" id="an-tab-month" onclick="renderAnalytics('month')">Month</button>
+        <button type="button" class="an-tab" id="an-tab-6month" onclick="renderAnalytics('6month')">6 Months</button>
       </div>
       <div id="analytics-content"></div>
     </div>
@@ -1738,6 +1780,9 @@ function lsSet(key, val) {
 const _esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 // ==================== SUPABASE ====================
+// SECURITY NOTE: This is a Supabase anon key (safe for client-side use).
+// Ensure Row Level Security (RLS) is enabled on all Supabase tables.
+// The EmailJS publicKey above is also client-safe but should be restricted by domain in EmailJS dashboard.
 const _supa = supabase.createClient(
   'https://esogrnjilzxcmvgpieib.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzb2dybmppbHp4Y212Z3BpZWliIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE3MDQsImV4cCI6MjA4OTk4NzcwNH0.x8KJldScjb2VsC-CGbPknOLppkozjjfhbbX9zwiYh_A'
@@ -1894,14 +1939,14 @@ function renderMenu() {
       const discPct = item.discount > 0 ? item.discount : 0;
       const finalPrice = discPct > 0 ? item.price * (1 - discPct / 100) : item.price;
       const addBtn = item.spice
-        ? `<button class="add-cart-btn spice-pick" onclick="openSpiceModal('${item.id}','${safeName}','${item.emoji}',${finalPrice})">Add 🌶️</button>`
-        : `<button class="add-cart-btn" onclick="addToCart('${item.id}','${safeName}','${item.emoji}',null,${finalPrice})">Add to Cart</button>`;
+        ? `<button type="button" class="add-cart-btn spice-pick" onclick="openSpiceModal('${item.id}','${safeName}','${item.emoji}',${finalPrice})">Add 🌶️</button>`
+        : `<button type="button" class="add-cart-btn" onclick="addToCart('${item.id}','${safeName}','${item.emoji}',null,${finalPrice})">Add to Cart</button>`;
       const priceHtml = discPct > 0
         ? `<span class="item-price"><span style="text-decoration:line-through;opacity:.5;font-size:.8em;margin-right:4px">$${item.price.toFixed(2)}</span>$${finalPrice.toFixed(2)} <span style="background:#e53935;color:#fff;font-size:.65em;padding:2px 5px;border-radius:3px;margin-left:2px">${discPct}% OFF</span></span>`
         : `<span class="item-price">$${item.price.toFixed(2)}</span>`;
       if (item.image) {
         out += `<div class="menu-card has-photo ${oos}" data-id="${item.id}">
-          <img src="${item.image}" alt="${item.name}" class="menu-card-photo">
+          <img src="${item.image}" alt="${item.name}" class="menu-card-photo" loading="lazy">
           <div class="menu-card-photo-overlay"></div>
           <div class="type-badge ${type}"></div>
           <div class="menu-card-content">
@@ -2103,9 +2148,9 @@ function _renderCatItem(item, isPerPiece) {
       <div class="cat-item-name">${_esc(item.name)} <span style="color:var(--accent);font-size:.78rem">$${item.pp.toFixed(2)}/ea</span></div>
       <div class="cat-item-controls">
         <div class="cat-qty-wrap">
-          <button class="cat-qty-btn" onclick="catBreadQty('${item.id}',${item.pp},-1)">−</button>
+          <button type="button" class="cat-qty-btn" onclick="catBreadQty('${item.id}',${item.pp},-1)" aria-label="Decrease quantity">−</button>
           <span class="cat-qty-val" id="cat-qty-${item.id}">${qty}</span>
-          <button class="cat-qty-btn" onclick="catBreadQty('${item.id}',${item.pp},1)">+</button>
+          <button type="button" class="cat-qty-btn" onclick="catBreadQty('${item.id}',${item.pp},1)" aria-label="Increase quantity">+</button>
         </div>
       </div>
     </div>`;
@@ -2122,12 +2167,12 @@ function _renderCatItem(item, isPerPiece) {
         if (qty > 0) {
           return `<div class="cat-qty-wrap">
             <span class="cat-qty-label">${sL[sz]} $${price}</span>
-            <button class="cat-qty-btn" onclick="catTrayQty('${item.id}','${sz}',${price},-1)">−</button>
+            <button type="button" class="cat-qty-btn" onclick="catTrayQty('${item.id}','${sz}',${price},-1)" aria-label="Decrease quantity">−</button>
             <span class="cat-qty-val" id="cat-qty-${k}">${qty}</span>
-            <button class="cat-qty-btn" onclick="catTrayQty('${item.id}','${sz}',${price},1)">+</button>
+            <button type="button" class="cat-qty-btn" onclick="catTrayQty('${item.id}','${sz}',${price},1)" aria-label="Increase quantity">+</button>
           </div>`;
         }
-        return `<button class="cat-size-btn" onclick="catTrayQty('${item.id}','${sz}',${price},1)">${sL[sz]} $${price}</button>`;
+        return `<button type="button" class="cat-size-btn" onclick="catTrayQty('${item.id}','${sz}',${price},1)">${sL[sz]} $${price}</button>`;
       }).join('')}
     </div>
   </div>`;
@@ -2463,7 +2508,7 @@ async function renderAnalytics(period) {
     <div class="admin-card" style="border:1px solid rgba(229,57,53,.25);background:rgba(229,57,53,.04)">
       <div class="admin-card-title" style="color:#ef9a9a">⚠️ Reset Analytics</div>
       <p style="font-size:.85rem;opacity:.7;margin-bottom:12px">Resets the tracking start date to now. Order history is always preserved — this only affects what's counted in analytics. Currently tracking from: <strong>${resetLabel}</strong></p>
-      <button class="admin-action-btn danger" onclick="resetAnalytics()">Reset Analytics</button>
+      <button type="button" class="admin-action-btn danger" onclick="resetAnalytics()">Reset Analytics</button>
     </div>`;
 }
 
@@ -2650,7 +2695,7 @@ function renderMenuManager() {
           <span class="toggle-slider"></span>
         </label>
       </td>
-      <td><button class="admin-action-btn danger" onclick="deleteMenuItem('${cat}','${item.id}','${item.type}')">Delete</button></td>
+      <td><button type="button" class="admin-action-btn danger" onclick="deleteMenuItem('${cat}','${item.id}','${item.type}')">Delete</button></td>
     </tr>`).join('');
 
   document.getElementById('menu-manager-table').innerHTML = `
@@ -2993,10 +3038,10 @@ async function renderInquiries() {
       <!-- Actions -->
       <div style="padding:12px 20px;border-top:1px solid var(--border)">
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:${parsed.subtotal?'10px':'0'}">
-          ${inq.status!=='responded'?`<button class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'responded')">Mark Responded</button>`:''}
-          ${inq.status==='new'?`<button class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'read')">Mark Read</button>`:''}
-          ${parsed.subtotal ? `<button class="admin-action-btn" style="${taxRemoved?'background:rgba(76,175,80,.15);border-color:rgba(76,175,80,.4);color:#81C784':''}" onclick="toggleInquiryTax(${inq.id})">${taxRemoved?'✓ Tax Removed — Restore':'🧾 Remove Tax'}</button>` : ''}
-          <button class="admin-action-btn danger" onclick="deleteInquiry(${inq.id})">Delete</button>
+          ${inq.status!=='responded'?`<button type="button" class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'responded')">Mark Responded</button>`:''}
+          ${inq.status==='new'?`<button type="button" class="admin-action-btn" onclick="updateInquiryStatus(${inq.id},'read')">Mark Read</button>`:''}
+          ${parsed.subtotal ? `<button type="button" class="admin-action-btn" style="${taxRemoved?'background:rgba(76,175,80,.15);border-color:rgba(76,175,80,.4);color:#81C784':''}" onclick="toggleInquiryTax(${inq.id})">${taxRemoved?'✓ Tax Removed — Restore':'🧾 Remove Tax'}</button>` : ''}
+          <button type="button" class="admin-action-btn danger" onclick="deleteInquiry(${inq.id})">Delete</button>
         </div>
         ${parsed.subtotal ? `
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -3006,8 +3051,8 @@ async function renderInquiries() {
             <option value="fixed" ${inqDiscount&&inqDiscount.type==='fixed'?'selected':''}>Fixed ($)</option>
           </select>
           <input type="number" class="admin-input" id="inq-disc-val-${inq.id}" min="0" step="0.01" placeholder="e.g. 10" value="${inqDiscount?inqDiscount.value:''}" style="width:90px;font-size:.78rem;padding:5px 8px">
-          <button class="admin-action-btn" onclick="applyInquiryDiscount(${inq.id})" style="padding:5px 12px;font-size:.78rem">Apply</button>
-          ${inqDiscount ? `<button class="admin-action-btn danger" onclick="removeInquiryDiscount(${inq.id})" style="padding:5px 12px;font-size:.78rem">Remove</button>` : ''}
+          <button type="button" class="admin-action-btn" onclick="applyInquiryDiscount(${inq.id})" style="padding:5px 12px;font-size:.78rem">Apply</button>
+          ${inqDiscount ? `<button type="button" class="admin-action-btn danger" onclick="removeInquiryDiscount(${inq.id})" style="padding:5px 12px;font-size:.78rem">Remove</button>` : ''}
           ${inqDiscount ? `<span style="font-size:.78rem;color:#4CAF50">✓ ${inqDiscount.type==='pct'?inqDiscount.value+'% off':'$'+Number(inqDiscount.value).toFixed(2)+' off'} applied</span>` : ''}
         </div>` : ''}
       </div>
@@ -3162,12 +3207,12 @@ function renderCartItems() {
         <div class="cart-item-size">${item.spice ? spiceLabel[item.spice] + ' · ' : ''}$${item.price.toFixed(2)} each</div>
       </div>
       <div class="cart-qty">
-        <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
+        <button type="button" class="qty-btn" onclick="changeQty(${i},-1)" aria-label="Decrease quantity">−</button>
         <span class="qty-val">${item.qty}</span>
-        <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+        <button type="button" class="qty-btn" onclick="changeQty(${i},1)" aria-label="Increase quantity">+</button>
       </div>
       <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
-      <button class="cart-remove" onclick="removeFromCart(${i})" title="Remove">✕</button>
+      <button type="button" class="cart-remove" onclick="removeFromCart(${i})" title="Remove">✕</button>
     </div>
   `).join('');
 }
@@ -3441,12 +3486,12 @@ async function renderOrders() {
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
           <span style="font-family:var(--font-display);font-size:1.4rem;color:var(--accent)">$${order.subtotal}</span>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
-            ${order.status==='new' ? `<button class="admin-action-btn" onclick="updateOrderStatus(${order.id},'confirmed')">Confirm</button>` : ''}
-            ${order.status==='confirmed' ? `<button class="admin-action-btn" onclick="updateOrderStatus(${order.id},'ready')">Mark Ready</button>` : ''}
-            ${order.status==='ready' ? `<button class="admin-action-btn" onclick="updateOrderStatus(${order.id},'completed')">Complete</button>` : ''}
+            ${order.status==='new' ? `<button type="button" class="admin-action-btn" onclick="updateOrderStatus(${order.id},'confirmed')">Confirm</button>` : ''}
+            ${order.status==='confirmed' ? `<button type="button" class="admin-action-btn" onclick="updateOrderStatus(${order.id},'ready')">Mark Ready</button>` : ''}
+            ${order.status==='ready' ? `<button type="button" class="admin-action-btn" onclick="updateOrderStatus(${order.id},'completed')">Complete</button>` : ''}
             ${order.status==='completed' ? `<span style="font-size:.8rem;opacity:.4">Completed</span>` : ''}
-            <button class="admin-action-btn" style="position:relative" onclick="adminToggleOrderChat(${order.id})">💬 Chat<span id="admin-chat-dot-${order.id}" style="display:none;position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:#e53935;border-radius:50%;border:2px solid #1A1208"></span></button>
-            <button class="admin-action-btn danger" onclick="deleteOrder(${order.id})">Delete</button>
+            <button type="button" class="admin-action-btn" style="position:relative" onclick="adminToggleOrderChat(${order.id})">💬 Chat<span id="admin-chat-dot-${order.id}" style="display:none;position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:#e53935;border-radius:50%;border:2px solid #1A1208"></span></button>
+            <button type="button" class="admin-action-btn danger" onclick="deleteOrder(${order.id})">Delete</button>
           </div>
         </div>
         <div id="admin-chat-${order.id}" style="display:none;margin-top:12px;border:1px solid var(--border)">
@@ -3454,7 +3499,7 @@ async function renderOrders() {
           <div class="order-chat-messages" id="admin-chat-msgs-${order.id}" style="min-height:60px"></div>
           <div class="order-chat-input">
             <input type="text" id="admin-chat-input-${order.id}" placeholder="Reply to customer..." onkeydown="if(event.key==='Enter')adminSendOrderMsg(${order.id})">
-            <button onclick="adminSendOrderMsg(${order.id})">Send</button>
+            <button type="button" onclick="adminSendOrderMsg(${order.id})">Send</button>
           </div>
         </div>
       </div>`;
@@ -3641,7 +3686,7 @@ async function renderProfilePage() {
     document.getElementById('profile-orders-list').innerHTML = `
       <div style="text-align:center;padding:40px 0">
         <p style="opacity:.6;margin-bottom:16px">Sign in to see your past orders and rewards.</p>
-        <button class="btn-primary" onclick="openAuthModal()">Sign In / Create Account</button>
+        <button type="button" class="btn-primary" onclick="openAuthModal()">Sign In / Create Account</button>
       </div>`;
     document.getElementById('profile-rewards-list').innerHTML = '';
     return;
@@ -3682,16 +3727,16 @@ async function renderProfilePage() {
         <span style="font-family:var(--font-display);font-size:1.1rem;color:var(--accent)">$${(order.subtotal||0).toFixed(2)}</span>
         <span style="font-size:.78rem;opacity:.5">${date} · ${order.order_type}</span>
         <div style="display:flex;gap:8px">
-          <button class="reorder-btn" onclick="reorderById(${order.id})">Reorder</button>
-          <button class="chat-btn" style="position:relative" onclick="toggleProfileOrderChat(${order.id})">💬 Chat<span id="chat-new-${order.id}" style="display:none;position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:#e53935;border-radius:50%;border:2px solid #1A1208"></span></button>
-          <button id="del-btn-${order.id}" class="reorder-btn" style="background:transparent;border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.35);padding:5px 10px;font-size:.75rem" onclick="deleteUserOrder(${order.id})" title="Remove from history">🗑</button>
+          <button type="button" class="reorder-btn" onclick="reorderById(${order.id})">Reorder</button>
+          <button type="button" class="chat-btn" style="position:relative" onclick="toggleProfileOrderChat(${order.id})">💬 Chat<span id="chat-new-${order.id}" style="display:none;position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:#e53935;border-radius:50%;border:2px solid #1A1208"></span></button>
+          <button type="button" id="del-btn-${order.id}" class="reorder-btn" style="background:transparent;border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.35);padding:5px 10px;font-size:.75rem" onclick="deleteUserOrder(${order.id})" title="Remove from history">🗑</button>
         </div>
       </div>
       <div id="profile-chat-${order.id}" style="display:none">
         <div class="order-chat-messages" id="profile-chat-msgs-${order.id}" style="min-height:60px"></div>
         <div class="order-chat-input">
           <input type="text" id="profile-chat-input-${order.id}" placeholder="Ask about your order..." onkeydown="if(event.key==='Enter')userSendOrderMsg(${order.id})">
-          <button onclick="userSendOrderMsg(${order.id})">Send</button>
+          <button type="button" onclick="userSendOrderMsg(${order.id})">Send</button>
         </div>
       </div>
     </div>`;
@@ -3715,7 +3760,7 @@ async function loadProfileRewards() {
       <div class="reward-emoji">${r.emoji}</div>
       <div class="reward-name">Free ${r.name}</div>
       <div class="reward-pts">${r.points_required} pts</div>
-      <button class="redeem-btn" ${canRedeem ? '' : 'disabled'} onclick="redeemReward(${r.id},'${r.name.replace(/'/g,"\\'")}',${r.points_required},'${r.menu_item_id||''}')">${canRedeem ? 'Add to Cart Free' : 'Need ' + (r.points_required - userPts) + ' more pts'}</button>
+      <button type="button" class="redeem-btn" ${canRedeem ? '' : 'disabled'} onclick="redeemReward(${r.id},'${r.name.replace(/'/g,"\\'")}',${r.points_required},'${r.menu_item_id||''}')">${canRedeem ? 'Add to Cart Free' : 'Need ' + (r.points_required - userPts) + ' more pts'}</button>
     </div>`;
   }).join('')}</div>`;
 }
@@ -4006,7 +4051,7 @@ async function renderRewardsAdmin() {
         <label style="display:flex;align-items:center;gap:6px;font-size:.75rem;cursor:pointer">
           <input type="checkbox" ${r.active?'checked':''} onchange="toggleRewardActive(${r.id},this.checked)"> Active
         </label>
-        <button class="admin-action-btn danger" style="font-size:.72rem;padding:4px 10px" onclick="deleteReward(${r.id})">Delete</button>
+        <button type="button" class="admin-action-btn danger" style="font-size:.72rem;padding:4px 10px" onclick="deleteReward(${r.id})">Delete</button>
       </div>
     </div>`).join('')}</div>`;
 }
@@ -4105,7 +4150,7 @@ function renderCouponsAdmin() {
       <div style="display:flex;align-items:center;gap:10px">
         <label class="toggle-switch"><input type="checkbox" ${c.active?'checked':''} onchange="toggleCoupon('${c.code}',this.checked)"><span class="toggle-slider"></span></label>
         <span style="font-size:.78rem;opacity:.5">${c.active?'Active':'Off'}</span>
-        <button class="admin-action-btn danger" onclick="deleteCoupon('${c.code}')">Delete</button>
+        <button type="button" class="admin-action-btn danger" onclick="deleteCoupon('${c.code}')">Delete</button>
       </div>
     </div>`;
   }).join('') + '<div></div>';
@@ -4191,7 +4236,7 @@ function renderPhoneOrderItems() {
       <span>${item.emoji} ${_esc(item.name)} × ${item.qty}</span>
       <div style="display:flex;align-items:center;gap:10px">
         <span>$${(item.price * item.qty).toFixed(2)}</span>
-        <button onclick="removePhoneOrderItem(${i})" style="background:none;border:none;color:#e53935;cursor:pointer;font-size:1rem;padding:0">✕</button>
+        <button type="button" onclick="removePhoneOrderItem(${i})" style="background:none;border:none;color:#e53935;cursor:pointer;font-size:1rem;padding:0">✕</button>
       </div>
     </div>`).join('');
   if (subtotalEl) subtotalEl.textContent = '$' + subtotal.toFixed(2);
@@ -4267,7 +4312,7 @@ window.addEventListener('hashchange', handleHash);
 <!-- ==================== PHONE ORDER MODAL ==================== -->
 <div id="phone-order-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:flex-start;justify-content:center;overflow-y:auto;padding:24px 16px;backdrop-filter:blur(4px)">
   <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:8px;width:100%;max-width:600px;padding:28px;position:relative;margin:auto">
-    <button onclick="closePhoneOrderModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--cream);font-size:1.3rem;cursor:pointer;opacity:.6">✕</button>
+    <button type="button" onclick="closePhoneOrderModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--cream);font-size:1.3rem;cursor:pointer;opacity:.6">✕</button>
     <div style="font-family:var(--font-display);font-size:1.8rem;color:var(--accent);margin-bottom:4px">📞 Place Phone Order</div>
     <p style="font-size:.82rem;opacity:.5;margin-bottom:20px">Enter order details for a customer who called in</p>
 
@@ -4308,7 +4353,7 @@ window.addEventListener('hashchange', handleHash);
         <select class="admin-select" id="po-cat" onchange="renderPhoneOrderItemPicker()" style="flex:1;min-width:140px"></select>
         <select class="admin-select" id="po-item" style="flex:2;min-width:160px"></select>
         <input class="admin-input" id="po-qty" type="number" min="1" value="1" style="width:64px">
-        <button class="btn-admin-add" onclick="addPhoneOrderItem()" style="white-space:nowrap">+ Add</button>
+        <button type="button" class="btn-admin-add" onclick="addPhoneOrderItem()" style="white-space:nowrap">+ Add</button>
       </div>
       <div id="po-items-list" style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;padding:10px;min-height:60px">
         <p style="opacity:.4;font-size:.82rem;text-align:center">No items added yet</p>
@@ -4321,7 +4366,7 @@ window.addEventListener('hashchange', handleHash);
       <div style="display:flex;justify-content:space-between;font-weight:700;font-size:1rem;margin-top:6px;color:var(--accent)"><span>Total</span><span id="po-total">$0.00</span></div>
     </div>
 
-    <button class="btn-primary" style="width:100%;padding:14px" onclick="submitPhoneOrder()">Place Order</button>
+    <button type="button" class="btn-primary" style="width:100%;padding:14px" onclick="submitPhoneOrder()">Place Order</button>
     <p id="po-error" style="color:#e53935;font-size:.82rem;margin-top:8px;display:none"></p>
   </div>
 </div>
@@ -4584,6 +4629,17 @@ window.addEventListener('hashchange', handleHash);
   }
 
 })();
+</script>
+
+<script>
+// Scroll-triggered fade-in reveal
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }});
+}, { threshold: 0.1 });
+document.querySelectorAll('.menu-card, .tray-card, .event-item, .feature-item, .section-title').forEach(el => {
+  el.classList.add('reveal');
+  revealObserver.observe(el);
+});
 </script>
 </body>
 </html>
