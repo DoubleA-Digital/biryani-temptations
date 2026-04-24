@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://checkout.sandbox.dev.clover.com/sdk.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
   // Replace YOUR_BT_PUBLIC_KEY with your actual EmailJS public key
@@ -1301,7 +1302,19 @@ footer:hover {
       </div>
       <div id="coupon-msg" style="font-size:.82rem;margin-bottom:12px;margin-top:-10px"></div>
 
-      <button type="button" class="btn-primary" style="width:100%;padding:16px;font-size:1rem" onclick="placeOrder()">Place Order</button>
+      <!-- Clover Payment Fields -->
+      <div id="clover-payment-section" style="margin-bottom:16px">
+        <div class="form-label" style="margin-bottom:10px;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent)">Card Payment</div>
+        <div id="clover-card-number" style="height:44px;border:1px solid var(--border2);border-radius:4px;padding:0 12px;margin-bottom:10px;background:rgba(255,255,255,.04)"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div id="clover-card-date" style="height:44px;border:1px solid var(--border2);border-radius:4px;padding:0 12px;background:rgba(255,255,255,.04)"></div>
+          <div id="clover-card-cvv" style="height:44px;border:1px solid var(--border2);border-radius:4px;padding:0 12px;background:rgba(255,255,255,.04)"></div>
+        </div>
+        <div id="clover-card-postal-code" style="height:44px;border:1px solid var(--border2);border-radius:4px;padding:0 12px;margin-top:10px;background:rgba(255,255,255,.04)"></div>
+        <div id="clover-payment-errors" style="color:#e53935;font-size:.82rem;margin-top:8px;min-height:18px"></div>
+      </div>
+
+      <button type="button" class="btn-primary" style="width:100%;padding:16px;font-size:1rem" onclick="placeOrder()">Pay &amp; Place Order</button>
     </div>
 
     <div class="order-confirm" id="order-confirm">
@@ -3357,8 +3370,51 @@ async function placeOrder() {
     alert('Please enter a delivery address.'); return;
   }
 
-  const orderNum = 'BT-' + Math.floor(1000 + Math.random() * 9000);
   const btn = document.querySelector('#checkout-form-wrap .btn-primary');
+  const errEl = document.getElementById('clover-payment-errors');
+
+  // Tokenize card via Clover
+  if (clover) {
+    if (btn) { btn.disabled = true; btn.textContent = 'Processing payment...'; }
+    if (errEl) errEl.textContent = '';
+    let cardToken;
+    try {
+      const result = await clover.createToken();
+      if (result.errors) {
+        const msg = Object.values(result.errors).join(' ');
+        if (errEl) errEl.textContent = msg;
+        if (btn) { btn.disabled = false; btn.textContent = 'Pay & Place Order'; }
+        return;
+      }
+      cardToken = result.token;
+    } catch (e) {
+      if (errEl) errEl.textContent = 'Card tokenization failed. Please try again.';
+      if (btn) { btn.disabled = false; btn.textContent = 'Pay & Place Order'; }
+      return;
+    }
+
+    const { total } = getOrderTotals();
+    const amountInCents = Math.round(total * 100);
+    try {
+      const chargeRes = await fetch('/.netlify/functions/clover-charge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: cardToken, amount: amountInCents, description: `Biryani Temptations - ${name}` }),
+      });
+      const chargeData = await chargeRes.json();
+      if (!chargeRes.ok || !chargeData.success) {
+        if (errEl) errEl.textContent = chargeData.error || 'Payment declined. Please try a different card.';
+        if (btn) { btn.disabled = false; btn.textContent = 'Pay & Place Order'; }
+        return;
+      }
+    } catch (e) {
+      if (errEl) errEl.textContent = 'Payment failed. Please try again.';
+      if (btn) { btn.disabled = false; btn.textContent = 'Pay & Place Order'; }
+      return;
+    }
+  }
+
+  const orderNum = 'BT-' + Math.floor(1000 + Math.random() * 9000);
   if (btn) { btn.disabled = true; btn.textContent = 'Placing order...'; }
 
   // Use cached currentUser — avoids extra network call to getUser()
@@ -3369,7 +3425,7 @@ async function placeOrder() {
   const orderAddress = document.getElementById('co-address').value.trim();
 
   // Show confirmation IMMEDIATELY — optimistic UI
-  if (btn) { btn.disabled = false; btn.textContent = 'Place Order'; }
+  if (btn) { btn.disabled = false; btn.textContent = 'Pay & Place Order'; }
   const spL = { mild:'Mild', medium:'Medium', spicy:'Spicy' };
   const itemLines = cart.map(c => `<div style="display:flex;justify-content:space-between"><span>${_esc(c.name)}${c.spice?' ('+spL[c.spice]+')':''} ×${c.qty}</span><span>$${(c.price*c.qty).toFixed(2)}</span></div>`).join('');
   const discountLine = orderDiscount > 0 ? `<div style="display:flex;justify-content:space-between;color:#4CAF50"><span>Discount (${appliedCoupon.code})</span><span>−$${orderDiscount.toFixed(2)}</span></div>` : '';
@@ -4307,6 +4363,46 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 window.addEventListener('hashchange', handleHash);
+
+// ==================== CLOVER PAYMENTS ====================
+const CLOVER_APP_ID = 'MT1T1NS59TFVY';
+const CLOVER_MERCHANT_ID = '3RCRKAWHN6F41';
+let clover, cloverElements, cloverTokenReady = false;
+
+function initClover() {
+  if (typeof Clover === 'undefined') return;
+  clover = new Clover(CLOVER_APP_ID, { merchantId: CLOVER_MERCHANT_ID });
+  cloverElements = clover.elements();
+
+  const styles = {
+    body: { fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#F5E6C8' },
+    input: { fontSize: '15px', color: '#F5E6C8' },
+  };
+
+  const cardNumber = cloverElements.create('CARD_NUMBER', styles);
+  const cardDate = cloverElements.create('CARD_DATE', styles);
+  const cardCvv = cloverElements.create('CARD_CVV', styles);
+  const cardPostalCode = cloverElements.create('CARD_POSTAL_CODE', styles);
+
+  cardNumber.mount('#clover-card-number');
+  cardDate.mount('#clover-card-date');
+  cardCvv.mount('#clover-card-cvv');
+  cardPostalCode.mount('#clover-card-postal-code');
+
+  clover.on('change', (ev) => {
+    const errEl = document.getElementById('clover-payment-errors');
+    if (errEl) errEl.textContent = ev.error ? ev.error.message : '';
+    cloverTokenReady = ev.completed;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof Clover !== 'undefined') initClover();
+  else {
+    const s = document.querySelector('script[src*="clover.com/sdk"]');
+    if (s) s.addEventListener('load', initClover);
+  }
+});
 </script>
 
 <!-- ==================== PHONE ORDER MODAL ==================== -->
