@@ -4366,7 +4366,7 @@ window.addEventListener('hashchange', handleHash);
 
 // ==================== CLOVER PAYMENTS ====================
 const CLOVER_APP_ID = 'MT1T1NS59TFVY';
-const CLOVER_MERCHANT_ID = '3RCRKAWHN6F41';
+const CLOVER_MERCHANT_ID = window.__CLOVER_MID__ || '';
 let clover, cloverElements, cloverTokenReady = false;
 
 function initClover() {

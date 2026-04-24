@@ -4,7 +4,7 @@ exports.handler = async (event) => {
   }
 
   const CLOVER_API_TOKEN = process.env.CLOVER_API_TOKEN;
-  const MERCHANT_ID = process.env.CLOVER_MERCHANT_ID || '3RCRKAWHN6F41';
+  const MERCHANT_ID = process.env.CLOVER_MERCHANT_ID;
   const CLOVER_BASE = 'https://scl-sandbox.dev.clover.com';
 
   if (!CLOVER_API_TOKEN) {
