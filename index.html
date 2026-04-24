@@ -6,14 +6,14 @@
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://api.emailjs.com; frame-ancestors 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://checkout.sandbox.dev.clover.com https://checkout.clover.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com https://checkout.sandbox.dev.clover.com https://checkout.clover.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://api.emailjs.com https://checkout.sandbox.dev.clover.com https://checkout.clover.com https://scl-sandbox.dev.clover.com https://scl.clover.com; frame-src https://checkout.sandbox.dev.clover.com https://checkout.clover.com; child-src https://checkout.sandbox.dev.clover.com https://checkout.clover.com; frame-ancestors 'none';">
 
 <title>Biryani Temptations — Authentic Indian Catering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://checkout.sandbox.dev.clover.com/sdk.js"></script>
+<script src="https://checkout.sandbox.dev.clover.com/sdk.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
   // Replace YOUR_BT_PUBLIC_KEY with your actual EmailJS public key
@@ -373,6 +373,25 @@ footer{background:var(--card-bg);border-top:1px solid var(--border);padding:60px
 /* CHECKOUT MODAL */
 #checkout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:400;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 #checkout-overlay.open{display:flex}
+/* ── Clover Payment Section ── */
+.clover-pay-section{margin:18px 0 16px;padding:18px;border-radius:10px;background:linear-gradient(180deg,rgba(212,105,42,.06) 0%,rgba(0,0,0,.25) 100%);border:1px solid rgba(212,105,42,.28);box-shadow:inset 0 1px 0 rgba(232,160,32,.08),0 2px 18px rgba(0,0,0,.25);position:relative}
+.clover-pay-section::before{content:"";position:absolute;inset:0;border-radius:10px;pointer-events:none;background:linear-gradient(135deg,rgba(232,160,32,.05),transparent 55%)}
+.clover-pay-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+.clover-pay-title{display:flex;align-items:center;gap:8px;font-family:var(--font-display,'Bebas Neue'),sans-serif;font-size:1rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent)}
+.clover-pay-title .clover-lock{color:var(--gold,#E8A020);font-size:.9rem}
+.clover-card-brands{display:flex;gap:6px}
+.clover-card-brands span{font-size:.62rem;font-weight:700;letter-spacing:1px;padding:3px 7px;border-radius:3px;background:rgba(245,230,200,.08);color:var(--cream,#F5E6C8);border:1px solid rgba(245,230,200,.12)}
+.clover-field-group{margin-bottom:12px}
+.clover-field-group .form-label{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;opacity:.75;margin-bottom:6px;display:block;color:var(--cream,#F5E6C8)}
+.clover-field{height:48px;border:1px solid rgba(245,230,200,.14);border-radius:6px;padding:0 14px;background:rgba(0,0,0,.32);transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;display:flex;align-items:center}
+.clover-field:hover{border-color:rgba(212,105,42,.5)}
+.clover-field.clover-focus{border-color:var(--accent);background:rgba(0,0,0,.45);box-shadow:0 0 0 3px rgba(212,105,42,.18)}
+.clover-field.clover-error{border-color:#ff6b6b;box-shadow:0 0 0 3px rgba(255,107,107,.15)}
+.clover-field iframe{width:100%!important;height:100%!important;border:0;background:transparent}
+.clover-field-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.clover-pay-footer{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed rgba(245,230,200,.12);font-size:.74rem;opacity:.7;color:var(--cream,#F5E6C8)}
+.clover-pay-footer .clover-lock{color:var(--gold,#E8A020)}
+@media (max-width:520px){.clover-field-row{grid-template-columns:1fr 1fr;gap:8px}.clover-field-row .clover-field-group:last-child{grid-column:1 / -1}}
 .checkout-modal{background:var(--card-bg);border:1px solid var(--border);width:100%;max-width:540px;max-height:90vh;overflow-y:auto;padding:40px;position:relative}
 .checkout-modal-title{font-family:var(--font-display);font-size:2rem;color:var(--accent);margin-bottom:4px;letter-spacing:1px}
 .checkout-modal-sub{font-size:.85rem;opacity:.5;margin-bottom:28px}
@@ -1303,27 +1322,39 @@ footer:hover {
       <div id="coupon-msg" style="font-size:.82rem;margin-bottom:12px;margin-top:-10px"></div>
 
       <!-- Clover Payment Fields -->
-      <div id="clover-payment-section" style="margin-bottom:16px">
-        <div class="form-label" style="margin-bottom:10px;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent)">Card Payment</div>
-        <div class="form-group full" style="margin-bottom:10px">
-          <label class="form-label">Card Number</label>
-          <div id="clover-card-number" style="height:44px;border:1px solid var(--border2);border-radius:4px;padding:0 12px;background:rgba(255,255,255,.04)"></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-          <div class="form-group">
-            <label class="form-label">Expiry Date</label>
-            <div id="clover-card-date" style="height:44px;border:1px solid var(--border2);border-radius:4px;padding:0 12px;background:rgba(255,255,255,.04)"></div>
+      <div id="clover-payment-section" class="clover-pay-section">
+        <div class="clover-pay-header">
+          <div class="clover-pay-title">
+            <span class="clover-lock" aria-hidden="true">&#128274;</span>
+            <span>Secure Card Payment</span>
           </div>
-          <div class="form-group">
-            <label class="form-label">CVV</label>
-            <div id="clover-card-cvv" style="height:44px;border:1px solid var(--border2);border-radius:4px;padding:0 12px;background:rgba(255,255,255,.04)"></div>
+          <div class="clover-card-brands" aria-hidden="true">
+            <span>VISA</span><span>MC</span><span>AMEX</span><span>DISC</span>
           </div>
         </div>
-        <div class="form-group full">
-          <label class="form-label">ZIP Code</label>
-          <div id="clover-card-postal-code" style="height:44px;border:1px solid var(--border2);border-radius:4px;padding:0 12px;background:rgba(255,255,255,.04)"></div>
+        <div class="form-group full clover-field-group">
+          <label class="form-label" for="clover-card-number">Card Number</label>
+          <div class="clover-field" id="clover-card-number"></div>
         </div>
-        <div id="clover-payment-errors" style="color:#e53935;font-size:.82rem;margin-top:8px;min-height:18px"></div>
+        <div class="clover-field-row">
+          <div class="form-group clover-field-group">
+            <label class="form-label" for="clover-card-date">Expiry</label>
+            <div class="clover-field" id="clover-card-date"></div>
+          </div>
+          <div class="form-group clover-field-group">
+            <label class="form-label" for="clover-card-cvv">CVV</label>
+            <div class="clover-field" id="clover-card-cvv"></div>
+          </div>
+          <div class="form-group clover-field-group">
+            <label class="form-label" for="clover-card-postal-code">ZIP</label>
+            <div class="clover-field" id="clover-card-postal-code"></div>
+          </div>
+        </div>
+        <div id="clover-payment-errors" role="alert" aria-live="polite" style="color:#ff6b6b;font-size:.82rem;margin-top:8px;min-height:18px"></div>
+        <div class="clover-pay-footer">
+          <span class="clover-lock" aria-hidden="true">&#128274;</span>
+          <span>Encrypted &amp; processed securely by Clover. We never see your card details.</span>
+        </div>
       </div>
 
       <button type="button" class="btn-primary" style="width:100%;padding:16px;font-size:1rem" onclick="placeOrder()">Pay &amp; Place Order</button>
@@ -3341,6 +3372,10 @@ function openCheckout() {
   document.getElementById('checkout-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   document.getElementById('floating-cta').style.display = 'none';
+  // Mount Clover iframe fields AFTER the modal is visible so iframes can measure their containers.
+  requestAnimationFrame(() => {
+    setTimeout(() => { if (typeof mountCloverFields === 'function') mountCloverFields(); }, 50);
+  });
 }
 
 function closeCheckout() {
@@ -4377,44 +4412,100 @@ document.addEventListener('DOMContentLoaded', async () => {
 window.addEventListener('hashchange', handleHash);
 
 // ==================== CLOVER PAYMENTS ====================
-let clover, cloverElements, cloverTokenReady = false;
+let clover = null;
+let cloverElements = null;
+let cloverMounted = false;
+let cloverTokenReady = false;
+let _cloverFields = { number: null, date: null, cvv: null, postal: null };
 
-function initClover() {
-  if (typeof Clover === 'undefined') return;
-  const mid = atob('M1JDUktBV0hONkY0MQ==');
-  clover = new Clover('MT1T1NS59TFVY', { merchantId: mid });
-  cloverElements = clover.elements();
+function _cloverSdkReady() { return typeof window.Clover !== 'undefined'; }
 
-  const styles = {
-    body: { fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#F5E6C8', backgroundColor: 'transparent' },
-    input: { fontSize: '15px', color: '#F5E6C8' },
-    'input::placeholder': { color: 'rgba(245,230,200,0.4)' },
-  };
-
-  const cardNumber = cloverElements.create('CARD_NUMBER', styles);
-  const cardDate = cloverElements.create('CARD_DATE', styles);
-  const cardCvv = cloverElements.create('CARD_CVV', styles);
-  const cardPostalCode = cloverElements.create('CARD_POSTAL_CODE', styles);
-
-  cardNumber.mount('#clover-card-number');
-  cardDate.mount('#clover-card-date');
-  cardCvv.mount('#clover-card-cvv');
-  cardPostalCode.mount('#clover-card-postal-code');
-
-  clover.on('change', (ev) => {
-    const errEl = document.getElementById('clover-payment-errors');
-    if (errEl) errEl.textContent = ev.error ? ev.error.message : '';
-    cloverTokenReady = ev.completed;
+function _waitForCloverSdk(maxWaitMs) {
+  return new Promise((resolve) => {
+    if (_cloverSdkReady()) return resolve(true);
+    const start = Date.now();
+    const timer = setInterval(() => {
+      if (_cloverSdkReady()) { clearInterval(timer); resolve(true); }
+      else if (Date.now() - start > (maxWaitMs || 8000)) { clearInterval(timer); resolve(false); }
+    }, 100);
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (typeof Clover !== 'undefined') initClover();
-  else {
-    const s = document.querySelector('script[src*="clover.com/sdk"]');
-    if (s) s.addEventListener('load', initClover);
+function _attachFieldEvents(el, wrapSel) {
+  try {
+    el.addListener('focus', () => { const w = document.querySelector(wrapSel); if (w) w.classList.add('clover-focus'); });
+    el.addListener('blur', () => { const w = document.querySelector(wrapSel); if (w) w.classList.remove('clover-focus'); });
+  } catch (e) { /* SDK version difference - non-fatal */ }
+}
+
+async function mountCloverFields() {
+  const ready = await _waitForCloverSdk(8000);
+  if (!ready) {
+    const errEl = document.getElementById('clover-payment-errors');
+    if (errEl) errEl.textContent = 'Payment system unavailable. Please refresh the page.';
+    return false;
   }
-});
+
+  // Ensure target containers exist and are visible
+  const targets = ['#clover-card-number', '#clover-card-date', '#clover-card-cvv', '#clover-card-postal-code'];
+  for (const sel of targets) {
+    if (!document.querySelector(sel)) return false;
+  }
+
+  try {
+    if (!clover) {
+      const mid = atob('M1JDUktBV0hONkY0MQ==');
+      clover = new Clover('MT1T1NS59TFVY', { merchantId: mid });
+    }
+
+    // If already mounted, skip re-creating
+    if (cloverMounted) return true;
+
+    cloverElements = clover.elements();
+
+    const styles = {
+      body: { fontFamily: '"DM Sans", system-ui, sans-serif', fontSize: '15px', color: '#F5E6C8' },
+      input: { fontSize: '15px', color: '#F5E6C8', fontWeight: '400' },
+      'input::placeholder': { color: 'rgba(245,230,200,0.35)' },
+      'input.invalid': { color: '#ff6b6b' },
+      img: { height: '18px' }
+    };
+
+    // Clear any previous iframe contents (defensive)
+    targets.forEach(sel => { const n = document.querySelector(sel); if (n) n.innerHTML = ''; });
+
+    _cloverFields.number = cloverElements.create('CARD_NUMBER', styles);
+    _cloverFields.date   = cloverElements.create('CARD_DATE', styles);
+    _cloverFields.cvv    = cloverElements.create('CARD_CVV', styles);
+    _cloverFields.postal = cloverElements.create('CARD_POSTAL_CODE', styles);
+
+    _cloverFields.number.mount('#clover-card-number');
+    _cloverFields.date.mount('#clover-card-date');
+    _cloverFields.cvv.mount('#clover-card-cvv');
+    _cloverFields.postal.mount('#clover-card-postal-code');
+
+    _attachFieldEvents(_cloverFields.number, '#clover-card-number');
+    _attachFieldEvents(_cloverFields.date,   '#clover-card-date');
+    _attachFieldEvents(_cloverFields.cvv,    '#clover-card-cvv');
+    _attachFieldEvents(_cloverFields.postal, '#clover-card-postal-code');
+
+    clover.addEventListener && clover.addEventListener('change', (ev) => {
+      const errEl = document.getElementById('clover-payment-errors');
+      if (errEl) errEl.textContent = ev && ev.CARD_NUMBER && ev.CARD_NUMBER.error ? ev.CARD_NUMBER.error : '';
+    });
+
+    cloverMounted = true;
+    return true;
+  } catch (err) {
+    console.error('Clover mount failed:', err);
+    const errEl = document.getElementById('clover-payment-errors');
+    if (errEl) errEl.textContent = 'Could not load card fields. Please refresh and try again.';
+    return false;
+  }
+}
+
+// Initialize in the background after page load; real mount happens when checkout opens.
+window.addEventListener('load', () => { _waitForCloverSdk(10000); });
 </script>
 
 <!-- ==================== PHONE ORDER MODAL ==================== -->
